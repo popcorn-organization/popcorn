@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Popcorn</title>
-<meta name="description" content="Popcorn for Android and Windows. Films and series on your phone and PC, free to download.">
+<meta name="description" content="Free films and series on your phone and PC. No sign-up, no ads. Popcorn for Android and Windows.">
 <meta name="theme-color" content="#0b0a09">
 <meta name="color-scheme" content="dark">
 <meta property="og:title" content="Popcorn">
-<meta property="og:description" content="Films and series on your phone and PC. Free for Android and Windows.">
+<meta property="og:description" content="Free films and series on your phone and PC. No sign-up, no ads.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://popcorn-organization.github.io/popcorn/">
 <meta property="og:image" content="https://popcorn-organization.github.io/popcorn/assets/share.jpg">
@@ -148,10 +148,20 @@
   }
   .marquee h1 { margin: 0; width: min(440px, 78vw, calc(46 * var(--vh))); }
   .marquee h1 img { width: 100%; }
-  .marquee p.line {
+  /* The pitch: the three things people ask first, big; cream on the second
+     line, the one that sets it apart. */
+  .marquee p.pitch {
     margin: 0;
-    font-size: clamp(18px, min(2.4vw, calc(3 * var(--vh))), 24px); line-height: 1.45; font-weight: 300;
-    max-width: 26em;
+    font-size: clamp(28px, min(3.6vw, calc(4.6 * var(--vh))), 44px);
+    line-height: 1.12; font-weight: 600; letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  .marquee p.pitch span { display: block; color: var(--cream); }
+  .marquee p.line {
+    margin: 0; margin-top: calc(-0.6 * clamp(14px, calc(2.6 * var(--vh)), 28px));
+    font-size: clamp(17px, min(1.8vw, calc(2.6 * var(--vh))), 20px); line-height: 1.45; font-weight: 300;
+    color: var(--dim);
+    max-width: 30em;
   }
 
   /* Pills, as the app's own buttons: solid cream first, frosted glass second. */
@@ -178,6 +188,7 @@
   .ticket { font: 400 14px/1.5 var(--body); color: var(--dim); display: flex; flex-wrap: wrap; }
   .ticket span + span::before { content: "·"; margin: 0 9px; color: var(--dim); }
   .ticket b { color: var(--paper); font-weight: 500; }
+  .ticket:empty { display: none; }
 
   .tips { display: grid; gap: 6px; font-size: 15px; line-height: 1.45; color: var(--dim); max-width: 36em; }
   .tips span b { color: var(--cream); font-weight: 500; margin-right: 6px; }
@@ -210,8 +221,6 @@
     .marquee p.line { max-width: 24em; }
     .get { justify-content: center; width: 100%; }
     .ticket { justify-content: center; }
-    .ticket span:first-child { flex-basis: 100%; }
-    .ticket span:first-child + span::before { content: none; }
     .tips { justify-items: center; }
     .credits { justify-self: center; text-align: center; max-width: 36em; }
   }
@@ -230,7 +239,8 @@
   @media (orientation: portrait) and (max-height: 820px) {
     .lobby { --logo: min(72vw, calc(34 * var(--vh))); }
     .marquee h1 { width: min(190px, 48vw, calc(15 * var(--vh))); }
-    .marquee p.line { font-size: 16px; }
+    .marquee p.pitch { font-size: 25px; }
+    .marquee p.line { font-size: 15px; }
     .marquee p.line .more { display: none; }
     .get a { padding-block: 10px; }
     .tips { font-size: 13px; }
@@ -244,6 +254,7 @@
   }
   .marquee > .line { transition-delay: 0.15s; }
   .marquee > .get { transition-delay: 0.25s; }
+  .marquee > .pitch { transition-delay: 0.1s; }
   .marquee > .ticket, .marquee > .apple { transition-delay: 0.35s; }
   .marquee > .tips { transition-delay: 0.45s; }
   .credits { transition-delay: 0.55s; }
@@ -283,7 +294,8 @@
   <div class="marquee">
     <div class="slot" aria-hidden="true" data-slot></div>
     <h1><img src="assets/wordmark.svg" width="332" height="170" alt="Popcorn"></h1>
-    <p class="line">Films and series on your phone and PC. <span class="more">Pick something, press play, and it remembers where you stopped.</span></p>
+    <p class="pitch">Free films and series. <span>No sign-up. No ads.</span></p>
+    <p class="line">On your phone and PC<span class="more">, and it remembers where you stopped</span>.</p>
     <div class="get" data-get>
       <a class="first" data-os="android" href="https://github.com/popcorn-organization/popcorn/releases/latest/download/Popcorn-Android.apk">
         <svg><use href="#android"/></svg>
@@ -294,7 +306,7 @@
         <span>Get it for Windows<small data-size="windows">Windows 10 and 11</small></span>
       </a>
     </div>
-    <div class="ticket" data-ticket><span>Free</span><span>No account</span><span>No ads</span></div>
+    <div class="ticket" data-ticket></div>
     <p class="apple" data-apple hidden>Not available for iPhone or Mac yet.</p>
     <div class="tips">
       <span data-tip="android"><b>On Android:</b>Open the downloaded file. If asked, allow <em>install unknown apps</em>, then tap <em>Install</em>.</span>
