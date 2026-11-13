@@ -254,11 +254,12 @@
   .splash-logo {
     position: fixed; z-index: 60; margin: 0; pointer-events: none;
     transform-origin: 0 0;
-    animation: splash-in 0.7s ease backwards;
+    animation: splash-in 1.4s cubic-bezier(0.4, 0, 0.2, 1) backwards;
   }
   .splash-logo.go { transition: transform 1s cubic-bezier(0.22, 0.8, 0.2, 1); }
   .splash-logo.gone { opacity: 0; transition: opacity 0.4s ease; }
-  @keyframes splash-in { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; } }
+  /* A plain fade, no change of size. */
+  @keyframes splash-in { from { opacity: 0; } to { opacity: 1; } }
 
   @media (prefers-reduced-motion: reduce) {
     .lane { animation: none; } .get a { transition: none; }
@@ -414,7 +415,8 @@
   var posterImgs = Array.prototype.slice.call(wall.querySelectorAll("img"));
   var ready = Promise.all(posterImgs.map(settled).concat(
     document.fonts && document.fonts.ready ? [document.fonts.ready] : []));
-  var atLeast = new Promise(function (done) { setTimeout(done, 1000); });
+  // Long enough for the logo's fade to finish and rest a moment.
+  var atLeast = new Promise(function (done) { setTimeout(done, still ? 600 : 1700); });
   var atMost = new Promise(function (done) { setTimeout(done, 4000); });
   var revealed = false;
 
