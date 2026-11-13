@@ -175,16 +175,19 @@
     text-wrap: balance;
   }
   .marquee p.pitch span { display: block; color: var(--cream); }
-  /* What's inside: a small plain white mark beside each word, like the
-     4K / CC badges under a film in a store. */
+  /* What's inside, as quiet white badges in a row, like the 4K / CC
+     badges under a film in a store. */
   .features {
     list-style: none; margin: 0; padding: 0;
-    display: flex; flex-wrap: wrap; gap: 10px 22px;
-    font: 500 14px/1.2 var(--body); color: var(--paper);
+    display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px;
+    font: 500 14px/1 var(--body); color: var(--paper); opacity: 0.6;
   }
-  .features li { display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; }
+  .features li { display: flex; }
   .mark { width: 1.3em; height: 1.3em; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .mark.wide { width: calc(1.3em * 28 / 18); }
   .mark .solid { fill: currentColor; stroke: none; }
+  .mark text { font: 700 10.5px var(--body); letter-spacing: 0.02em; text-anchor: middle; dominant-baseline: central; stroke: none; }
+  .mark mask text { fill: #000; }
   .mark.popcorn { stroke-width: 105; }
 
   /* Pills, as the app's own buttons: solid cream first, frosted glass second. */
@@ -247,7 +250,7 @@
     .slot { display: block; width: var(--logo); height: var(--logo); margin-bottom: calc(1 * var(--vh)); }
     .marquee h1 { width: min(240px, 56vw, calc(19 * var(--vh))); }
     /* Centred under the logo: each icon over its name, side by side. */
-    .features { justify-content: center; gap: 8px 18px; font-size: 13px; }
+    .features { justify-content: center; gap: 8px 14px; font-size: 13px; }
     .get { justify-content: center; width: 100%; }
     .ticket { justify-content: center; }
     .tips { justify-items: center; }
@@ -269,8 +272,7 @@
     .lobby { --logo: min(72vw, calc(34 * var(--vh))); }
     .marquee h1 { width: min(190px, 48vw, calc(15 * var(--vh))); }
     .marquee p.pitch { font-size: 25px; }
-    .features { font-size: 12px; gap: 8px 16px; }
-    .features li { gap: 6px; }
+    .features { font-size: 12px; gap: 8px 12px; }
     .get a { padding-block: 10px; }
     .tips { font-size: 13px; }
     .credits { font-size: 11px; }
@@ -281,7 +283,7 @@
     .marquee { max-width: 640px; }
     .marquee h1 { width: min(500px, 35vw, calc(46 * var(--vh))); }
     .marquee p.pitch { font-size: clamp(40px, min(3.9vw, calc(6.2 * var(--vh))), 60px); }
-    .features { font-size: 15px; gap: 12px 26px; }
+    .features { font-size: 15px; gap: 12px 16px; }
     .get { gap: 14px; }
     .get a { padding: 17px 32px 17px 24px; gap: 14px; }
     .get a svg { width: 26px; height: 26px; }
@@ -341,23 +343,23 @@
     <h1><img src="assets/wordmark.svg" width="332" height="170" alt="Popcorn"></h1>
     <p class="pitch">Free films and series. <span>No sign-up. No ads.</span></p>
     <ul class="features">
-      <li>
-        <svg class="mark" viewBox="0 0 24 24" aria-hidden="true"><circle class="solid" cx="12" cy="12" r="2"/><path d="M8.6 8.6a4.8 4.8 0 0 0 0 6.8M15.4 8.6a4.8 4.8 0 0 1 0 6.8M5.5 5.5a9.2 9.2 0 0 0 0 13M18.5 5.5a9.2 9.2 0 0 1 0 13"/></svg>
-        Surround sound
+      <li title="4K">
+        <svg class="mark wide" viewBox="0 0 28 18" role="img" aria-label="4K"><mask id="cut-4k"><rect width="28" height="18" fill="#fff"/><text x="14" y="9.6">4K</text></mask><rect class="solid" width="28" height="18" rx="3.5" mask="url(#cut-4k)"/></svg>
       </li>
-      <li>
-        <svg class="mark" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="3"/><path d="M6.5 11h5M14 11h3.5M8.5 15h7"/></svg>
-        Synced subtitles
+      <li title="Surround sound">
+        <svg class="mark" viewBox="0 0 24 24" role="img" aria-label="Surround sound"><circle class="solid" cx="12" cy="12" r="2"/><path d="M8.6 8.6a4.8 4.8 0 0 0 0 6.8M15.4 8.6a4.8 4.8 0 0 1 0 6.8M5.5 5.5a9.2 9.2 0 0 0 0 13M18.5 5.5a9.2 9.2 0 0 1 0 13"/></svg>
       </li>
-      <li>
-        <svg class="mark popcorn" viewBox="-0.9 -7.6 1037.1 1037.1" aria-hidden="true">
+      <li title="Subtitles, synced automatically">
+        <svg class="mark wide" viewBox="0 0 28 18" role="img" aria-label="Subtitles"><rect x="0.8" y="0.8" width="26.4" height="16.4" rx="3.2" style="stroke-width:1.5"/><text class="solid" x="14" y="9.6">CC</text></svg>
+      </li>
+      <li title="Ask AI">
+        <svg class="mark popcorn" viewBox="-0.9 -7.6 1037.1 1037.1" role="img" aria-label="Ask AI">
           <mask id="cut-l" maskUnits="userSpaceOnUse" x="-100" y="-100" width="1300" height="1300"><rect x="-100" y="-100" width="1300" height="1300" fill="#fff"/><circle cx="725.2" cy="308.5" r="213"/></mask>
           <mask id="cut-b" maskUnits="userSpaceOnUse" x="-100" y="-100" width="1300" height="1300"><rect x="-100" y="-100" width="1300" height="1300" fill="#fff"/><circle cx="725.2" cy="308.5" r="213"/><circle cx="310.1" cy="368.3" r="213"/></mask>
           <path mask="url(#cut-l)" d="M447.0 591.7A262 262 0 1 1 497.0 184.7"/>
           <path d="M463.2 313.1A262 262 0 1 1 729.8 570.5"/>
           <path mask="url(#cut-b)" d="M791.2 578.5A262 262 0 1 1 318.9 628.1"/>
         </svg>
-        Ask AI
       </li>
     </ul>
     <div class="get" data-get>
