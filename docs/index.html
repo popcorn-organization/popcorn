@@ -79,13 +79,22 @@
     display: grid;
     grid-template-columns: repeat(9, 1fr);
     gap: 12px;
+    /* each lane only as tall as its own posters: stretched to the tallest
+       lane, a shorter one's "half" overshot its posters and it jumped */
+    align-items: start;
     transform: rotate(-9deg);
     z-index: -2;
   }
-  .lane { display: flex; flex-direction: column; gap: 12px; animation: drift 90s linear infinite; }
+  /* Each lane is two identical halves and drifts by exactly one half, then
+     starts over. Every poster carries its own space below it (rather than a
+     gap between posters), so the halves are exactly equal and the restart
+     lands on the same picture: with gaps the loop was half a gap out, and
+     each lane jumped every time it restarted. */
+  .lane { display: flex; flex-direction: column; animation: drift 90s linear infinite; will-change: transform; }
   .lane:nth-child(even) { animation-direction: reverse; animation-duration: 110s; }
   .lane img {
-    width: 100%; aspect-ratio: 2 / 3; object-fit: cover;
+    width: 100%; aspect-ratio: 2 / 3; object-fit: cover; flex: none;
+    margin-bottom: 12px;
     border-radius: 6px; background: var(--screen);
   }
   @keyframes drift { from { transform: translateY(0); } to { transform: translateY(-50%); } }
@@ -202,7 +211,7 @@
   }
   @media (max-width: 640px) {
     .wall { inset: -20% -40% -20% -20%; grid-template-columns: repeat(6, 1fr); gap: 8px; }
-    .lane { gap: 8px; }
+    .lane img { margin-bottom: 8px; }
     .get a { flex: 1 1 100%; justify-content: center; }
     .tips { font-size: 14px; }
   }
@@ -220,7 +229,8 @@
     .get a { padding-block: 10px; }
     .tips { font-size: 13px; }
     .credits { font-size: 11px; }
-  }  @media (prefers-reduced-motion: reduce) { .lane { animation: none; } .get a { transition: none; } }
+  }
+  @media (prefers-reduced-motion: reduce) { .lane { animation: none; } .get a { transition: none; } }
 </style>
 </head>
 <body>
