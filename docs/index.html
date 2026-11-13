@@ -13,67 +13,56 @@
 <link rel="icon" href="assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=Outfit:wght@300;400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  /* Layout: a cinema lobby at night. One full-bleed wall of drifting posters
-     opens the page; everything after it is quiet, left-aligned and plain. */
+  /* Layout: a cinema lobby at night, on one screen. A wall of drifting posters
+     fills the window; the logo, the downloads and two install tips sit over
+     its dark left side. Nothing scrolls. */
   :root {
     --night: #0b0a09;        /* the room */
-    --screen: #15130f;       /* raised surfaces */
+    --screen: #15130f;       /* poster placeholders */
     --rule: #2a2621;         /* hairlines */
     --paper: #f3efe6;        /* text */
-    --dim: #9d978a;          /* secondary text */
+    --dim: #a19b8e;          /* secondary text */
     --cream: #fdedad;        /* Popcorn's own logo colour, the one accent */
     --ink: #17140f;          /* text on cream */
-    --display: "Big Shoulders Display", "Arial Narrow", "Roboto Condensed", sans-serif;
     --body: "Outfit", system-ui, -apple-system, "Segoe UI", sans-serif;
     --mono: "Spline Sans Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
-    --max: 1180px;
     color-scheme: dark;
   }
 
   * { box-sizing: border-box; }
+  html, body { height: 100%; }
   html { background: var(--night); }
   body {
     margin: 0;
     background: var(--night);
     color: var(--paper);
-    font: 300 18px/1.6 var(--body);
+    font: 300 18px/1.55 var(--body);
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
+    overflow: hidden;
   }
   img { display: block; max-width: 100%; height: auto; }
   a { color: inherit; }
-  .wrap {
-    max-width: var(--max);
-    margin: 0 auto;
-    padding-left: max(20px, env(safe-area-inset-left, 0px));
-    padding-right: max(20px, env(safe-area-inset-right, 0px));
-  }
-  .label {
-    font: 500 12px/1.4 var(--mono);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--cream);
-  }
-  h2 {
-    font: 800 clamp(44px, 7vw, 84px)/0.92 var(--display);
-    text-transform: uppercase;
-    letter-spacing: 0.005em;
-    margin: 0;
-    text-wrap: balance;
+
+  .lobby {
+    position: relative;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    isolation: isolate;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    padding-top: max(clamp(18px, 3.5vh, 36px), env(safe-area-inset-top, 0px));
+    padding-bottom: max(clamp(16px, 3vh, 28px), env(safe-area-inset-bottom, 0px));
+    padding-left: max(clamp(20px, 6vw, 96px), env(safe-area-inset-left, 0px));
+    padding-right: max(clamp(20px, 6vw, 96px), env(safe-area-inset-right, 0px));
   }
 
   /* ── The poster wall ── */
-  .lobby {
-    position: relative;
-    overflow: hidden;
-    isolation: isolate;
-    border-bottom: 1px solid var(--rule);
-  }
   .wall {
     position: absolute;
-    inset: -30% -10% -30% 18%;
+    inset: -30% -10% -30% 22%;
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     gap: 14px;
@@ -88,39 +77,53 @@
   }
   @keyframes drift { from { transform: translateY(0); } to { transform: translateY(-50%); } }
   .lobby::before {
-    /* the dark falls from the left, where the words are, and off the bottom */
     content: ""; position: absolute; inset: 0; z-index: -1;
     background:
-      linear-gradient(90deg, var(--night) 0%, rgba(11, 10, 9, 0.94) 34%, rgba(11, 10, 9, 0.55) 62%, rgba(11, 10, 9, 0.35) 100%),
-      linear-gradient(0deg, var(--night) 0%, rgba(11, 10, 9, 0) 28%);
+      linear-gradient(90deg, var(--night) 0%, rgba(11, 10, 9, 0.94) 36%, rgba(11, 10, 9, 0.55) 64%, rgba(11, 10, 9, 0.32) 100%),
+      linear-gradient(0deg, rgba(11, 10, 9, 0.85) 0%, rgba(11, 10, 9, 0) 22%);
   }
-  .lobby .wrap { padding-block: clamp(36px, 6vw, 56px) clamp(80px, 12vw, 140px); }
+
+  /* ── Top and bottom lines ── */
   .bar { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
   .bar .icon { width: 40px; height: 40px; border-radius: 11px; }
-  .bar nav {
-    display: flex; gap: 24px; font: 500 13px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase;
+  .bar a.versions {
+    font: 500 13px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase;
+    text-decoration: none; color: var(--dim);
     padding: 12px 16px; border-radius: 6px;
     background: rgba(11, 10, 9, 0.72);
     -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
   }
-  .bar nav a { text-decoration: none; color: var(--dim); }
-  .bar nav a:hover, .bar nav a:focus-visible { color: var(--paper); }
+  .bar a.versions:hover, .bar a.versions:focus-visible { color: var(--paper); }
 
-  .marquee { margin-top: clamp(64px, 11vw, 132px); max-width: 660px; }
-  .marquee .mark { width: min(440px, 82vw); }
-  .marquee .mark img { width: 100%; }
-  .marquee p {
-    font-size: clamp(20px, 2.4vw, 24px); line-height: 1.45; font-weight: 300;
-    color: var(--paper); margin: 26px 0 36px; max-width: 26em;
+  .credits {
+    font: 400 12px/1.5 var(--mono); color: var(--dim); letter-spacing: 0.02em;
+    max-width: 52em;
+  }
+  .credits a { text-decoration: none; color: var(--paper); }
+
+  /* ── The marquee ── */
+  .marquee {
+    align-self: center;
+    max-width: 680px;
+    display: grid;
+    gap: clamp(14px, 2.6vh, 28px);
+    min-width: 0;
+  }
+  .marquee h1 { margin: 0; width: min(440px, 78vw, 46vh); }
+  .marquee h1 img { width: 100%; }
+  .marquee p.line {
+    margin: 0;
+    font-size: clamp(18px, min(2.4vw, 3vh), 24px); line-height: 1.45; font-weight: 300;
+    max-width: 26em;
   }
 
   .get { display: flex; flex-wrap: wrap; gap: 12px; }
   .get a {
     display: inline-flex; align-items: center; gap: 14px;
-    padding: 15px 22px 15px 18px; border-radius: 6px;
+    padding: clamp(11px, 1.8vh, 15px) 22px clamp(11px, 1.8vh, 15px) 18px; border-radius: 6px;
     text-decoration: none; font: 500 17px/1.2 var(--body);
     border: 1px solid var(--cream);
-    transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+    transition: background 0.18s ease, transform 0.18s ease;
   }
   .get a svg { width: 24px; height: 24px; flex: none; }
   .get a small { display: block; font: 400 12px/1.3 var(--mono); letter-spacing: 0.04em; opacity: 0.75; margin-top: 3px; }
@@ -129,71 +132,37 @@
   .get a.second { color: var(--cream); background: rgba(11, 10, 9, 0.5); }
   .get a.second:hover { background: rgba(253, 237, 173, 0.08); }
   .get a:focus-visible { outline: 2px solid var(--paper); outline-offset: 3px; }
+
   .ticket {
-    margin-top: 20px; font: 400 13px/1.5 var(--mono); color: var(--dim); letter-spacing: 0.02em;
+    font: 400 13px/1.5 var(--mono); color: var(--dim); letter-spacing: 0.02em;
     display: flex; flex-wrap: wrap; gap: 6px 18px;
   }
   .ticket b { color: var(--paper); font-weight: 500; }
-  .apple { margin-top: 12px; font: 400 13px/1.5 var(--mono); color: var(--cream); }
 
-  /* ── Quiet sections ── */
-  section { padding-block: clamp(80px, 11vw, 136px); border-bottom: 1px solid var(--rule); }
-  .head { display: grid; gap: 18px; margin-bottom: clamp(40px, 6vw, 64px); max-width: 760px; }
-  .head p { margin: 0; color: var(--dim); max-width: 36em; }
-
-  .screen {
-    margin: 0;
-    border: 1px solid var(--rule); border-radius: 10px; overflow: hidden;
-    box-shadow: 0 50px 120px -60px rgba(0, 0, 0, 1);
+  .tips {
+    display: grid; gap: 8px;
+    border-top: 1px solid var(--rule); padding-top: clamp(12px, 2vh, 18px);
+    font-size: 15px; line-height: 1.45; color: var(--dim);
+    max-width: 36em;
   }
-  .screen + figcaption { margin-top: 14px; font: 400 13px/1.5 var(--mono); color: var(--dim); }
-
-  dl.notes {
-    display: grid; gap: 34px 56px; margin: clamp(48px, 7vw, 80px) 0 0;
-    grid-template-columns: 1fr;
-  }
-  @media (min-width: 720px) { dl.notes { grid-template-columns: 1fr 1fr; } }
-  @media (min-width: 1040px) { dl.notes { grid-template-columns: repeat(3, 1fr); } }
-  dl.notes div { border-top: 1px solid var(--rule); padding-top: 18px; min-width: 0; }
-  dl.notes dt { font: 600 22px/1.25 var(--body); margin-bottom: 8px; }
-  dl.notes dd { margin: 0; color: var(--dim); font-size: 17px; }
-
-  .pair { display: grid; gap: 40px; align-items: start; }
-  @media (min-width: 900px) { .pair { grid-template-columns: 340px 1fr; gap: 72px; align-items: center; } }
-  .pair .phone {
-    width: min(340px, 100%); justify-self: center;
-    border-radius: 38px; padding: 9px; background: #1c1915;
-    box-shadow: 0 0 0 1px var(--rule), 0 40px 100px -40px rgba(0, 0, 0, 1);
-  }
-  .pair .phone img { border-radius: 30px; }
-  .pair .text { display: grid; gap: 22px; min-width: 0; }
-  .pair .text p { margin: 0; color: var(--dim); max-width: 32em; }
-
-  .install { display: grid; gap: 56px; }
-  @media (min-width: 880px) { .install { grid-template-columns: 1fr 1fr; gap: 72px; } }
-  .install h3 {
-    display: flex; align-items: center; gap: 12px; margin: 0 0 22px;
-    font: 800 34px/1 var(--display); text-transform: uppercase; letter-spacing: 0.01em;
-  }
-  .install h3 svg { width: 26px; height: 26px; color: var(--cream); }
-  .install ol { margin: 0 0 28px; padding: 0; list-style: none; counter-reset: s; display: grid; gap: 16px; }
-  .install li { counter-increment: s; display: grid; grid-template-columns: 34px 1fr; gap: 8px; color: var(--dim); }
-  .install li::before { content: counter(s); font: 500 14px/1.9 var(--mono); color: var(--cream); }
-  .install li b { color: var(--paper); font-weight: 500; }
-
-  footer { padding-block: 44px 64px; font: 400 13px/1.6 var(--mono); color: var(--dim); }
-  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px 32px; align-items: center; }
-  footer img { width: 110px; }
-  footer a { text-decoration: none; color: var(--paper); }
-  footer a:hover { color: var(--cream); }
+  .tips span b { color: var(--cream); font: 500 12px/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; margin-right: 10px; }
+  .tips em { font-style: normal; color: var(--paper); }
+  .apple { font: 400 13px/1.5 var(--mono); color: var(--cream); margin: 0; }
 
   @media (max-width: 640px) {
     .wall { inset: -20% -40% -20% -20%; grid-template-columns: repeat(4, 1fr); gap: 10px; }
     .lane { gap: 10px; }
     .lobby::before {
-      background: linear-gradient(180deg, rgba(11, 10, 9, 0.7) 0%, rgba(11, 10, 9, 0.88) 45%, var(--night) 100%);
+      background: linear-gradient(180deg, rgba(11, 10, 9, 0.62) 0%, rgba(11, 10, 9, 0.86) 40%, rgba(11, 10, 9, 0.96) 100%);
     }
-    .bar nav .wide { display: none; }
+    .get a { flex: 1 1 100%; }
+    .tips { font-size: 14px; }
+  }
+  /* A window too short for everything: let it scroll rather than cut it off. */
+  @media (max-height: 620px) {
+    body { overflow: auto; }
+    .lobby { height: auto; min-height: 100dvh; }
+    .tips { display: none; }
   }
   @media (prefers-reduced-motion: reduce) { .lane { animation: none; } .get a { transition: none; } }
 </style>
@@ -205,108 +174,37 @@
   <symbol id="windows" viewBox="0 0 24 24"><path fill="currentColor" d="M3 5.1l7.4-1v7.2H3V5.1zm0 13.8l7.4 1v-7.1H3v6.1zm8.3 1.1L21 21.3v-8.5h-9.7v7.2zm0-15.9v7.3H21V2.7l-9.7 1.4z"/></symbol>
 </svg>
 
-<header class="lobby">
+<main class="lobby">
   <div class="wall" aria-hidden="true" data-wall></div>
-  <div class="wrap">
-    <div class="bar">
-      <img class="icon" src="assets/icon.png" width="40" height="40" alt="Popcorn">
-      <nav aria-label="Page">
-        <a class="wide" href="#player">The player</a>
-        <a class="wide" href="#install">Installing</a>
-        <a href="https://github.com/popcorn-organization/popcorn/releases">All versions</a>
-      </nav>
-    </div>
 
-    <div class="marquee">
-      <h1 class="mark" style="margin:0"><img src="assets/wordmark.svg" width="332" height="170" alt="Popcorn"></h1>
-      <p>Films and series on your phone and PC. Pick something, press play, and it remembers where you stopped.</p>
-      <div class="get" data-get>
-        <a class="first" data-os="android" href="https://github.com/popcorn-organization/popcorn/releases/latest/download/Popcorn-Android.apk">
-          <svg><use href="#android"/></svg>
-          <span>Get it for Android<small data-size="android">Phones and tablets</small></span>
-        </a>
-        <a class="second" data-os="windows" href="https://github.com/popcorn-organization/popcorn/releases/latest/download/Popcorn-Windows-Setup.exe">
-          <svg><use href="#windows"/></svg>
-          <span>Get it for Windows<small data-size="windows">Windows 10 and 11</small></span>
-        </a>
-      </div>
-      <div class="ticket" data-ticket><span>Free</span><span>No account</span><span>No ads</span></div>
-      <p class="apple" data-apple hidden>Not available for iPhone or Mac yet.</p>
+  <div class="bar">
+    <img class="icon" src="assets/icon.png" width="40" height="40" alt="Popcorn">
+    <a class="versions" href="https://github.com/popcorn-organization/popcorn/releases">All versions</a>
+  </div>
+
+  <div class="marquee">
+    <h1><img src="assets/wordmark.svg" width="332" height="170" alt="Popcorn"></h1>
+    <p class="line">Films and series on your phone and PC. Pick something, press play, and it remembers where you stopped.</p>
+    <div class="get" data-get>
+      <a class="first" data-os="android" href="https://github.com/popcorn-organization/popcorn/releases/latest/download/Popcorn-Android.apk">
+        <svg><use href="#android"/></svg>
+        <span>Get it for Android<small data-size="android">Phones and tablets</small></span>
+      </a>
+      <a class="second" data-os="windows" href="https://github.com/popcorn-organization/popcorn/releases/latest/download/Popcorn-Windows-Setup.exe">
+        <svg><use href="#windows"/></svg>
+        <span>Get it for Windows<small data-size="windows">Windows 10 and 11</small></span>
+      </a>
+    </div>
+    <div class="ticket" data-ticket><span>Free</span><span>No account</span><span>No ads</span></div>
+    <p class="apple" data-apple hidden>Not available for iPhone or Mac yet.</p>
+    <div class="tips">
+      <span><b>Android</b>Open the downloaded file. If asked, allow <em>install unknown apps</em>, then tap <em>Install</em>.</span>
+      <span><b>Windows</b>If Windows says it protected your PC, click <em>More info</em>, then <em>Run anyway</em>.</span>
     </div>
   </div>
-</header>
 
-<main>
-  <section id="player">
-    <div class="wrap">
-      <div class="head">
-        <span class="label">The player</span>
-        <h2>Gets out of the way</h2>
-        <p>The controls fade once the film starts. Intros and credits have a skip button, and quality and subtitles are one tap away.</p>
-      </div>
-      <figure style="margin:0">
-        <div class="screen"><img src="assets/screen-player.jpg" width="1280" height="606" alt="Dune: Part Two playing in Popcorn on a phone held sideways, with a subtitle and the playback controls" loading="lazy"></div>
-        <figcaption>Dune: Part Two, 07:15 of 2:45:48, on a Galaxy S10 held sideways.</figcaption>
-      </figure>
-      <dl class="notes">
-        <div><dt>Surround sound</dt><dd>Films keep all their channels, so Dolby Atmos on your phone, earbuds or PC can place the sound around you.</dd></div>
-        <div><dt>Subtitles that keep time</dt><dd>Popcorn listens to the film and lines the subtitles up with what's being said.</dd></div>
-        <div><dt>Light on storage</dt><dd>It keeps the last few minutes you watched and what's coming up, and clears older downloads by itself.</dd></div>
-      </dl>
-    </div>
-  </section>
-
-  <section>
-    <div class="wrap pair">
-      <div class="phone"><img src="assets/screen-details.jpg" width="600" height="700" alt="Dune: Part Two's page in Popcorn: poster, 2024, PG-13, 2h 47m, rated 8.1" loading="lazy"></div>
-      <div class="text">
-        <span class="label">Every title</span>
-        <h2>Its own page</h2>
-        <p>Poster, cast, trailer and every episode, season by season. Choose a quality from SD to Ultra HD, or let Popcorn recommend one that balances the picture against the download.</p>
-        <p>Continue Watching keeps your place in each film and episode, and the next episode is ready when one ends.</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="install">
-    <div class="wrap">
-      <div class="head">
-        <span class="label">Installing</span>
-        <h2>One minute, once</h2>
-        <p>Popcorn comes from this page, not an app store, so your phone or PC asks you to confirm the first time. Updates install over it and keep your history.</p>
-      </div>
-      <div class="install">
-        <div>
-          <h3><svg><use href="#android"/></svg>Android</h3>
-          <ol>
-            <li><span><b>Download</b> Popcorn on your phone.</span></li>
-            <li><span><b>Open the file.</b> If asked, allow your browser or Files app to install unknown apps, then go back.</span></li>
-            <li><span><b>Tap Install</b> and open Popcorn from your home screen.</span></li>
-          </ol>
-          <div class="get"><a class="first" href="https://github.com/popcorn-organization/popcorn/releases/latest/download/Popcorn-Android.apk"><svg><use href="#android"/></svg><span>Get it for Android</span></a></div>
-        </div>
-        <div>
-          <h3><svg><use href="#windows"/></svg>Windows</h3>
-          <ol>
-            <li><span><b>Download</b> the installer and open it.</span></li>
-            <li><span>If Windows says it protected your PC, click <b>More info</b>, then <b>Run anyway</b>.</span></li>
-            <li><span><b>Follow the steps</b> and open Popcorn from the Start menu or your desktop.</span></li>
-          </ol>
-          <div class="get"><a class="first" href="https://github.com/popcorn-organization/popcorn/releases/latest/download/Popcorn-Windows-Setup.exe"><svg><use href="#windows"/></svg><span>Get it for Windows</span></a></div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <p class="credits">Posters from <a href="https://www.themoviedb.org/">TMDB</a>. Popcorn uses the TMDB API but is not endorsed or certified by TMDB.</p>
 </main>
-
-<footer>
-  <div class="wrap">
-    <img src="assets/wordmark.svg" width="332" height="170" alt="Popcorn">
-    <span data-version>Always the newest version.</span>
-    <a href="https://github.com/popcorn-organization/popcorn/releases">All versions</a>
-    <span style="flex-basis:100%">Posters from <a href="https://www.themoviedb.org/">TMDB</a>. Popcorn uses the TMDB API but is not endorsed or certified by TMDB.</span>
-  </div>
-</footer>
 
 <script>
 (function () {
@@ -323,7 +221,6 @@
       var img = document.createElement("img");
       img.src = "https://image.tmdb.org/t/p/w342" + p;
       img.alt = "";
-      img.loading = "lazy";
       img.decoding = "async";
       lane.appendChild(img);
     });
@@ -355,7 +252,6 @@
       var b = document.createElement("b"); b.textContent = "Version " + v;
       ver.appendChild(b); ver.appendChild(document.createTextNode(" · " + day));
       ticket.insertBefore(ver, ticket.firstChild);
-      document.querySelector("[data-version]").textContent = "Version " + v + ", released " + day + ".";
       (rel.assets || []).forEach(function (a) {
         var key = /Android/i.test(a.name) ? "android" : /Windows/i.test(a.name) ? "windows" : null;
         var el = key && document.querySelector('[data-size="' + key + '"]');
