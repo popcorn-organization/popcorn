@@ -188,7 +188,7 @@
   .mark .solid { fill: currentColor; stroke: none; }
   .mark text { font: 700 10.5px var(--body); letter-spacing: 0.02em; text-anchor: middle; dominant-baseline: central; stroke: none; }
   .mark mask text { fill: #000; }
-  .mark.popcorn { stroke-width: 105; }
+  .features .word { font-weight: 600; font-size: 1.05em; letter-spacing: 0.01em; white-space: nowrap; }
 
   /* Pills, as the app's own buttons: solid cream first, frosted glass second. */
   .get { display: flex; flex-wrap: wrap; gap: 12px; }
@@ -352,15 +352,7 @@
       <li title="Subtitles, synced automatically">
         <svg class="mark wide" viewBox="0 0 28 18" role="img" aria-label="Subtitles"><rect x="0.8" y="0.8" width="26.4" height="16.4" rx="3.2" style="stroke-width:1.5"/><text class="solid" x="14" y="9.6">CC</text></svg>
       </li>
-      <li title="Ask AI">
-        <svg class="mark popcorn" viewBox="-0.9 -7.6 1037.1 1037.1" role="img" aria-label="Ask AI">
-          <mask id="cut-l" maskUnits="userSpaceOnUse" x="-100" y="-100" width="1300" height="1300"><rect x="-100" y="-100" width="1300" height="1300" fill="#fff"/><circle cx="725.2" cy="308.5" r="213"/></mask>
-          <mask id="cut-b" maskUnits="userSpaceOnUse" x="-100" y="-100" width="1300" height="1300"><rect x="-100" y="-100" width="1300" height="1300" fill="#fff"/><circle cx="725.2" cy="308.5" r="213"/><circle cx="310.1" cy="368.3" r="213"/></mask>
-          <path mask="url(#cut-l)" d="M447.0 591.7A262 262 0 1 1 497.0 184.7"/>
-          <path d="M463.2 313.1A262 262 0 1 1 729.8 570.5"/>
-          <path mask="url(#cut-b)" d="M791.2 578.5A262 262 0 1 1 318.9 628.1"/>
-        </svg>
-      </li>
+      <li title="Ask AI"><span class="word">Ask AI</span></li>
     </ul>
     <div class="get" data-get>
       <a class="first" data-os="android" href="https://github.com/popcorn-organization/popcorn/releases/latest/download/Popcorn-Android.apk">
