@@ -122,6 +122,13 @@
     --logo-x: calc(73vw - var(--logo) / 2);
     --logo-y: calc(calc(50 * var(--vh)) - var(--logo) / 2);
   }
+  /* Wide screens: the words centred in the space left of the icon (about
+     480px of them), not pushed to the edge; never nearer the edge than 6vw. */
+  @media (orientation: landscape) {
+    .lobby {
+      padding-left: max(6vw, min(calc((var(--logo-x) - 480px) / 2), 240px), env(safe-area-inset-left, 0px));
+    }
+  }
   .frost {
     position: absolute; inset: 0; z-index: -1;
     background: rgba(11, 10, 9, 0.5);
