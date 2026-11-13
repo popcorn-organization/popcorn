@@ -17,7 +17,7 @@
 <meta property="og:image:alt" content="Popcorn: films and series on your phone and PC">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://popcorn-organization.github.io/popcorn/assets/share.jpg">
-<link rel="icon" href="assets/favicon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/favicon.png?v=2">
 <script>
   // The splash (see the script at the end): the page waits behind the logo
   // until the posters are in. Never longer than a few seconds, scripts or not.
@@ -184,7 +184,10 @@
     transition: background 0.18s ease, transform 0.18s ease;
   }
   .get a svg { width: 24px; height: 24px; flex: none; }
-  .get a small { display: block; font: 400 13px/1.3 var(--body); opacity: 0.7; margin-top: 2px; }
+  /* App-store-badge style: a small line over the platform's name. */
+  .get a > span { display: grid; gap: 1px; text-align: left; }
+  .get a small { display: block; font: 400 12px/1.2 var(--body); opacity: 0.72; letter-spacing: 0.01em; }
+  .get a strong { display: block; font: 600 20px/1.1 var(--body); letter-spacing: -0.01em; }
   .get a.first { background: var(--cream); color: var(--ink); box-shadow: 0 12px 36px -14px rgba(253, 237, 173, 0.6); }
   .get a.first:hover { transform: translateY(-1px); }
   .get a.second {
@@ -201,8 +204,9 @@
   .ticket b { color: var(--paper); font-weight: 500; }
   .ticket:empty { display: none; }
 
+  .marquee p.line, .tips span, .credits { text-wrap: balance; }
   .tips { display: grid; gap: 6px; font-size: 15px; line-height: 1.45; color: var(--dim); max-width: 36em; }
-  .tips span b { color: var(--cream); font-weight: 500; margin-right: 6px; }
+  .tips span b { color: var(--paper); font-weight: 500; margin-right: 6px; }
   .tips em { font-style: normal; color: var(--paper); }
   .apple { font: 400 14px/1.5 var(--body); color: var(--cream); margin: 0; }
   .marquee { max-width: min(680px, 48vw); }
@@ -306,26 +310,26 @@
     <div class="slot" aria-hidden="true" data-slot></div>
     <h1><img src="assets/wordmark.svg" width="332" height="170" alt="Popcorn"></h1>
     <p class="pitch">Free films and series. <span>No sign-up. No ads.</span></p>
-    <p class="line">Cinema surround sound<span class="more"> and subtitles that line up by themselves</span>.</p>
+    <p class="line">Surround sound<span class="more">, and subtitles that stay in sync</span>.</p>
     <div class="get" data-get>
       <a class="first" data-os="android" href="https://github.com/popcorn-organization/popcorn/releases/latest/download/Popcorn-Android.apk">
         <svg><use href="#android"/></svg>
-        <span>Get it for Android<small data-size="android">Phones and tablets</small></span>
+        <span><small data-size="android">Free download</small><strong>Android</strong></span>
       </a>
       <a class="second" data-os="windows" href="https://github.com/popcorn-organization/popcorn/releases/latest/download/Popcorn-Windows-Setup.exe">
         <svg><use href="#windows"/></svg>
-        <span>Get it for Windows<small data-size="windows">Windows 10 and 11</small></span>
+        <span><small data-size="windows">Free download</small><strong>Windows</strong></span>
       </a>
     </div>
     <div class="ticket" data-ticket></div>
     <p class="apple" data-apple hidden>Not available for iPhone or Mac yet.</p>
     <div class="tips">
-      <span data-tip="android"><b>On Android:</b>Open the downloaded file. If asked, allow <em>install unknown apps</em>, then tap <em>Install</em>.</span>
-      <span data-tip="windows"><b>On Windows:</b>If Windows says it protected your PC, click <em>More info</em>, then <em>Run anyway</em>.</span>
+      <span data-tip="android"><b>First time?</b>Open the file, allow <em>install unknown apps</em> if asked, then tap <em>Install</em>.</span>
+      <span data-tip="windows"><b>First time?</b>If Windows warns you, choose <em>More info</em>, then <em>Run anyway</em>.</span>
     </div>
   </div>
 
-  <p class="credits">Posters from <a href="https://www.themoviedb.org/" target="_blank" rel="noopener">TMDB</a>. Popcorn uses the TMDB API but is not endorsed or certified by TMDB.</p>
+  <p class="credits">Posters by <a href="https://www.themoviedb.org/" target="_blank" rel="noopener">TMDB</a>. This product uses the TMDB API but is not endorsed or certified by TMDB.</p>
 </main>
 
 <script>
@@ -381,12 +385,12 @@
       var ticket = document.querySelector("[data-ticket]");
       var ver = document.createElement("span");
       var b = document.createElement("b"); b.textContent = "Version " + v;
-      ver.appendChild(b); ver.appendChild(document.createTextNode(" · " + day));
+      ver.appendChild(b); ver.appendChild(document.createTextNode(" · Updated " + day));
       ticket.insertBefore(ver, ticket.firstChild);
       (rel.assets || []).forEach(function (a) {
         var key = /Android/i.test(a.name) ? "android" : /Windows/i.test(a.name) ? "windows" : null;
         var el = key && document.querySelector('[data-size="' + key + '"]');
-        if (el) el.textContent = (key === "android" ? "Phones and tablets · " : "Windows 10 and 11 · ") + Math.round(a.size / 1048576) + " MB";
+        if (el) el.textContent = "Free download · " + Math.round(a.size / 1048576) + " MB";
       });
     })
     .catch(function () {});
