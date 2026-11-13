@@ -159,42 +159,57 @@
   .apple { font: 400 14px/1.5 var(--body); color: var(--cream); margin: 0; }
   .marquee { max-width: min(680px, 48vw); }
 
-  /* Upright screens (phones, tablets held upright): the icon above, the
-     words below it, as the app's welcome screen does on a phone. */
+  .slot { display: none; }
+
+  /* Upright screens (phones, tablets held upright), as the app's welcome
+     screen on a phone: a large icon, and everything centred under it as one
+     group in the middle of the screen. The icon's cutout follows the empty
+     slot at the top of the group (placed by the script below). */
   @media (orientation: portrait) {
     .lobby {
-      --logo: min(66vw, 31vh);
+      --logo: min(78vw, 40vh);
       --logo-x: calc(50vw - var(--logo) / 2);
-      --logo-y: calc(max(clamp(18px, 3.5vh, 36px), env(safe-area-inset-top, 0px)) + 4vh);
+      --logo-y: 6vh;
     }
     .lobby::after {
-      background: linear-gradient(180deg, rgba(11, 10, 9, 0) 30%, rgba(11, 10, 9, 0.55) 55%, rgba(11, 10, 9, 0.75) 100%);
+      background: radial-gradient(120% 70% at 50% 75%, rgba(11, 10, 9, 0.7), rgba(11, 10, 9, 0) 70%);
     }
-    .marquee { max-width: 640px; align-self: end; padding-top: calc(var(--logo) + 6vh); gap: clamp(12px, 2vh, 22px); }
-    .marquee h1 { width: min(260px, 58vw, 22vh); }
+    .marquee {
+      max-width: 560px; width: 100%; justify-self: center; align-self: center;
+      justify-items: center; text-align: center;
+      gap: clamp(12px, 1.9vh, 20px);
+    }
+    .slot { display: block; width: var(--logo); height: var(--logo); margin-bottom: 1vh; }
+    .marquee h1 { width: min(240px, 56vw, 19vh); }
+    .marquee p.line { max-width: 24em; }
+    .get { justify-content: center; width: 100%; }
+    .ticket { justify-content: center; }
+    .ticket span:first-child { flex-basis: 100%; }
+    .ticket span:first-child + span::before { content: none; }
+    .tips { justify-items: center; }
+    .credits { justify-self: center; text-align: center; max-width: 36em; }
   }
   @media (max-width: 640px) {
     .wall { inset: -20% -40% -20% -20%; grid-template-columns: repeat(6, 1fr); gap: 8px; }
     .lane { gap: 8px; }
-    .get a { flex: 1 1 100%; }
+    .get a { flex: 1 1 100%; justify-content: center; }
     .tips { font-size: 14px; }
   }
-  /* A window too short for everything: let it scroll rather than cut it off. */
   /* Tablets held upright: room for a bigger icon. */
   @media (orientation: portrait) and (min-width: 641px) and (min-height: 821px) {
-    .lobby { --logo: min(56vw, 40vh); }
+    .lobby { --logo: min(60vw, 42vh); }
   }
   /* Short screens: phones held sideways, small phones upright. */
   @media (max-height: 620px) { .tips { display: none; } }
   @media (orientation: portrait) and (max-height: 820px) {
-    .lobby { --logo: min(50vw, 23vh); }
-    .marquee { padding-top: calc(var(--logo) + 4vh); }
-    .marquee h1 { width: min(200px, 50vw, 17vh); }
+    .lobby { --logo: min(72vw, 34vh); }
+    .marquee h1 { width: min(190px, 48vw, 15vh); }
     .marquee p.line { font-size: 16px; }
+    .marquee p.line .more { display: none; }
     .get a { padding-block: 10px; }
     .tips { font-size: 13px; }
-  }
-  @media (prefers-reduced-motion: reduce) { .lane { animation: none; } .get a { transition: none; } }
+    .credits { font-size: 11px; }
+  }  @media (prefers-reduced-motion: reduce) { .lane { animation: none; } .get a { transition: none; } }
 </style>
 </head>
 <body>
@@ -210,8 +225,9 @@
   <div class="frost" aria-hidden="true"></div>
 
   <div class="marquee">
+    <div class="slot" aria-hidden="true" data-slot></div>
     <h1><img src="assets/wordmark.svg" width="332" height="170" alt="Popcorn"></h1>
-    <p class="line">Films and series on your phone and PC. Pick something, press play, and it remembers where you stopped.</p>
+    <p class="line">Films and series on your phone and PC. <span class="more">Pick something, press play, and it remembers where you stopped.</span></p>
     <div class="get" data-get>
       <a class="first" data-os="android" href="https://github.com/popcorn-organization/popcorn/releases/latest/download/Popcorn-Android.apk">
         <svg><use href="#android"/></svg>
@@ -295,7 +311,24 @@
       });
     })
     .catch(function () {});
-})();
+
+  // Upright screens: put the icon's cutout where the empty slot is.
+  var lobby = document.querySelector(".lobby");
+  var slot = document.querySelector("[data-slot]");
+  function place() {
+    if (!window.matchMedia("(orientation: portrait)").matches) {
+      lobby.style.removeProperty("--logo-x");
+      lobby.style.removeProperty("--logo-y");
+      return;
+    }
+    var s = slot.getBoundingClientRect(), l = lobby.getBoundingClientRect();
+    lobby.style.setProperty("--logo-x", (s.left - l.left) + "px");
+    lobby.style.setProperty("--logo-y", (s.top - l.top) + "px");
+  }
+  place();
+  window.addEventListener("resize", place);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(place);
+  if (window.ResizeObserver) new ResizeObserver(place).observe(document.querySelector(".marquee"));})();
 </script>
 </body>
 </html>
