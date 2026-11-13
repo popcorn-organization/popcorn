@@ -57,7 +57,8 @@
     color: var(--paper);
     font: 300 18px/1.55 var(--body);
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
+    overflow: hidden;
+    overscroll-behavior: none;
   }
   /* A page to look at and tap, not to copy from: no text selection, and no
      blue flash when a button is tapped on a phone (the keyboard focus
@@ -72,14 +73,16 @@
 
   .lobby {
     position: relative;
-    /* Exactly one screen when it all fits; it grows (and scrolls) only
-       where a window is too small to hold it, rather than cutting it off. */
-    min-height: 100vh;
-    min-height: 100dvh;
+    /* Exactly the visible screen (dvh: it follows the phone's address bar
+       as it shows and hides), and never more: where the content is taller
+       than that (large text settings, a small phone), the script below
+       shrinks it to fit rather than letting the page scroll. */
+    height: 100vh;
+    height: 100dvh;
     overflow: hidden;
     isolation: isolate;
     display: grid;
-    grid-template-rows: 1fr auto;
+    grid-template-rows: minmax(0, 1fr) auto;
     padding-top: max(clamp(18px, calc(3.5 * var(--vh)), 36px), env(safe-area-inset-top, 0px));
     padding-bottom: max(clamp(16px, calc(3 * var(--vh)), 28px), env(safe-area-inset-bottom, 0px));
     padding-left: max(clamp(20px, 6vw, 96px), env(safe-area-inset-left, 0px));
@@ -125,12 +128,12 @@
     -webkit-backdrop-filter: blur(34px) saturate(120%);
     backdrop-filter: blur(34px) saturate(120%);
     -webkit-mask-image: url(assets/silhouette.svg), linear-gradient(#000, #000);
-    -webkit-mask-size: var(--logo) var(--logo), 100% 100%;
+    -webkit-mask-size: var(--mask, var(--logo)) var(--mask, var(--logo)), 100% 100%;
     -webkit-mask-position: var(--logo-x) var(--logo-y), 0 0;
     -webkit-mask-repeat: no-repeat;
     -webkit-mask-composite: xor;
     mask-image: url(assets/silhouette.svg), linear-gradient(#000, #000);
-    mask-size: var(--logo) var(--logo), 100% 100%;
+    mask-size: var(--mask, var(--logo)) var(--mask, var(--logo)), 100% 100%;
     mask-position: var(--logo-x) var(--logo-y), 0 0;
     mask-repeat: no-repeat;
     mask-composite: exclude;
@@ -391,15 +394,39 @@
   // Upright screens: put the icon's cutout where the empty slot is.
   var lobby = document.querySelector(".lobby");
   var slot = document.querySelector("[data-slot]");
+  var marquee = document.querySelector(".marquee");
+  var credits = document.querySelector(".credits");
+
+  // Never taller than the screen: when the words, buttons and icon slot need
+  // more height than there is (large text settings, small phones, the
+  // address bar showing), the whole group is shrunk to fit instead of the
+  // page scrolling. (offsetHeight is the group's own size, unaffected by
+  // the shrinking, so this doesn't feed back on itself.)
+  function fit() {
+    var cs = getComputedStyle(lobby);
+    var room = lobby.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom)
+      - credits.offsetHeight - 12;
+    var need = marquee.offsetHeight;
+    var s = need > room && room > 0 ? room / need : 1;
+    marquee.style.transform = s < 1 ? "scale(" + s.toFixed(4) + ")" : "";
+    var portrait = window.matchMedia("(orientation: portrait)").matches;
+    marquee.style.transformOrigin = portrait ? "50% 50%" : "0 50%";
+  }
+
   function place() {
+    fit();
     if (!window.matchMedia("(orientation: portrait)").matches) {
       lobby.style.removeProperty("--logo-x");
       lobby.style.removeProperty("--logo-y");
+      lobby.style.removeProperty("--mask");
       return;
     }
+    // The slot as drawn (shrunk with the group, if it was): the cutout
+    // takes its place and its size.
     var s = slot.getBoundingClientRect(), l = lobby.getBoundingClientRect();
     lobby.style.setProperty("--logo-x", (s.left - l.left) + "px");
     lobby.style.setProperty("--logo-y", (s.top - l.top) + "px");
+    lobby.style.setProperty("--mask", s.width + "px");
   }
   place();
   window.addEventListener("resize", place);
