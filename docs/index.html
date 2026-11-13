@@ -13,7 +13,7 @@
 <link rel="icon" href="assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   /* Layout: a cinema lobby at night, on one screen. A wall of drifting posters
      fills the window; the logo, the downloads and two install tips sit over
@@ -64,12 +64,12 @@
     position: absolute;
     inset: -30% -12% -30% -12%;
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 14px;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 12px;
     transform: rotate(-9deg);
     z-index: -2;
   }
-  .lane { display: flex; flex-direction: column; gap: 14px; animation: drift 90s linear infinite; }
+  .lane { display: flex; flex-direction: column; gap: 12px; animation: drift 90s linear infinite; }
   .lane:nth-child(even) { animation-direction: reverse; animation-duration: 110s; }
   .lane img {
     width: 100%; aspect-ratio: 2 / 3; object-fit: cover;
@@ -79,7 +79,7 @@
   /* As on the app's welcome screen: the wall frosted over, with the icon's
      silhouette cut out of the frost so the posters move through it sharp. */
   .lobby {
-    --logo: min(40vw, 66vh);
+    --logo: min(46vw, 80vh);
     --logo-x: calc(73vw - var(--logo) / 2);
     --logo-y: calc(50vh - var(--logo) / 2);
   }
@@ -108,18 +108,16 @@
   /* ── Top and bottom lines ── */
   .bar { display: flex; justify-content: flex-end; align-items: center; gap: 16px; }
   .bar a.versions {
-    font: 500 13px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase;
-    text-decoration: none; color: var(--dim);
-    padding: 12px 16px; border-radius: 6px;
-    background: rgba(11, 10, 9, 0.72);
-    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    font: 500 14px/1 var(--body);
+    text-decoration: none; color: var(--paper);
+    padding: 11px 18px; border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
   }
-  .bar a.versions:hover, .bar a.versions:focus-visible { color: var(--paper); }
+  .bar a.versions:hover, .bar a.versions:focus-visible { background: rgba(255, 255, 255, 0.14); }
 
-  .credits {
-    font: 400 12px/1.5 var(--mono); color: var(--dim); letter-spacing: 0.02em;
-    max-width: 52em;
-  }
+  .credits { font: 400 12px/1.5 var(--body); color: var(--dim); max-width: 52em; margin: 0; }
   .credits a { text-decoration: none; color: var(--paper); }
 
   /* ── The marquee ── */
@@ -138,45 +136,42 @@
     max-width: 26em;
   }
 
+  /* Pills, as the app's own buttons: solid cream first, frosted glass second. */
   .get { display: flex; flex-wrap: wrap; gap: 12px; }
   .get a {
-    display: inline-flex; align-items: center; gap: 14px;
-    padding: clamp(11px, 1.8vh, 15px) 22px clamp(11px, 1.8vh, 15px) 18px; border-radius: 6px;
-    text-decoration: none; font: 500 17px/1.2 var(--body);
-    border: 1px solid var(--cream);
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: clamp(11px, 1.8vh, 14px) 26px clamp(11px, 1.8vh, 14px) 20px; border-radius: 999px;
+    text-decoration: none; font: 600 17px/1.15 var(--body);
     transition: background 0.18s ease, transform 0.18s ease;
   }
   .get a svg { width: 24px; height: 24px; flex: none; }
-  .get a small { display: block; font: 400 12px/1.3 var(--mono); letter-spacing: 0.04em; opacity: 0.75; margin-top: 3px; }
-  .get a.first { background: var(--cream); color: var(--ink); }
+  .get a small { display: block; font: 400 13px/1.3 var(--body); opacity: 0.7; margin-top: 2px; }
+  .get a.first { background: var(--cream); color: var(--ink); box-shadow: 0 12px 36px -14px rgba(253, 237, 173, 0.6); }
   .get a.first:hover { transform: translateY(-1px); }
-  .get a.second { color: var(--cream); background: rgba(11, 10, 9, 0.5); }
-  .get a.second:hover { background: rgba(253, 237, 173, 0.08); }
+  .get a.second {
+    color: var(--paper);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  }
+  .get a.second:hover { background: rgba(255, 255, 255, 0.14); }
   .get a:focus-visible { outline: 2px solid var(--paper); outline-offset: 3px; }
 
-  .ticket {
-    font: 400 13px/1.5 var(--mono); color: var(--dim); letter-spacing: 0.02em;
-    display: flex; flex-wrap: wrap; gap: 6px 18px;
-  }
+  .ticket { font: 400 14px/1.5 var(--body); color: var(--dim); display: flex; flex-wrap: wrap; }
+  .ticket span + span::before { content: "·"; margin: 0 9px; color: var(--dim); }
   .ticket b { color: var(--paper); font-weight: 500; }
 
-  .tips {
-    display: grid; gap: 8px;
-    border-top: 1px solid var(--rule); padding-top: clamp(12px, 2vh, 18px);
-    font-size: 15px; line-height: 1.45; color: var(--dim);
-    max-width: 36em;
-  }
-  .tips span b { color: var(--cream); font: 500 12px/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; margin-right: 10px; }
+  .tips { display: grid; gap: 6px; font-size: 15px; line-height: 1.45; color: var(--dim); max-width: 36em; }
+  .tips span b { color: var(--cream); font-weight: 500; margin-right: 6px; }
   .tips em { font-style: normal; color: var(--paper); }
-  .apple { font: 400 13px/1.5 var(--mono); color: var(--cream); margin: 0; }
-
+  .apple { font: 400 14px/1.5 var(--body); color: var(--cream); margin: 0; }
   .marquee { max-width: min(680px, 48vw); }
 
   /* Upright screens (phones, tablets held upright): the icon above, the
      words below it, as the app's welcome screen does on a phone. */
   @media (orientation: portrait) {
     .lobby {
-      --logo: min(58vw, 27vh);
+      --logo: min(66vw, 31vh);
       --logo-x: calc(50vw - var(--logo) / 2);
       --logo-y: calc(max(clamp(18px, 3.5vh, 36px), env(safe-area-inset-top, 0px)) + 4vh);
     }
@@ -184,12 +179,12 @@
       background: linear-gradient(180deg, rgba(11, 10, 9, 0) 30%, rgba(11, 10, 9, 0.55) 55%, rgba(11, 10, 9, 0.75) 100%);
     }
     .bar { position: absolute; top: max(clamp(18px, 3.5vh, 36px), env(safe-area-inset-top, 0px)); right: max(20px, env(safe-area-inset-right, 0px)); }
-    .marquee { max-width: 640px; align-self: end; padding-top: calc(var(--logo) + 8vh); gap: clamp(12px, 2vh, 22px); }
+    .marquee { max-width: 640px; align-self: end; padding-top: calc(var(--logo) + 6vh); gap: clamp(12px, 2vh, 22px); }
     .marquee h1 { width: min(260px, 58vw, 22vh); }
   }
   @media (max-width: 640px) {
-    .wall { inset: -20% -40% -20% -20%; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-    .lane { gap: 10px; }
+    .wall { inset: -20% -40% -20% -20%; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+    .lane { gap: 8px; }
     .get a { flex: 1 1 100%; }
     .tips { font-size: 14px; }
   }
@@ -234,8 +229,8 @@
     <div class="ticket" data-ticket><span>Free</span><span>No account</span><span>No ads</span></div>
     <p class="apple" data-apple hidden>Not available for iPhone or Mac yet.</p>
     <div class="tips">
-      <span data-tip="android"><b>Android</b>Open the downloaded file. If asked, allow <em>install unknown apps</em>, then tap <em>Install</em>.</span>
-      <span data-tip="windows"><b>Windows</b>If Windows says it protected your PC, click <em>More info</em>, then <em>Run anyway</em>.</span>
+      <span data-tip="android"><b>On Android:</b>Open the downloaded file. If asked, allow <em>install unknown apps</em>, then tap <em>Install</em>.</span>
+      <span data-tip="windows"><b>On Windows:</b>If Windows says it protected your PC, click <em>More info</em>, then <em>Run anyway</em>.</span>
     </div>
   </div>
 
@@ -247,13 +242,16 @@
   // This week's trending posters, the wall behind the logo.
   var posters = "/5rhTDKUhPYvpdQIijFIs5VoWsON.jpg,/WGyAyBPncfuu8MZhLY9RtfZPM0.jpg,/bMXWXKM9ydUmMTNvDnYo9QtCBRt.jpg,/7SE0LBwgqiqZzkm9gKVbBAbcNQL.jpg,/kNxRgcTeqeU5jauBackTERoO2De.jpg,/6sYemVUn79UPKz1ZsSG6kPU4RVy.jpg,/gAgWJhUSQWCgtKR8170nMkYlBda.jpg,/tTMmREfhVd51CCg7GN73wL8cIoT.jpg,/bG4h6C6wRKmf3ryz8gdN6imXW4c.jpg,/hSmIJluOJmTWvJs4d7kHRxjc8s8.jpg,/6H2N59jJW1hZEzn2ZdrMvJw5vNI.jpg,/bGB6bEbG4qL22C1SFupkdAxYC9i.jpg,/j1MNyNNgNQL6f27cb3m3uKaPKd6.jpg,/5Xc7WpWsgflfgEMoBlf9TmWhfbH.jpg,/bjiS5ipwxb9JFy3XRRN4OAilSeX.jpg,/1ERGPNiKtnEcsvJS1ywsmqmcIDO.jpg,/lmrulvLbmaejTix1YaMxo1oGhH1.jpg,/o2Oyi3boT100bY5kCP4MBiTeetO.jpg,/vBQ7wks68OhJKlb3RnXSl2yXBXK.jpg,/zn3IXZzGavH3qle3o3g1r32eXDy.jpg,/srlsyEfIBz2MNWBndVc3opOaNGS.jpg,/195kCuy2RqGaEAZDDpGTx7gBUBZ.jpg,/eSS5mvSG84UUuvtbHel5Yu3Wik4.jpg,/snFM00mpNAfUzUtkdEW0uDEvXA0.jpg,/qJPvyo9Pxz3MQndd3tKSocLz1Nt.jpg,/dJPT2Uf12X6aFg8i5N67NTpIZ9t.jpg,/k7n2EVge7G77eMr3brztRGG1fFU.jpg,/bRwnj8WEKBCvmfeUNOukJPwB43K.jpg,/aa1mDCaRtGNEIHVpZrh2xil03Tq.jpg,/ouGH1PS0xjDyfTQOhppn7QzJqQZ.jpg,/9AWkNkZHwNLuM6H5u6dToioHMAI.jpg,/ifYDZkr2qkHFz87TNVvlxajOxl5.jpg,/c8UHaCOfzyQYagHv7vAAOkrmgDb.jpg,/9l1NuFjel2j89hiuiJbsxfblqjy.jpg,/dNJFRtVg3xLQ7dbNIQ55cmmIniD.jpg,/glt0v4I89rMWstDNCaFXc5SNyO1.jpg,/rmaNMA1seHqpjtnYKzyynFAr1g8.jpg,/IECgq0Hd4ezuyGhbQgQawURGKT.jpg,/upwdEyhhYZ7pT2hD535fr2MGfpx.jpg".split(",");
   var wall = document.querySelector("[data-wall]");
-  var lanes = window.matchMedia("(max-width: 640px)").matches ? 4 : 6;
+  var lanes = window.matchMedia("(max-width: 640px)").matches ? 6 : 9;
   for (var l = 0; l < lanes; l++) {
     var lane = document.createElement("div");
     lane.className = "lane";
     var own = [];
     for (var i = l; i < posters.length; i += lanes) own.push(posters[i]);
-    own.concat(own).forEach(function (p) {
+    // Two identical halves (the drift moves up by one half), each long
+    // enough to fill the window on its own, so a lane never runs out.
+    var half = own.concat(own);
+    half.concat(half).forEach(function (p) {
       var img = document.createElement("img");
       img.src = "https://image.tmdb.org/t/p/w342" + p;
       img.alt = "";
