@@ -18,6 +18,12 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://popcorn-organization.github.io/popcorn/assets/share.jpg">
 <link rel="icon" href="assets/favicon.png">
+<script>
+  // The splash (see the script at the end): the page waits behind the logo
+  // until the posters are in. Never longer than a few seconds, scripts or not.
+  document.documentElement.classList.add("splashing");
+  setTimeout(function () { document.documentElement.classList.remove("splashing"); }, 6000);
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -230,7 +236,35 @@
     .tips { font-size: 13px; }
     .credits { font-size: 11px; }
   }
-  @media (prefers-reduced-motion: reduce) { .lane { animation: none; } .get a { transition: none; } }
+  /* ── The splash ──
+     The script logo alone in the middle while the posters download; then it
+     glides into its place above the tagline and the page fades in around it. */
+  .wall, .frost, .lobby::after, .marquee > *, .credits {
+    transition: opacity 0.9s ease;
+  }
+  .marquee > .line { transition-delay: 0.15s; }
+  .marquee > .get { transition-delay: 0.25s; }
+  .marquee > .ticket, .marquee > .apple { transition-delay: 0.35s; }
+  .marquee > .tips { transition-delay: 0.45s; }
+  .credits { transition-delay: 0.55s; }
+  .splashing .wall, .splashing .frost, .splashing .lobby::after,
+  .splashing .marquee > *, .splashing .credits {
+    opacity: 0; transition-delay: 0s;
+  }
+  .splash-logo {
+    position: fixed; z-index: 60; margin: 0; pointer-events: none;
+    transform-origin: 0 0;
+    animation: splash-in 0.7s ease backwards;
+  }
+  .splash-logo.go { transition: transform 1s cubic-bezier(0.22, 0.8, 0.2, 1); }
+  .splash-logo.gone { opacity: 0; transition: opacity 0.4s ease; }
+  @keyframes splash-in { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lane { animation: none; } .get a { transition: none; }
+    .splash-logo { animation: none; }
+    .marquee > *, .credits { transition-delay: 0s !important; }
+  }
 </style>
 </head>
 <body>
@@ -349,7 +383,62 @@
   place();
   window.addEventListener("resize", place);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(place);
-  if (window.ResizeObserver) new ResizeObserver(place).observe(document.querySelector(".marquee"));})();
+  if (window.ResizeObserver) new ResizeObserver(place).observe(document.querySelector(".marquee"));
+
+  // ── The splash ──
+  // The script logo in the middle until the posters have downloaded (at
+  // least ~1 s so it doesn't flash, at most 4 s); then it glides and shrinks
+  // onto the real logo above the tagline, which takes over, while the rest
+  // of the page fades in.
+  var root = document.documentElement;
+  if (!root.classList.contains("splashing")) return;
+  var target = document.querySelector(".marquee h1 img");
+  var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var w = Math.min(440, window.innerWidth * 0.72);
+  var h = w * 170 / 332;
+  var x0 = (window.innerWidth - w) / 2, y0 = (window.innerHeight - h) / 2;
+  var logo = document.createElement("img");
+  logo.src = target.src;
+  logo.alt = "";
+  logo.className = "splash-logo";
+  logo.style.cssText = "width:" + w + "px;height:" + h + "px;left:" + x0 + "px;top:" + y0 + "px";
+  document.body.appendChild(logo);
+  target.style.opacity = "0";
+
+  function settled(img) {
+    return img.complete ? Promise.resolve() : new Promise(function (done) {
+      img.addEventListener("load", done, { once: true });
+      img.addEventListener("error", done, { once: true });
+    });
+  }
+  var posterImgs = Array.prototype.slice.call(wall.querySelectorAll("img"));
+  var ready = Promise.all(posterImgs.map(settled).concat(
+    document.fonts && document.fonts.ready ? [document.fonts.ready] : []));
+  var atLeast = new Promise(function (done) { setTimeout(done, 1000); });
+  var atMost = new Promise(function (done) { setTimeout(done, 4000); });
+  var revealed = false;
+
+  Promise.race([Promise.all([ready, atLeast]), atMost]).then(function () {
+    if (revealed) return;
+    revealed = true;
+    place();
+    var r = target.getBoundingClientRect();
+    root.classList.remove("splashing");
+    function handOver() {
+      target.style.opacity = "";
+      logo.classList.add("gone");
+      setTimeout(function () { logo.remove(); }, 450);
+    }
+    if (still) { handOver(); return; }
+    logo.classList.add("go");
+    // Onto the real logo: its position, at its size.
+    logo.style.transform = "translate(" + (r.left - x0) + "px," + (r.top - y0) + "px) scale(" + (r.width / w) + ")";
+    var done = false;
+    function finish() { if (!done) { done = true; handOver(); } }
+    logo.addEventListener("transitionend", finish, { once: true });
+    setTimeout(finish, 1200);
+  });
+})();
 </script>
 </body>
 </html>
