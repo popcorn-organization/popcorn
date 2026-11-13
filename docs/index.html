@@ -59,7 +59,15 @@
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
-  img { display: block; max-width: 100%; height: auto; }
+  /* A page to look at and tap, not to copy from: no text selection, and no
+     blue flash when a button is tapped on a phone (the keyboard focus
+     outline stays). */
+  html {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  img { display: block; max-width: 100%; height: auto; -webkit-user-drag: none; }
   a { color: inherit; }
 
   .lobby {
