@@ -126,7 +126,7 @@
      480px of them), not pushed to the edge; never nearer the edge than 6vw. */
   @media (orientation: landscape) {
     .lobby {
-      padding-left: max(6vw, min(calc((var(--logo-x) - 480px) / 2), 240px), env(safe-area-inset-left, 0px));
+      padding-left: max(6vw, min(calc((var(--logo-x) - 560px) / 2), 240px), env(safe-area-inset-left, 0px));
     }
   }
   .frost {
@@ -179,19 +179,22 @@
      orb of the app's colours, as in the app's own nav bar. */
   .features {
     list-style: none; margin: 0; padding: 0;
-    display: flex; flex-wrap: wrap; gap: 10px 22px;
-    font: 400 15px/1.2 var(--body); color: var(--dim);
+    display: flex; flex-wrap: wrap; gap: 12px 30px;
+    font: 500 14px/1.2 var(--body); color: var(--paper);
   }
-  .features li { display: flex; align-items: center; gap: 10px; }
+  .features li { display: flex; flex-direction: column; align-items: center; gap: 9px; text-align: center; }
+  /* Little badges: a solid light disc with a bold dark mark on it. */
   .chip {
-    --chip: 36px;
+    --chip: 52px;
     width: var(--chip); height: var(--chip); border-radius: 50%; flex: none;
-    display: grid; place-items: center; color: var(--paper);
-    background: rgba(255, 255, 255, 0.08);
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+    display: grid; place-items: center;
+    background: var(--paper); color: var(--night);
+    box-shadow: 0 10px 28px -12px rgba(0, 0, 0, 0.8);
   }
-  .chip svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-  .chip.orb { position: relative; overflow: hidden; box-shadow: 0 0 18px -4px rgba(233, 30, 99, 0.45); background: #17140f; }
+  .chip svg { width: 56%; height: 56%; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+  .chip svg .solid { fill: currentColor; stroke: none; }
+  .chip svg .cut { stroke: var(--paper); stroke-width: 1.9; }
+  .chip.orb { position: relative; overflow: hidden; background: #17140f; box-shadow: 0 10px 28px -10px rgba(233, 30, 99, 0.55); }
   .chip.orb::before {
     content: ""; position: absolute; inset: -30%;
     background:
@@ -203,7 +206,7 @@
     animation: orb 14s linear infinite;
   }
   @keyframes orb { to { transform: rotate(1turn); } }
-  .chip.orb svg.popcorn { position: relative; width: 18px; height: 18px; stroke: #fff; stroke-width: 98; filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.35)); }
+  .chip.orb svg.popcorn { position: relative; width: 50%; height: 50%; stroke: #fff; stroke-width: 110; filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3)); }
 
   /* Pills, as the app's own buttons: solid cream first, frosted glass second. */
   .get { display: flex; flex-wrap: wrap; gap: 12px; }
@@ -265,8 +268,7 @@
     .slot { display: block; width: var(--logo); height: var(--logo); margin-bottom: calc(1 * var(--vh)); }
     .marquee h1 { width: min(240px, 56vw, calc(19 * var(--vh))); }
     /* Centred under the logo: each icon over its name, side by side. */
-    .features { justify-content: center; gap: 10px 28px; font-size: 13px; }
-    .features li { flex-direction: column; gap: 7px; }
+    .features { justify-content: center; gap: 10px 26px; font-size: 13px; }
     .get { justify-content: center; width: 100%; }
     .ticket { justify-content: center; }
     .tips { justify-items: center; }
@@ -289,12 +291,29 @@
     .marquee h1 { width: min(190px, 48vw, calc(15 * var(--vh))); }
     .marquee p.pitch { font-size: 25px; }
     .features { font-size: 12px; gap: 8px 22px; }
-    .features li { gap: 5px; }
-    .chip { --chip: 32px; }
+    .features li { gap: 6px; }
+    .chip { --chip: 40px; }
     .get a { padding-block: 10px; }
     .tips { font-size: 13px; }
     .credits { font-size: 11px; }
   }
+  /* Laptops and up: everything on the left a size larger, so it holds its
+     half of the screen against the icon rather than sitting in it thinly. */
+  @media (orientation: landscape) and (min-width: 1200px) and (min-height: 700px) {
+    .marquee { max-width: 640px; }
+    .marquee h1 { width: min(500px, 35vw, calc(46 * var(--vh))); }
+    .marquee p.pitch { font-size: clamp(40px, min(3.9vw, calc(6.2 * var(--vh))), 60px); }
+    .features { font-size: 15px; gap: 14px 36px; }
+    .chip { --chip: 60px; }
+    .get { gap: 14px; }
+    .get a { padding: 17px 32px 17px 24px; gap: 14px; }
+    .get a svg { width: 26px; height: 26px; }
+    .get a strong { font-size: 22px; }
+    .get a small { font-size: 14px; }
+    .ticket { font-size: 15px; }
+    .tips { font-size: 16px; }
+  }
+
   /* ── The splash ──
      The script logo alone in the middle while the posters download; then it
      glides into its place above the tagline and the page fades in around it. */
@@ -346,11 +365,11 @@
     <p class="pitch">Free films and series. <span>No sign-up. No ads.</span></p>
     <ul class="features">
       <li>
-        <span class="chip"><svg viewBox="0 0 24 24"><path d="M4 9.5h3.2L11.5 6v12l-4.3-3.5H4z"/><path d="M15 9.2a4 4 0 0 1 0 5.6M17.8 6.6a7.8 7.8 0 0 1 0 10.8"/></svg></span>
+        <span class="chip"><svg viewBox="0 0 24 24"><path d="M3 12c1.5-7 3.7-7 4.5 0s3 7 4.5 0 3-7 4.5 0 3 7 4.5 0" style="stroke-width:3"/></svg></span>
         Surround sound
       </li>
       <li>
-        <span class="chip"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3.5"/><path d="M7 12.5h3.5M13 12.5h4M7 15.5h6M15.5 15.5H17"/></svg></span>
+        <span class="chip"><svg viewBox="0 0 24 24"><rect class="solid" x="2.5" y="4.5" width="19" height="15" rx="4"/><path class="cut" d="M6.5 12.5h4M13 12.5h4.5M6.5 15.8h7M16 15.8h1.5"/></svg></span>
         Synced subtitles
       </li>
       <li>
