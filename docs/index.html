@@ -62,7 +62,7 @@
   /* ── The poster wall ── */
   .wall {
     position: absolute;
-    inset: -30% -10% -30% 22%;
+    inset: -30% -12% -30% -12%;
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     gap: 14px;
@@ -76,16 +76,37 @@
     border-radius: 6px; background: var(--screen);
   }
   @keyframes drift { from { transform: translateY(0); } to { transform: translateY(-50%); } }
-  .lobby::before {
-    content: ""; position: absolute; inset: 0; z-index: -1;
-    background:
-      linear-gradient(90deg, var(--night) 0%, rgba(11, 10, 9, 0.94) 36%, rgba(11, 10, 9, 0.55) 64%, rgba(11, 10, 9, 0.32) 100%),
-      linear-gradient(0deg, rgba(11, 10, 9, 0.85) 0%, rgba(11, 10, 9, 0) 22%);
+  /* As on the app's welcome screen: the wall frosted over, with the icon's
+     silhouette cut out of the frost so the posters move through it sharp. */
+  .lobby {
+    --logo: min(40vw, 66vh);
+    --logo-x: calc(73vw - var(--logo) / 2);
+    --logo-y: calc(50vh - var(--logo) / 2);
+  }
+  .frost {
+    position: absolute; inset: 0; z-index: -1;
+    background: rgba(11, 10, 9, 0.5);
+    -webkit-backdrop-filter: blur(34px) saturate(120%);
+    backdrop-filter: blur(34px) saturate(120%);
+    -webkit-mask-image: url(assets/silhouette.svg), linear-gradient(#000, #000);
+    -webkit-mask-size: var(--logo) var(--logo), 100% 100%;
+    -webkit-mask-position: var(--logo-x) var(--logo-y), 0 0;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-composite: xor;
+    mask-image: url(assets/silhouette.svg), linear-gradient(#000, #000);
+    mask-size: var(--logo) var(--logo), 100% 100%;
+    mask-position: var(--logo-x) var(--logo-y), 0 0;
+    mask-repeat: no-repeat;
+    mask-composite: exclude;
+  }
+  .lobby::after {
+    /* a little darker behind the words, so they read on the frost */
+    content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background: linear-gradient(90deg, rgba(11, 10, 9, 0.7) 0%, rgba(11, 10, 9, 0.35) 40%, rgba(11, 10, 9, 0) 55%);
   }
 
   /* ── Top and bottom lines ── */
-  .bar { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
-  .bar .icon { width: 40px; height: 40px; border-radius: 11px; }
+  .bar { display: flex; justify-content: flex-end; align-items: center; gap: 16px; }
   .bar a.versions {
     font: 500 13px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase;
     text-decoration: none; color: var(--dim);
@@ -149,12 +170,26 @@
   .tips em { font-style: normal; color: var(--paper); }
   .apple { font: 400 13px/1.5 var(--mono); color: var(--cream); margin: 0; }
 
+  .marquee { max-width: min(680px, 48vw); }
+
+  /* Upright screens (phones, tablets held upright): the icon above, the
+     words below it, as the app's welcome screen does on a phone. */
+  @media (orientation: portrait) {
+    .lobby {
+      --logo: min(58vw, 27vh);
+      --logo-x: calc(50vw - var(--logo) / 2);
+      --logo-y: calc(max(clamp(18px, 3.5vh, 36px), env(safe-area-inset-top, 0px)) + 4vh);
+    }
+    .lobby::after {
+      background: linear-gradient(180deg, rgba(11, 10, 9, 0) 30%, rgba(11, 10, 9, 0.55) 55%, rgba(11, 10, 9, 0.75) 100%);
+    }
+    .bar { position: absolute; top: max(clamp(18px, 3.5vh, 36px), env(safe-area-inset-top, 0px)); right: max(20px, env(safe-area-inset-right, 0px)); }
+    .marquee { max-width: 640px; align-self: end; padding-top: calc(var(--logo) + 4vh); gap: clamp(12px, 2vh, 22px); }
+    .marquee h1 { width: min(260px, 58vw, 22vh); }
+  }
   @media (max-width: 640px) {
     .wall { inset: -20% -40% -20% -20%; grid-template-columns: repeat(4, 1fr); gap: 10px; }
     .lane { gap: 10px; }
-    .lobby::before {
-      background: linear-gradient(180deg, rgba(11, 10, 9, 0.62) 0%, rgba(11, 10, 9, 0.86) 40%, rgba(11, 10, 9, 0.96) 100%);
-    }
     .get a { flex: 1 1 100%; }
     .tips { font-size: 14px; }
   }
@@ -177,8 +212,9 @@
 <main class="lobby">
   <div class="wall" aria-hidden="true" data-wall></div>
 
+  <div class="frost" aria-hidden="true"></div>
+
   <div class="bar">
-    <img class="icon" src="assets/icon.png" width="40" height="40" alt="Popcorn">
     <a class="versions" href="https://github.com/popcorn-organization/popcorn/releases">All versions</a>
   </div>
 
@@ -198,8 +234,8 @@
     <div class="ticket" data-ticket><span>Free</span><span>No account</span><span>No ads</span></div>
     <p class="apple" data-apple hidden>Not available for iPhone or Mac yet.</p>
     <div class="tips">
-      <span><b>Android</b>Open the downloaded file. If asked, allow <em>install unknown apps</em>, then tap <em>Install</em>.</span>
-      <span><b>Windows</b>If Windows says it protected your PC, click <em>More info</em>, then <em>Run anyway</em>.</span>
+      <span data-tip="android"><b>Android</b>Open the downloaded file. If asked, allow <em>install unknown apps</em>, then tap <em>Install</em>.</span>
+      <span data-tip="windows"><b>Windows</b>If Windows says it protected your PC, click <em>More info</em>, then <em>Run anyway</em>.</span>
     </div>
   </div>
 
@@ -239,6 +275,12 @@
     get.insertBefore(win, droid);
   }
   if (os === "apple") document.querySelector("[data-apple]").hidden = false;
+  // Only this device's install tip, where we know the device.
+  if (os === "android" || os === "windows") {
+    document.querySelectorAll("[data-tip]").forEach(function (t) {
+      t.hidden = t.getAttribute("data-tip") !== os;
+    });
+  }
 
   // The newest version, its date (Sri Lanka time) and the download sizes.
   fetch("https://api.github.com/repos/popcorn-organization/popcorn/releases/latest")
