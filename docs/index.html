@@ -168,12 +168,35 @@
     text-wrap: balance;
   }
   .marquee p.pitch span { display: block; color: var(--cream); }
-  .marquee p.line {
-    margin: 0; margin-top: calc(-0.6 * clamp(14px, calc(2.6 * var(--vh)), 28px));
-    font-size: clamp(17px, min(1.8vw, calc(2.6 * var(--vh))), 20px); line-height: 1.45; font-weight: 300;
-    color: var(--dim);
-    max-width: 30em;
+  /* What's inside, as icons: each in a small frosted circle, Ask's on its
+     orb of the app's colours, as in the app's own nav bar. */
+  .features {
+    list-style: none; margin: 0; padding: 0;
+    display: flex; flex-wrap: wrap; gap: 10px 22px;
+    font: 400 15px/1.2 var(--body); color: var(--dim);
   }
+  .features li { display: flex; align-items: center; gap: 10px; }
+  .chip {
+    --chip: 36px;
+    width: var(--chip); height: var(--chip); border-radius: 50%; flex: none;
+    display: grid; place-items: center; color: var(--paper);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+  }
+  .chip svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .chip.orb { position: relative; overflow: hidden; box-shadow: 0 0 18px -4px rgba(233, 30, 99, 0.45); background: #17140f; }
+  .chip.orb::before {
+    content: ""; position: absolute; inset: -30%;
+    background:
+      radial-gradient(circle at 30% 30%, #fdedad 0, transparent 45%),
+      radial-gradient(circle at 75% 40%, #d4a574 0, transparent 45%),
+      radial-gradient(circle at 50% 80%, #e91e63 0, transparent 48%),
+      radial-gradient(circle at 25% 75%, #e3e5ea 0, transparent 40%);
+    filter: blur(3px);
+    animation: orb 14s linear infinite;
+  }
+  @keyframes orb { to { transform: rotate(1turn); } }
+  .chip.orb svg.popcorn { position: relative; width: 18px; height: 18px; stroke: #fff; stroke-width: 98; filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.35)); }
 
   /* Pills, as the app's own buttons: solid cream first, frosted glass second. */
   .get { display: flex; flex-wrap: wrap; gap: 12px; }
@@ -184,10 +207,11 @@
     transition: background 0.18s ease, transform 0.18s ease;
   }
   .get a svg { width: 24px; height: 24px; flex: none; }
-  /* App-store-badge style: a small line over the platform's name. */
-  .get a > span { display: grid; gap: 1px; text-align: left; }
-  .get a small { display: block; font: 400 12px/1.2 var(--body); opacity: 0.72; letter-spacing: 0.01em; }
-  .get a strong { display: block; font: 600 20px/1.1 var(--body); letter-spacing: -0.01em; }
+  /* The platform's name, and the download's size beside it, quieter. */
+  .get a > span { display: flex; align-items: baseline; gap: 10px; }
+  .get a strong { font: 600 19px/1.1 var(--body); letter-spacing: -0.01em; }
+  .get a small { font: 400 13px/1.1 var(--body); opacity: 0.62; }
+  .get a small:empty { display: none; }
   .get a.first { background: var(--cream); color: var(--ink); box-shadow: 0 12px 36px -14px rgba(253, 237, 173, 0.6); }
   .get a.first:hover { transform: translateY(-1px); }
   .get a.second {
@@ -204,7 +228,7 @@
   .ticket b { color: var(--paper); font-weight: 500; }
   .ticket:empty { display: none; }
 
-  .marquee p.line, .tips span, .credits { text-wrap: balance; }
+  .tips span, .credits { text-wrap: balance; }
   .tips { display: grid; gap: 6px; font-size: 15px; line-height: 1.45; color: var(--dim); max-width: 36em; }
   .tips span b { color: var(--paper); font-weight: 500; margin-right: 6px; }
   .tips em { font-style: normal; color: var(--paper); }
@@ -233,7 +257,9 @@
     }
     .slot { display: block; width: var(--logo); height: var(--logo); margin-bottom: calc(1 * var(--vh)); }
     .marquee h1 { width: min(240px, 56vw, calc(19 * var(--vh))); }
-    .marquee p.line { max-width: 24em; }
+    /* Centred under the logo: each icon over its name, side by side. */
+    .features { justify-content: center; gap: 10px 28px; font-size: 13px; }
+    .features li { flex-direction: column; gap: 7px; }
     .get { justify-content: center; width: 100%; }
     .ticket { justify-content: center; }
     .tips { justify-items: center; }
@@ -255,8 +281,9 @@
     .lobby { --logo: min(72vw, calc(34 * var(--vh))); }
     .marquee h1 { width: min(190px, 48vw, calc(15 * var(--vh))); }
     .marquee p.pitch { font-size: 25px; }
-    .marquee p.line { font-size: 15px; }
-    .marquee p.line .more { display: none; }
+    .features { font-size: 12px; gap: 8px 22px; }
+    .features li { gap: 5px; }
+    .chip { --chip: 32px; }
     .get a { padding-block: 10px; }
     .tips { font-size: 13px; }
     .credits { font-size: 11px; }
@@ -267,7 +294,7 @@
   .wall, .frost, .lobby::after, .marquee > *, .credits {
     transition: opacity 0.9s ease;
   }
-  .marquee > .line { transition-delay: 0.15s; }
+  .marquee > .features { transition-delay: 0.15s; }
   .marquee > .get { transition-delay: 0.25s; }
   .marquee > .pitch { transition-delay: 0.1s; }
   .marquee > .ticket, .marquee > .apple { transition-delay: 0.35s; }
@@ -288,7 +315,7 @@
   @keyframes splash-in { from { opacity: 0; } to { opacity: 1; } }
 
   @media (prefers-reduced-motion: reduce) {
-    .lane { animation: none; } .get a { transition: none; }
+    .lane, .chip.orb::before { animation: none; } .get a { transition: none; }
     .splash-logo { animation: none; }
     .marquee > *, .credits { transition-delay: 0s !important; }
   }
@@ -310,15 +337,34 @@
     <div class="slot" aria-hidden="true" data-slot></div>
     <h1><img src="assets/wordmark.svg" width="332" height="170" alt="Popcorn"></h1>
     <p class="pitch">Free films and series. <span>No sign-up. No ads.</span></p>
-    <p class="line">Surround sound<span class="more">, and subtitles that stay in sync</span>.</p>
+    <ul class="features">
+      <li>
+        <span class="chip"><svg viewBox="0 0 24 24"><path d="M4 9.5h3.2L11.5 6v12l-4.3-3.5H4z"/><path d="M15 9.2a4 4 0 0 1 0 5.6M17.8 6.6a7.8 7.8 0 0 1 0 10.8"/></svg></span>
+        Surround sound
+      </li>
+      <li>
+        <span class="chip"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3.5"/><path d="M7 12.5h3.5M13 12.5h4M7 15.5h6M15.5 15.5H17"/></svg></span>
+        Synced subtitles
+      </li>
+      <li>
+        <span class="chip orb"><svg viewBox="-0.9 -7.6 1037.1 1037.1" class="popcorn">
+          <mask id="cut-l" maskUnits="userSpaceOnUse" x="-100" y="-100" width="1300" height="1300"><rect x="-100" y="-100" width="1300" height="1300" fill="#fff"/><circle cx="725.2" cy="308.5" r="213"/></mask>
+          <mask id="cut-b" maskUnits="userSpaceOnUse" x="-100" y="-100" width="1300" height="1300"><rect x="-100" y="-100" width="1300" height="1300" fill="#fff"/><circle cx="725.2" cy="308.5" r="213"/><circle cx="310.1" cy="368.3" r="213"/></mask>
+          <path mask="url(#cut-l)" d="M447.0 591.7A262 262 0 1 1 497.0 184.7"/>
+          <path d="M463.2 313.1A262 262 0 1 1 729.8 570.5"/>
+          <path mask="url(#cut-b)" d="M791.2 578.5A262 262 0 1 1 318.9 628.1"/>
+        </svg></span>
+        Ask AI
+      </li>
+    </ul>
     <div class="get" data-get>
       <a class="first" data-os="android" href="https://github.com/popcorn-organization/popcorn/releases/latest/download/Popcorn-Android.apk">
         <svg><use href="#android"/></svg>
-        <span><small data-size="android">Free download</small><strong>Android</strong></span>
+        <span><strong>Android</strong><small data-size="android"></small></span>
       </a>
       <a class="second" data-os="windows" href="https://github.com/popcorn-organization/popcorn/releases/latest/download/Popcorn-Windows-Setup.exe">
         <svg><use href="#windows"/></svg>
-        <span><small data-size="windows">Free download</small><strong>Windows</strong></span>
+        <span><strong>Windows</strong><small data-size="windows"></small></span>
       </a>
     </div>
     <div class="ticket" data-ticket></div>
@@ -390,7 +436,7 @@
       (rel.assets || []).forEach(function (a) {
         var key = /Android/i.test(a.name) ? "android" : /Windows/i.test(a.name) ? "windows" : null;
         var el = key && document.querySelector('[data-size="' + key + '"]');
-        if (el) el.textContent = "Free download · " + Math.round(a.size / 1048576) + " MB";
+        if (el) el.textContent = Math.round(a.size / 1048576) + " MB";
       });
     })
     .catch(function () {});
