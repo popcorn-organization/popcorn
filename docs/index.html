@@ -2,379 +2,297 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Popcorn: movies and TV shows</title>
-<meta name="description" content="Download Popcorn for Android and Windows. Movies and TV shows with cinema sound, subtitles that line up by themselves, and it remembers where you stopped.">
-<meta name="theme-color" content="#0c0c0d">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Popcorn</title>
+<meta name="description" content="Popcorn for Android and Windows. Films and series on your phone and PC, free to download.">
+<meta name="theme-color" content="#0b0a09">
 <meta name="color-scheme" content="dark">
 <meta property="og:title" content="Popcorn">
-<meta property="og:description" content="Movies and TV shows on your phone and PC. Free download for Android and Windows.">
+<meta property="og:description" content="Films and series on your phone and PC. Free for Android and Windows.">
 <meta property="og:image" content="https://popcorn-organization.github.io/popcorn/assets/screen-player.jpg">
 <link rel="icon" href="assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=Outfit:wght@300;400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+  /* Layout: a cinema lobby at night. One full-bleed wall of drifting posters
+     opens the page; everything after it is quiet, left-aligned and plain. */
   :root {
-    --bg: #0c0c0d;
-    --bg-raised: #151517;
-    --line: rgba(255, 255, 255, 0.08);
-    --text: #f4f2ec;
-    --muted: #a7a49b;
-    --cream: #fdedad;
-    --ink: #121212;
-    --glow-1: #eef0f4;
-    --glow-2: #f6eec0;
-    --glow-3: #f2cfa8;
-    --glow-4: #efb6cb;
-    --radius: 20px;
-    --max: 1120px;
+    --night: #0b0a09;        /* the room */
+    --screen: #15130f;       /* raised surfaces */
+    --rule: #2a2621;         /* hairlines */
+    --paper: #f3efe6;        /* text */
+    --dim: #9d978a;          /* secondary text */
+    --cream: #fdedad;        /* Popcorn's own logo colour, the one accent */
+    --ink: #17140f;          /* text on cream */
+    --display: "Big Shoulders Display", "Arial Narrow", "Roboto Condensed", sans-serif;
+    --body: "Outfit", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "Spline Sans Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+    --max: 1180px;
+    color-scheme: dark;
   }
+
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html { background: var(--night); }
   body {
     margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: "Outfit", system-ui, -apple-system, "Segoe UI", sans-serif;
-    font-size: 17px;
-    line-height: 1.55;
+    background: var(--night);
+    color: var(--paper);
+    font: 300 18px/1.6 var(--body);
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
-  a { color: inherit; }
   img { display: block; max-width: 100%; height: auto; }
-  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 16px; }
-  @media (min-width: 720px) { .wrap { padding: 0 32px; } }
-
-  /* ── Header ── */
-  header.top {
-    position: sticky; top: 0; z-index: 10;
-    background: rgba(12, 12, 13, 0.72);
-    backdrop-filter: saturate(140%) blur(14px);
-    -webkit-backdrop-filter: saturate(140%) blur(14px);
-    border-bottom: 1px solid var(--line);
+  a { color: inherit; }
+  .wrap {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding-left: max(20px, env(safe-area-inset-left, 0px));
+    padding-right: max(20px, env(safe-area-inset-right, 0px));
   }
-  header.top .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
-  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-  .brand img.icon { width: 34px; height: 34px; border-radius: 9px; }
-  .brand img.mark { height: 26px; width: auto; }
-  nav.top-links { display: flex; gap: 22px; font-size: 15px; color: var(--muted); }
-  nav.top-links a { text-decoration: none; }
-  nav.top-links a:hover { color: var(--text); }
-  @media (max-width: 560px) { nav.top-links .hide-sm { display: none; } }
-
-  /* ── Hero ── */
-  .hero { position: relative; overflow: hidden; padding: 56px 0 72px; }
-  .hero::before {
-    content: ""; position: absolute; inset: -20% -10% auto auto; width: 70vw; height: 70vw; max-width: 900px; max-height: 900px;
-    background: radial-gradient(closest-side, rgba(242, 207, 168, 0.18), rgba(239, 182, 203, 0.10) 45%, transparent 72%);
-    pointer-events: none;
-  }
-  .hero .wrap { position: relative; display: grid; gap: 48px; align-items: center; }
-  @media (min-width: 900px) { .hero .wrap { grid-template-columns: 1.1fr 0.9fr; } .hero { padding: 88px 0 104px; } }
-  .eyebrow {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-size: 14px; color: var(--muted);
-    border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px;
-    background: rgba(255, 255, 255, 0.03);
-  }
-  .eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--cream); box-shadow: 0 0 10px var(--cream); }
-  h1 {
-    font-size: clamp(40px, 7vw, 68px); line-height: 1.04; letter-spacing: -0.025em;
-    font-weight: 600; margin: 20px 0 18px;
-  }
-  h1 .soft {
-    background: linear-gradient(100deg, var(--glow-1), var(--glow-2) 35%, var(--glow-3) 65%, var(--glow-4));
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-  }
-  .lead { font-size: 19px; color: var(--muted); max-width: 34em; margin: 0 0 32px; font-weight: 300; }
-
-  .downloads { display: flex; flex-wrap: wrap; gap: 12px; }
-  .btn {
-    display: inline-flex; align-items: center; gap: 12px;
-    padding: 14px 22px 14px 18px; border-radius: 16px;
-    text-decoration: none; font-weight: 600; font-size: 17px;
-    transition: transform 0.15s ease, background 0.2s ease, box-shadow 0.2s ease;
-    min-height: 58px;
-  }
-  .btn svg { width: 26px; height: 26px; flex: none; }
-  .btn small { display: block; font-weight: 400; font-size: 13px; opacity: 0.7; line-height: 1.2; }
-  .btn span { line-height: 1.2; }
-  .btn.primary { background: var(--cream); color: var(--ink); box-shadow: 0 10px 40px -12px rgba(253, 237, 173, 0.55); }
-  .btn.primary:hover { transform: translateY(-1px); box-shadow: 0 14px 44px -10px rgba(253, 237, 173, 0.7); }
-  .btn.secondary { background: rgba(255, 255, 255, 0.06); color: var(--text); border: 1px solid var(--line); }
-  .btn.secondary:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-1px); }
-  .btn:focus-visible { outline: 2px solid var(--cream); outline-offset: 3px; }
-  .version { margin-top: 18px; font-size: 14px; color: var(--muted); }
-  .version strong { color: var(--text); font-weight: 500; }
-  .notice { margin-top: 14px; font-size: 14px; color: var(--glow-3); display: none; }
-
-  .phone {
-    position: relative; justify-self: center; width: min(320px, 78vw);
-    border-radius: 44px; padding: 10px; background: #1b1b1e;
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 40px 90px -30px rgba(0, 0, 0, 0.9), 0 0 120px -40px rgba(242, 207, 168, 0.45);
-  }
-  .phone img { border-radius: 34px; width: 100%; }
-
-  /* ── Sections ── */
-  section { padding: 72px 0; }
-  @media (min-width: 900px) { section { padding: 104px 0; } }
-  .section-head { max-width: 640px; margin-bottom: 40px; }
-  h2 { font-size: clamp(30px, 4.6vw, 44px); line-height: 1.1; letter-spacing: -0.02em; font-weight: 600; margin: 0 0 14px; }
-  .section-head p { color: var(--muted); margin: 0; font-size: 18px; font-weight: 300; }
-
-  .features { display: grid; gap: 16px; grid-template-columns: 1fr; }
-  @media (min-width: 640px) { .features { grid-template-columns: 1fr 1fr; } }
-  @media (min-width: 1000px) { .features { grid-template-columns: repeat(3, 1fr); } }
-  .card {
-    background: var(--bg-raised); border: 1px solid var(--line); border-radius: var(--radius);
-    padding: 26px 24px;
-  }
-  .card .ico {
-    width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; margin-bottom: 18px;
-    background: linear-gradient(135deg, rgba(246, 238, 192, 0.16), rgba(239, 182, 203, 0.12));
+  .label {
+    font: 500 12px/1.4 var(--mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
     color: var(--cream);
   }
-  .card .ico svg { width: 22px; height: 22px; }
-  .card h3 { margin: 0 0 8px; font-size: 19px; font-weight: 600; }
-  .card p { margin: 0; color: var(--muted); font-size: 16px; }
-
-  .showcase { display: grid; gap: 24px; align-items: center; }
-  @media (min-width: 900px) { .showcase { grid-template-columns: 1.6fr 1fr; } }
-  .frame {
-    border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line);
-    box-shadow: 0 30px 80px -40px rgba(0, 0, 0, 0.9);
+  h2 {
+    font: 800 clamp(44px, 7vw, 84px)/0.92 var(--display);
+    text-transform: uppercase;
+    letter-spacing: 0.005em;
+    margin: 0;
+    text-wrap: balance;
   }
-  .frame.tall { max-width: 360px; justify-self: center; border-radius: 28px; }
-  .caption { color: var(--muted); font-size: 15px; margin-top: 12px; }
 
-  .install { display: grid; gap: 16px; }
-  @media (min-width: 820px) { .install { grid-template-columns: 1fr 1fr; } }
-  .install .card h3 { display: flex; align-items: center; gap: 10px; font-size: 21px; margin-bottom: 16px; }
-  .install .card h3 svg { width: 24px; height: 24px; color: var(--cream); }
-  ol.steps { margin: 0; padding: 0; list-style: none; counter-reset: step; }
-  ol.steps li { counter-increment: step; position: relative; padding: 0 0 16px 44px; color: var(--muted); }
-  ol.steps li::before {
-    content: counter(step); position: absolute; left: 0; top: -1px;
-    width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center;
-    font-size: 14px; font-weight: 600; color: var(--ink); background: var(--cream);
+  /* ── The poster wall ── */
+  .lobby {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    border-bottom: 1px solid var(--rule);
   }
-  ol.steps li strong { color: var(--text); font-weight: 500; }
-  .install .card .btn { margin-top: 6px; }
-
-  .faq { max-width: 760px; }
-  details {
-    border-top: 1px solid var(--line); padding: 20px 0;
+  .wall {
+    position: absolute;
+    inset: -30% -10% -30% 18%;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 14px;
+    transform: rotate(-9deg);
+    z-index: -2;
   }
-  details:last-child { border-bottom: 1px solid var(--line); }
-  summary {
-    cursor: pointer; list-style: none; font-size: 19px; font-weight: 500;
-    display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  .lane { display: flex; flex-direction: column; gap: 14px; animation: drift 90s linear infinite; }
+  .lane:nth-child(even) { animation-direction: reverse; animation-duration: 110s; }
+  .lane img {
+    width: 100%; aspect-ratio: 2 / 3; object-fit: cover;
+    border-radius: 6px; background: var(--screen);
   }
-  summary::-webkit-details-marker { display: none; }
-  summary::after { content: "+"; font-size: 24px; font-weight: 300; color: var(--muted); transition: transform 0.2s ease; }
-  details[open] summary::after { transform: rotate(45deg); }
-  details p { color: var(--muted); margin: 12px 0 0; }
-
-  .cta {
-    text-align: center; border-radius: 28px; padding: 56px 20px;
+  @keyframes drift { from { transform: translateY(0); } to { transform: translateY(-50%); } }
+  .lobby::before {
+    /* the dark falls from the left, where the words are, and off the bottom */
+    content: ""; position: absolute; inset: 0; z-index: -1;
     background:
-      radial-gradient(120% 140% at 50% 0%, rgba(242, 207, 168, 0.16), transparent 60%),
-      var(--bg-raised);
-    border: 1px solid var(--line);
+      linear-gradient(90deg, var(--night) 0%, rgba(11, 10, 9, 0.94) 34%, rgba(11, 10, 9, 0.55) 62%, rgba(11, 10, 9, 0.35) 100%),
+      linear-gradient(0deg, var(--night) 0%, rgba(11, 10, 9, 0) 28%);
   }
-  .cta img { width: 72px; height: 72px; border-radius: 18px; margin: 0 auto 20px; }
-  .cta .downloads { justify-content: center; margin-top: 28px; }
+  .lobby .wrap { padding-block: clamp(36px, 6vw, 56px) clamp(80px, 12vw, 140px); }
+  .bar { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+  .bar .icon { width: 40px; height: 40px; border-radius: 11px; }
+  .bar nav {
+    display: flex; gap: 24px; font: 500 13px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 12px 16px; border-radius: 6px;
+    background: rgba(11, 10, 9, 0.72);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  }
+  .bar nav a { text-decoration: none; color: var(--dim); }
+  .bar nav a:hover, .bar nav a:focus-visible { color: var(--paper); }
 
-  footer { padding: 40px 0 56px; color: var(--muted); font-size: 14px; }
-  footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 28px; justify-content: space-between; border-top: 1px solid var(--line); padding-top: 28px; }
-  footer a { text-decoration: none; }
-  footer a:hover { color: var(--text); }
+  .marquee { margin-top: clamp(64px, 11vw, 132px); max-width: 660px; }
+  .marquee .mark { width: min(440px, 82vw); }
+  .marquee .mark img { width: 100%; }
+  .marquee p {
+    font-size: clamp(20px, 2.4vw, 24px); line-height: 1.45; font-weight: 300;
+    color: var(--paper); margin: 26px 0 36px; max-width: 26em;
+  }
 
-  @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+  .get { display: flex; flex-wrap: wrap; gap: 12px; }
+  .get a {
+    display: inline-flex; align-items: center; gap: 14px;
+    padding: 15px 22px 15px 18px; border-radius: 6px;
+    text-decoration: none; font: 500 17px/1.2 var(--body);
+    border: 1px solid var(--cream);
+    transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+  }
+  .get a svg { width: 24px; height: 24px; flex: none; }
+  .get a small { display: block; font: 400 12px/1.3 var(--mono); letter-spacing: 0.04em; opacity: 0.75; margin-top: 3px; }
+  .get a.first { background: var(--cream); color: var(--ink); }
+  .get a.first:hover { transform: translateY(-1px); }
+  .get a.second { color: var(--cream); background: rgba(11, 10, 9, 0.5); }
+  .get a.second:hover { background: rgba(253, 237, 173, 0.08); }
+  .get a:focus-visible { outline: 2px solid var(--paper); outline-offset: 3px; }
+  .ticket {
+    margin-top: 20px; font: 400 13px/1.5 var(--mono); color: var(--dim); letter-spacing: 0.02em;
+    display: flex; flex-wrap: wrap; gap: 6px 18px;
+  }
+  .ticket b { color: var(--paper); font-weight: 500; }
+  .apple { margin-top: 12px; font: 400 13px/1.5 var(--mono); color: var(--cream); }
+
+  /* ── Quiet sections ── */
+  section { padding-block: clamp(80px, 11vw, 136px); border-bottom: 1px solid var(--rule); }
+  .head { display: grid; gap: 18px; margin-bottom: clamp(40px, 6vw, 64px); max-width: 760px; }
+  .head p { margin: 0; color: var(--dim); max-width: 36em; }
+
+  .screen {
+    margin: 0;
+    border: 1px solid var(--rule); border-radius: 10px; overflow: hidden;
+    box-shadow: 0 50px 120px -60px rgba(0, 0, 0, 1);
+  }
+  .screen + figcaption { margin-top: 14px; font: 400 13px/1.5 var(--mono); color: var(--dim); }
+
+  dl.notes {
+    display: grid; gap: 34px 56px; margin: clamp(48px, 7vw, 80px) 0 0;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 720px) { dl.notes { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1040px) { dl.notes { grid-template-columns: repeat(3, 1fr); } }
+  dl.notes div { border-top: 1px solid var(--rule); padding-top: 18px; min-width: 0; }
+  dl.notes dt { font: 600 22px/1.25 var(--body); margin-bottom: 8px; }
+  dl.notes dd { margin: 0; color: var(--dim); font-size: 17px; }
+
+  .pair { display: grid; gap: 40px; align-items: start; }
+  @media (min-width: 900px) { .pair { grid-template-columns: 340px 1fr; gap: 72px; align-items: center; } }
+  .pair .phone {
+    width: min(340px, 100%); justify-self: center;
+    border-radius: 38px; padding: 9px; background: #1c1915;
+    box-shadow: 0 0 0 1px var(--rule), 0 40px 100px -40px rgba(0, 0, 0, 1);
+  }
+  .pair .phone img { border-radius: 30px; }
+  .pair .text { display: grid; gap: 22px; min-width: 0; }
+  .pair .text p { margin: 0; color: var(--dim); max-width: 32em; }
+
+  .install { display: grid; gap: 56px; }
+  @media (min-width: 880px) { .install { grid-template-columns: 1fr 1fr; gap: 72px; } }
+  .install h3 {
+    display: flex; align-items: center; gap: 12px; margin: 0 0 22px;
+    font: 800 34px/1 var(--display); text-transform: uppercase; letter-spacing: 0.01em;
+  }
+  .install h3 svg { width: 26px; height: 26px; color: var(--cream); }
+  .install ol { margin: 0 0 28px; padding: 0; list-style: none; counter-reset: s; display: grid; gap: 16px; }
+  .install li { counter-increment: s; display: grid; grid-template-columns: 34px 1fr; gap: 8px; color: var(--dim); }
+  .install li::before { content: counter(s); font: 500 14px/1.9 var(--mono); color: var(--cream); }
+  .install li b { color: var(--paper); font-weight: 500; }
+
+  footer { padding-block: 44px 64px; font: 400 13px/1.6 var(--mono); color: var(--dim); }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px 32px; align-items: center; }
+  footer img { width: 110px; }
+  footer a { text-decoration: none; color: var(--paper); }
+  footer a:hover { color: var(--cream); }
+
+  @media (max-width: 640px) {
+    .wall { inset: -20% -40% -20% -20%; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .lane { gap: 10px; }
+    .lobby::before {
+      background: linear-gradient(180deg, rgba(11, 10, 9, 0.7) 0%, rgba(11, 10, 9, 0.88) 45%, var(--night) 100%);
+    }
+    .bar nav .wide { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { .lane { animation: none; } .get a { transition: none; } }
 </style>
 </head>
 <body>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <defs>
-    <symbol id="i-android" viewBox="0 0 24 24"><path fill="currentColor" d="M17.6 9.48l1.84-3.18a.38.38 0 0 0-.66-.38l-1.86 3.22a11.4 11.4 0 0 0-9.84 0L5.22 5.92a.38.38 0 0 0-.66.38L6.4 9.48A10.8 10.8 0 0 0 1 18h22a10.8 10.8 0 0 0-5.4-8.52zM7 15.25a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5zm10 0a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5z"/></symbol>
-    <symbol id="i-windows" viewBox="0 0 24 24"><path fill="currentColor" d="M3 5.1l7.4-1v7.2H3V5.1zm0 13.8l7.4 1v-7.1H3v6.1zm8.3 1.1L21 21.3v-8.5h-9.7v7.2zm0-15.9v7.3H21V2.7l-9.7 1.4z"/></symbol>
-    <symbol id="i-sound" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5H4zM15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></symbol>
-    <symbol id="i-resume" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4 4v3.5h3.5"/></symbol>
-    <symbol id="i-subs" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M3.5 6.5h17v11h-17zM7 12.5h4M13.5 12.5H17M7 15h7"/></symbol>
-    <symbol id="i-storage" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M5 7c0-1.4 3.1-2.5 7-2.5S19 5.6 19 7s-3.1 2.5-7 2.5S5 8.4 5 7zM5 7v10c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5V7M5 12c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5"/></symbol>
-    <symbol id="i-quality" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M3.5 5.5h17v13h-17zM7.5 9.5v5M7.5 12h3M10.5 9.5v5M13.5 9.5v5h1.5a2.5 2.5 0 0 0 0-5h-1.5z"/></symbol>
-    <symbol id="i-devices" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M3 5.5h13v9H3zM7 18.5h5M9.5 14.5v4M17.5 9.5h3.5v10h-3.5z"/></symbol>
-  </defs>
+  <symbol id="android" viewBox="0 0 24 24"><path fill="currentColor" d="M17.6 9.48l1.84-3.18a.38.38 0 0 0-.66-.38l-1.86 3.22a11.4 11.4 0 0 0-9.84 0L5.22 5.92a.38.38 0 0 0-.66.38L6.4 9.48A10.8 10.8 0 0 0 1 18h22a10.8 10.8 0 0 0-5.4-8.52zM7 15.25a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5zm10 0a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5z"/></symbol>
+  <symbol id="windows" viewBox="0 0 24 24"><path fill="currentColor" d="M3 5.1l7.4-1v7.2H3V5.1zm0 13.8l7.4 1v-7.1H3v6.1zm8.3 1.1L21 21.3v-8.5h-9.7v7.2zm0-15.9v7.3H21V2.7l-9.7 1.4z"/></symbol>
 </svg>
 
-<header class="top">
+<header class="lobby">
+  <div class="wall" aria-hidden="true" data-wall></div>
   <div class="wrap">
-    <a class="brand" href="#" aria-label="Popcorn home">
-      <img class="icon" src="assets/icon.png" alt="">
-      <img class="mark" src="assets/wordmark.svg" alt="Popcorn">
-    </a>
-    <nav class="top-links">
-      <a class="hide-sm" href="#features">Features</a>
-      <a class="hide-sm" href="#install">How to install</a>
-      <a href="#download">Download</a>
-    </nav>
+    <div class="bar">
+      <img class="icon" src="assets/icon.png" width="40" height="40" alt="Popcorn">
+      <nav aria-label="Page">
+        <a class="wide" href="#player">The player</a>
+        <a class="wide" href="#install">Installing</a>
+        <a href="https://github.com/popcorn-organization/popcorn/releases">All versions</a>
+      </nav>
+    </div>
+
+    <div class="marquee">
+      <h1 class="mark" style="margin:0"><img src="assets/wordmark.svg" width="332" height="170" alt="Popcorn"></h1>
+      <p>Films and series on your phone and PC. Pick something, press play, and it remembers where you stopped.</p>
+      <div class="get" data-get>
+        <a class="first" data-os="android" href="https://github.com/popcorn-organization/popcorn/releases/latest/download/Popcorn-Android.apk">
+          <svg><use href="#android"/></svg>
+          <span>Get it for Android<small data-size="android">Phones and tablets</small></span>
+        </a>
+        <a class="second" data-os="windows" href="https://github.com/popcorn-organization/popcorn/releases/latest/download/Popcorn-Windows-Setup.exe">
+          <svg><use href="#windows"/></svg>
+          <span>Get it for Windows<small data-size="windows">Windows 10 and 11</small></span>
+        </a>
+      </div>
+      <div class="ticket" data-ticket><span>Free</span><span>No account</span><span>No ads</span></div>
+      <p class="apple" data-apple hidden>Not available for iPhone or Mac yet.</p>
+    </div>
   </div>
 </header>
 
 <main>
-  <div class="hero" id="download">
+  <section id="player">
     <div class="wrap">
-      <div>
-        <span class="eyebrow"><span class="dot"></span>Free for Android and Windows</span>
-        <h1>Movies and TV shows, <span class="soft">beautifully simple.</span></h1>
-        <p class="lead">Popcorn brings films and series to your phone and PC, with cinema sound, subtitles that line up by themselves, and it always remembers where you stopped.</p>
-        <div class="downloads" data-downloads>
-          <a class="btn primary" data-os="android" href="https://github.com/popcorn-organization/popcorn/releases/latest/download/Popcorn-Android.apk">
-            <svg><use href="#i-android"/></svg>
-            <span>Download for Android<small data-size="android">Popcorn-Android.apk</small></span>
-          </a>
-          <a class="btn secondary" data-os="windows" href="https://github.com/popcorn-organization/popcorn/releases/latest/download/Popcorn-Windows-Setup.exe">
-            <svg><use href="#i-windows"/></svg>
-            <span>Download for Windows<small data-size="windows">Windows 10 and 11</small></span>
-          </a>
-        </div>
-        <p class="version" data-version>Always the latest version.</p>
-        <p class="notice" data-notice>Popcorn isn't available for iPhone or Mac yet.</p>
+      <div class="head">
+        <span class="label">The player</span>
+        <h2>Gets out of the way</h2>
+        <p>The controls fade once the film starts. Intros and credits have a skip button, and quality and subtitles are one tap away.</p>
       </div>
-      <div class="phone">
-        <img src="assets/screen-home.jpg" width="600" height="1128" alt="Popcorn's home screen, showing a featured TV show and the Continue Watching row">
-      </div>
-    </div>
-  </div>
-
-  <section id="features">
-    <div class="wrap">
-      <div class="section-head">
-        <h2>Made for watching, not fiddling.</h2>
-        <p>Open it, pick something, press play. The details are taken care of.</p>
-      </div>
-      <div class="features">
-        <div class="card">
-          <div class="ico"><svg><use href="#i-sound"/></svg></div>
-          <h3>Cinema sound</h3>
-          <p>Films play in full surround, so Dolby Atmos and spatial audio on your phone, earbuds or PC can place every sound around you.</p>
-        </div>
-        <div class="card">
-          <div class="ico"><svg><use href="#i-resume"/></svg></div>
-          <h3>Picks up where you left off</h3>
-          <p>Continue Watching keeps your place in every film and episode, and the next episode is ready when one ends.</p>
-        </div>
-        <div class="card">
-          <div class="ico"><svg><use href="#i-subs"/></svg></div>
-          <h3>Subtitles that line up</h3>
-          <p>Subtitles in many languages, timed to what's being said automatically, with no fiddly delay settings.</p>
-        </div>
-        <div class="card">
-          <div class="ico"><svg><use href="#i-quality"/></svg></div>
-          <h3>Choose your quality</h3>
-          <p>From SD to Ultra HD, with a recommended pick that balances picture quality against how much it downloads.</p>
-        </div>
-        <div class="card">
-          <div class="ico"><svg><use href="#i-storage"/></svg></div>
-          <h3>Light on storage</h3>
-          <p>Only the part you're watching is kept, and older downloads clear themselves, so your phone doesn't fill up.</p>
-        </div>
-        <div class="card">
-          <div class="ico"><svg><use href="#i-devices"/></svg></div>
-          <h3>Phone and PC</h3>
-          <p>The same Popcorn on Android and Windows, with a layout made for each screen.</p>
-        </div>
-      </div>
+      <figure style="margin:0">
+        <div class="screen"><img src="assets/screen-player.jpg" width="1280" height="606" alt="Dune: Part Two playing in Popcorn on a phone held sideways, with a subtitle and the playback controls" loading="lazy"></div>
+        <figcaption>Dune: Part Two, 07:15 of 2:45:48, on a Galaxy S10 held sideways.</figcaption>
+      </figure>
+      <dl class="notes">
+        <div><dt>Surround sound</dt><dd>Films keep all their channels, so Dolby Atmos on your phone, earbuds or PC can place the sound around you.</dd></div>
+        <div><dt>Subtitles that keep time</dt><dd>Popcorn listens to the film and lines the subtitles up with what's being said.</dd></div>
+        <div><dt>Light on storage</dt><dd>It keeps the last few minutes you watched and what's coming up, and clears older downloads by itself.</dd></div>
+      </dl>
     </div>
   </section>
 
   <section>
-    <div class="wrap">
-      <div class="section-head">
-        <h2>A player that gets out of the way.</h2>
-        <p>Big, clear controls that fade when you're watching, skip buttons for intros and credits, and quality and subtitles one tap away.</p>
-      </div>
-      <div class="showcase">
-        <figure style="margin:0">
-          <div class="frame"><img src="assets/screen-player.jpg" width="1280" height="606" alt="The Popcorn player showing a film with subtitles and playback controls" loading="lazy"></div>
-          <figcaption class="caption">The player, on a phone turned sideways.</figcaption>
-        </figure>
-        <figure style="margin:0">
-          <div class="frame tall"><img src="assets/screen-details.jpg" width="600" height="700" alt="A film's page in Popcorn, with its poster, year, rating and genres" loading="lazy"></div>
-          <figcaption class="caption" style="text-align:center">Every title has a page with its details, cast and trailer.</figcaption>
-        </figure>
+    <div class="wrap pair">
+      <div class="phone"><img src="assets/screen-details.jpg" width="600" height="700" alt="Dune: Part Two's page in Popcorn: poster, 2024, PG-13, 2h 47m, rated 8.1" loading="lazy"></div>
+      <div class="text">
+        <span class="label">Every title</span>
+        <h2>Its own page</h2>
+        <p>Poster, cast, trailer and every episode, season by season. Choose a quality from SD to Ultra HD, or let Popcorn recommend one that balances the picture against the download.</p>
+        <p>Continue Watching keeps your place in each film and episode, and the next episode is ready when one ends.</p>
       </div>
     </div>
   </section>
 
   <section id="install">
     <div class="wrap">
-      <div class="section-head">
-        <h2>Installing takes a minute.</h2>
-        <p>Popcorn isn't in the app stores, so your device asks you to confirm once. Here's what you'll see.</p>
+      <div class="head">
+        <span class="label">Installing</span>
+        <h2>One minute, once</h2>
+        <p>Popcorn comes from this page, not an app store, so your phone or PC asks you to confirm the first time. Updates install over it and keep your history.</p>
       </div>
       <div class="install">
-        <div class="card">
-          <h3><svg><use href="#i-android"/></svg>Android</h3>
-          <ol class="steps">
-            <li><strong>Download Popcorn</strong> on your phone using the button below.</li>
-            <li><strong>Open the downloaded file.</strong> If asked, allow your browser or Files app to <strong>install unknown apps</strong>, then go back.</li>
-            <li><strong>Tap Install</strong>, then open Popcorn from your home screen.</li>
-            <li>To update later, install the new version the same way. Your favourites and history stay.</li>
+        <div>
+          <h3><svg><use href="#android"/></svg>Android</h3>
+          <ol>
+            <li><span><b>Download</b> Popcorn on your phone.</span></li>
+            <li><span><b>Open the file.</b> If asked, allow your browser or Files app to install unknown apps, then go back.</span></li>
+            <li><span><b>Tap Install</b> and open Popcorn from your home screen.</span></li>
           </ol>
-          <a class="btn primary" href="https://github.com/popcorn-organization/popcorn/releases/latest/download/Popcorn-Android.apk"><svg><use href="#i-android"/></svg><span>Download for Android</span></a>
+          <div class="get"><a class="first" href="https://github.com/popcorn-organization/popcorn/releases/latest/download/Popcorn-Android.apk"><svg><use href="#android"/></svg><span>Get it for Android</span></a></div>
         </div>
-        <div class="card">
-          <h3><svg><use href="#i-windows"/></svg>Windows</h3>
-          <ol class="steps">
-            <li><strong>Download the installer</strong> and open it.</li>
-            <li>If Windows says <strong>"Windows protected your PC"</strong>, click <strong>More info</strong>, then <strong>Run anyway</strong>.</li>
-            <li>Follow the steps, then open Popcorn from the <strong>Start menu</strong> or your desktop.</li>
-            <li>To update later, run the new installer. Your favourites and history stay.</li>
+        <div>
+          <h3><svg><use href="#windows"/></svg>Windows</h3>
+          <ol>
+            <li><span><b>Download</b> the installer and open it.</span></li>
+            <li><span>If Windows says it protected your PC, click <b>More info</b>, then <b>Run anyway</b>.</span></li>
+            <li><span><b>Follow the steps</b> and open Popcorn from the Start menu or your desktop.</span></li>
           </ol>
-          <a class="btn primary" href="https://github.com/popcorn-organization/popcorn/releases/latest/download/Popcorn-Windows-Setup.exe"><svg><use href="#i-windows"/></svg><span>Download for Windows</span></a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <div class="wrap faq">
-      <div class="section-head"><h2>Questions</h2></div>
-      <details>
-        <summary>Is Popcorn free?</summary>
-        <p>Yes. There's no account, no subscription and no ads.</p>
-      </details>
-      <details>
-        <summary>Why does my phone or PC warn me before installing?</summary>
-        <p>Because Popcorn comes from this website rather than an app store. The warning appears for any app installed this way. Allow it once and it won't ask again for updates.</p>
-      </details>
-      <details>
-        <summary>Will updating delete my history?</summary>
-        <p>No. Installing a newer version keeps your favourites, history and where you stopped in each title.</p>
-      </details>
-      <details>
-        <summary>Is there an iPhone or Mac version?</summary>
-        <p>Not yet. Popcorn is available for Android phones and tablets, and for Windows 10 and 11.</p>
-      </details>
-      <details>
-        <summary>Something takes a long time to start. Why?</summary>
-        <p>Some older or rarer titles are only available in copies few people share, so they load slowly. Picking a different quality often helps.</p>
-      </details>
-    </div>
-  </section>
-
-  <section style="padding-top:0">
-    <div class="wrap">
-      <div class="cta">
-        <img src="assets/icon.png" width="72" height="72" alt="">
-        <h2>Ready when you are.</h2>
-        <p class="lead" style="margin:0 auto;max-width:28em">Download Popcorn for free and start watching in a minute.</p>
-        <div class="downloads" data-downloads>
-          <a class="btn primary" data-os="android" href="https://github.com/popcorn-organization/popcorn/releases/latest/download/Popcorn-Android.apk"><svg><use href="#i-android"/></svg><span>Download for Android</span></a>
-          <a class="btn secondary" data-os="windows" href="https://github.com/popcorn-organization/popcorn/releases/latest/download/Popcorn-Windows-Setup.exe"><svg><use href="#i-windows"/></svg><span>Download for Windows</span></a>
+          <div class="get"><a class="first" href="https://github.com/popcorn-organization/popcorn/releases/latest/download/Popcorn-Windows-Setup.exe"><svg><use href="#windows"/></svg><span>Get it for Windows</span></a></div>
         </div>
       </div>
     </div>
@@ -383,59 +301,68 @@
 
 <footer>
   <div class="wrap">
-    <span>Popcorn</span>
-    <span><a href="https://github.com/popcorn-organization/popcorn/releases">All versions</a></span>
+    <img src="assets/wordmark.svg" width="332" height="170" alt="Popcorn">
+    <span data-version>Always the newest version.</span>
+    <a href="https://github.com/popcorn-organization/popcorn/releases">All versions</a>
+    <span style="flex-basis:100%">Posters from <a href="https://www.themoviedb.org/">TMDB</a>. Popcorn uses the TMDB API but is not endorsed or certified by TMDB.</span>
   </div>
 </footer>
 
 <script>
 (function () {
-  // The download for this device first, and the other one as the secondary button.
-  var ua = navigator.userAgent || "";
-  var os = /Android/i.test(ua) ? "android"
-    : /Windows/i.test(ua) ? "windows"
-    : /iPhone|iPad|iPod|Macintosh/i.test(ua) ? "apple" : null;
-  if (os === "android" || os === "windows") {
-    document.querySelectorAll("[data-downloads]").forEach(function (group) {
-      var mine = group.querySelector('[data-os="' + os + '"]');
-      if (!mine) return;
-      group.querySelectorAll(".btn").forEach(function (b) {
-        b.classList.toggle("primary", b === mine);
-        b.classList.toggle("secondary", b !== mine);
-      });
-      group.insertBefore(mine, group.firstChild);
+  // This week's trending posters, the wall behind the logo.
+  var posters = "/5rhTDKUhPYvpdQIijFIs5VoWsON.jpg,/WGyAyBPncfuu8MZhLY9RtfZPM0.jpg,/bMXWXKM9ydUmMTNvDnYo9QtCBRt.jpg,/7SE0LBwgqiqZzkm9gKVbBAbcNQL.jpg,/kNxRgcTeqeU5jauBackTERoO2De.jpg,/6sYemVUn79UPKz1ZsSG6kPU4RVy.jpg,/gAgWJhUSQWCgtKR8170nMkYlBda.jpg,/tTMmREfhVd51CCg7GN73wL8cIoT.jpg,/bG4h6C6wRKmf3ryz8gdN6imXW4c.jpg,/hSmIJluOJmTWvJs4d7kHRxjc8s8.jpg,/6H2N59jJW1hZEzn2ZdrMvJw5vNI.jpg,/bGB6bEbG4qL22C1SFupkdAxYC9i.jpg,/j1MNyNNgNQL6f27cb3m3uKaPKd6.jpg,/5Xc7WpWsgflfgEMoBlf9TmWhfbH.jpg,/bjiS5ipwxb9JFy3XRRN4OAilSeX.jpg,/1ERGPNiKtnEcsvJS1ywsmqmcIDO.jpg,/lmrulvLbmaejTix1YaMxo1oGhH1.jpg,/o2Oyi3boT100bY5kCP4MBiTeetO.jpg,/vBQ7wks68OhJKlb3RnXSl2yXBXK.jpg,/zn3IXZzGavH3qle3o3g1r32eXDy.jpg,/srlsyEfIBz2MNWBndVc3opOaNGS.jpg,/195kCuy2RqGaEAZDDpGTx7gBUBZ.jpg,/eSS5mvSG84UUuvtbHel5Yu3Wik4.jpg,/snFM00mpNAfUzUtkdEW0uDEvXA0.jpg,/qJPvyo9Pxz3MQndd3tKSocLz1Nt.jpg,/dJPT2Uf12X6aFg8i5N67NTpIZ9t.jpg,/k7n2EVge7G77eMr3brztRGG1fFU.jpg,/bRwnj8WEKBCvmfeUNOukJPwB43K.jpg,/aa1mDCaRtGNEIHVpZrh2xil03Tq.jpg,/ouGH1PS0xjDyfTQOhppn7QzJqQZ.jpg,/9AWkNkZHwNLuM6H5u6dToioHMAI.jpg,/ifYDZkr2qkHFz87TNVvlxajOxl5.jpg,/c8UHaCOfzyQYagHv7vAAOkrmgDb.jpg,/9l1NuFjel2j89hiuiJbsxfblqjy.jpg,/dNJFRtVg3xLQ7dbNIQ55cmmIniD.jpg,/glt0v4I89rMWstDNCaFXc5SNyO1.jpg,/rmaNMA1seHqpjtnYKzyynFAr1g8.jpg,/IECgq0Hd4ezuyGhbQgQawURGKT.jpg,/upwdEyhhYZ7pT2hD535fr2MGfpx.jpg".split(",");
+  var wall = document.querySelector("[data-wall]");
+  var lanes = window.matchMedia("(max-width: 640px)").matches ? 4 : 6;
+  for (var l = 0; l < lanes; l++) {
+    var lane = document.createElement("div");
+    lane.className = "lane";
+    var own = [];
+    for (var i = l; i < posters.length; i += lanes) own.push(posters[i]);
+    own.concat(own).forEach(function (p) {
+      var img = document.createElement("img");
+      img.src = "https://image.tmdb.org/t/p/w342" + p;
+      img.alt = "";
+      img.loading = "lazy";
+      img.decoding = "async";
+      lane.appendChild(img);
     });
-  }
-  if (os === "apple") {
-    var n = document.querySelector("[data-notice]");
-    if (n) n.style.display = "block";
+    wall.appendChild(lane);
   }
 
-  // The latest version, when it came out (Sri Lanka time), and the download sizes.
-  try {
-    fetch("https://api.github.com/repos/popcorn-organization/popcorn/releases/latest")
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (rel) {
-        if (!rel) return;
-        var version = String(rel.tag_name || "").replace(/^v/, "");
-        var when = new Date(rel.published_at);
-        var day = new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Colombo", day: "numeric", month: "long", year: "numeric" }).format(when);
-        var el = document.querySelector("[data-version]");
-        if (el && version) {
-          el.innerHTML = "";
-          var s = document.createElement("strong");
-          s.textContent = "Version " + version;
-          el.appendChild(s);
-          el.appendChild(document.createTextNode(", released " + day + "."));
-        }
-        (rel.assets || []).forEach(function (a) {
-          var key = /Android/i.test(a.name) ? "android" : /Windows/i.test(a.name) ? "windows" : null;
-          var small = key && document.querySelector('[data-size="' + key + '"]');
-          if (small) small.textContent = (key === "windows" ? "Windows 10 and 11 · " : "") + Math.round(a.size / 1048576) + " MB";
-        });
-      })
-      .catch(function () {});
-  } catch (e) {}
+  // This device's download first.
+  var ua = navigator.userAgent || "";
+  var os = /Android/i.test(ua) ? "android" : /Windows/i.test(ua) ? "windows"
+    : /iPhone|iPad|iPod|Macintosh/i.test(ua) ? "apple" : null;
+  if (os === "windows") {
+    var get = document.querySelector("[data-get]");
+    var win = get.querySelector('[data-os="windows"]');
+    var droid = get.querySelector('[data-os="android"]');
+    win.className = "first"; droid.className = "second";
+    get.insertBefore(win, droid);
+  }
+  if (os === "apple") document.querySelector("[data-apple]").hidden = false;
+
+  // The newest version, its date (Sri Lanka time) and the download sizes.
+  fetch("https://api.github.com/repos/popcorn-organization/popcorn/releases/latest")
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (rel) {
+      if (!rel) return;
+      var v = String(rel.tag_name || "").replace(/^v/, "");
+      var day = new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Colombo", day: "numeric", month: "short", year: "numeric" }).format(new Date(rel.published_at));
+      var ticket = document.querySelector("[data-ticket]");
+      var ver = document.createElement("span");
+      var b = document.createElement("b"); b.textContent = "Version " + v;
+      ver.appendChild(b); ver.appendChild(document.createTextNode(" · " + day));
+      ticket.insertBefore(ver, ticket.firstChild);
+      document.querySelector("[data-version]").textContent = "Version " + v + ", released " + day + ".";
+      (rel.assets || []).forEach(function (a) {
+        var key = /Android/i.test(a.name) ? "android" : /Windows/i.test(a.name) ? "windows" : null;
+        var el = key && document.querySelector('[data-size="' + key + '"]');
+        if (el) el.textContent = (key === "android" ? "Phones and tablets · " : "Windows 10 and 11 · ") + Math.round(a.size / 1048576) + " MB";
+      });
+    })
+    .catch(function () {});
 })();
 </script>
 </body>
