@@ -40,15 +40,17 @@
     color: var(--paper);
     font: 300 18px/1.55 var(--body);
     -webkit-font-smoothing: antialiased;
-    overflow: hidden;
+    overflow-x: hidden;
   }
   img { display: block; max-width: 100%; height: auto; }
   a { color: inherit; }
 
   .lobby {
     position: relative;
-    height: 100vh;
-    height: 100dvh;
+    /* Exactly one screen when it all fits; it grows (and scrolls) only
+       where a window is too small to hold it, rather than cutting it off. */
+    min-height: 100vh;
+    min-height: 100dvh;
     overflow: hidden;
     isolation: isolate;
     display: grid;
@@ -106,7 +108,7 @@
   }
 
   /* ── Top and bottom lines ── */
-  .bar { display: flex; justify-content: flex-end; align-items: center; gap: 16px; }
+  .bar { grid-row: 1; display: flex; justify-content: flex-end; align-items: center; gap: 16px; }
   .bar a.versions {
     font: 500 14px/1 var(--body);
     text-decoration: none; color: var(--paper);
@@ -117,11 +119,12 @@
   }
   .bar a.versions:hover, .bar a.versions:focus-visible { background: rgba(255, 255, 255, 0.14); }
 
-  .credits { font: 400 12px/1.5 var(--body); color: var(--dim); max-width: 52em; margin: 0; }
+  .credits { grid-row: 3; font: 400 12px/1.5 var(--body); color: var(--dim); max-width: 52em; margin: 0; }
   .credits a { text-decoration: none; color: var(--paper); }
 
   /* ── The marquee ── */
   .marquee {
+    grid-row: 2;
     align-self: center;
     max-width: 680px;
     display: grid;
@@ -173,13 +176,13 @@
     .lobby {
       --logo: min(66vw, 31vh);
       --logo-x: calc(50vw - var(--logo) / 2);
-      --logo-y: calc(max(clamp(18px, 3.5vh, 36px), env(safe-area-inset-top, 0px)) + 4vh);
+      --logo-y: calc(max(clamp(18px, 3.5vh, 36px), env(safe-area-inset-top, 0px)) + 4vh + 22px);
     }
     .lobby::after {
       background: linear-gradient(180deg, rgba(11, 10, 9, 0) 30%, rgba(11, 10, 9, 0.55) 55%, rgba(11, 10, 9, 0.75) 100%);
     }
     .bar { position: absolute; top: max(clamp(18px, 3.5vh, 36px), env(safe-area-inset-top, 0px)); right: max(20px, env(safe-area-inset-right, 0px)); }
-    .marquee { max-width: 640px; align-self: end; padding-top: calc(var(--logo) + 6vh); gap: clamp(12px, 2vh, 22px); }
+    .marquee { max-width: 640px; align-self: end; padding-top: calc(var(--logo) + 6vh + 22px); gap: clamp(12px, 2vh, 22px); }
     .marquee h1 { width: min(260px, 58vw, 22vh); }
   }
   @media (max-width: 640px) {
@@ -189,10 +192,19 @@
     .tips { font-size: 14px; }
   }
   /* A window too short for everything: let it scroll rather than cut it off. */
-  @media (max-height: 620px) {
-    body { overflow: auto; }
-    .lobby { height: auto; min-height: 100dvh; }
-    .tips { display: none; }
+  /* Tablets held upright: room for a bigger icon. */
+  @media (orientation: portrait) and (min-width: 641px) and (min-height: 821px) {
+    .lobby { --logo: min(56vw, 40vh); }
+  }
+  /* Short screens: phones held sideways, small phones upright. */
+  @media (max-height: 620px) { .tips { display: none; } }
+  @media (orientation: portrait) and (max-height: 820px) {
+    .lobby { --logo: min(50vw, 23vh); }
+    .marquee { padding-top: calc(var(--logo) + 4vh + 22px); }
+    .marquee h1 { width: min(200px, 50vw, 17vh); }
+    .marquee p.line { font-size: 16px; }
+    .get a { padding-block: 10px; }
+    .tips { font-size: 13px; }
   }
   @media (prefers-reduced-motion: reduce) { .lane { animation: none; } .get a { transition: none; } }
 </style>
