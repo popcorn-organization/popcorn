@@ -3,7 +3,7 @@
 Movies and TV shows, for Android and Windows.
 
 <!-- latest -->
-**Latest version: 3.0.0**, released on 12 November 2026 at 11:53 PM (Sri Lanka time).
+**Latest version: 3.0.1**, released on 13 November 2026 at 11:37 AM (Sri Lanka time).
 <!-- /latest -->
 
 ## Download
