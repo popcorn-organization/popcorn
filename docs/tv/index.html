@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Popcorn for TV</title>
-<meta name="description" content="Popcorn on Android TV, Google TV and Fire TV: how to install it.">
+<meta name="description" content="Popcorn on Android TV, Google TV and Fire TV: free films and series on the big screen. How to install it.">
 <meta name="theme-color" content="#0b0a09">
 <meta name="color-scheme" content="dark">
 <meta property="og:title" content="Popcorn for TV">
@@ -19,11 +19,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  /* The TV install page: opened on a phone or PC to read the steps, and on
-     the TV itself (typed into Downloader) to get the file. Same lobby
-     colours as the home page; one column, big enough to read from a sofa. */
+  /* The TV page, in the home page's lobby: the same drifting poster wall
+     under frost. The download and the address to type on the TV first,
+     beside the app on a TV; the three install steps as cards below. Read
+     on a phone or PC, or opened on the TV itself in Downloader. */
   :root {
     --night: #0b0a09;
+    --screen: #15130f;
     --rule: #2a2621;
     --paper: #f3efe6;
     --dim: #a19b8e;
@@ -36,133 +38,237 @@
   * { box-sizing: border-box; }
   html { background: var(--night); -webkit-tap-highlight-color: transparent; }
   body {
-    margin: 0;
-    background: var(--night)
-      radial-gradient(90% 60% at 80% -10%, rgba(253, 237, 173, 0.08), rgba(11, 10, 9, 0) 70%) no-repeat;
+    /* No background of its own: it would cover the poster wall (behind
+       everything, z-index below 0); the page's is html's. */
+    margin: 0; min-height: 100vh;
     color: var(--paper);
     font: 300 18px/1.55 var(--body);
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
   img { display: block; max-width: 100%; height: auto; }
   a { color: inherit; }
-  main {
-    max-width: 760px;
-    margin: 0 auto;
-    padding: max(32px, env(safe-area-inset-top, 0px)) max(20px, env(safe-area-inset-right, 0px)) 48px max(20px, env(safe-area-inset-left, 0px));
-    display: grid;
-    gap: 28px;
-  }
-  .home { display: inline-block; width: 180px; }
-  h1 { margin: 0; font-size: clamp(32px, 6vw, 48px); line-height: 1.1; font-weight: 600; letter-spacing: -0.015em; }
-  h1 span { display: block; color: var(--cream); font-size: 0.55em; font-weight: 500; letter-spacing: 0; margin-top: 10px; }
 
-  /* The download, as the home page's cream pill. */
+  /* ── The poster wall, fixed behind the page, under frost ── */
+  .wall {
+    position: fixed; inset: -30% -12%;
+    display: grid; grid-template-columns: repeat(9, 1fr); gap: 12px;
+    align-items: start; transform: rotate(-9deg); z-index: -3;
+  }
+  .lane { display: flex; flex-direction: column; animation: drift 180s linear infinite; will-change: transform; }
+  .lane:nth-child(even) { animation-direction: reverse; animation-duration: 220s; }
+  .lane img { width: 100%; aspect-ratio: 2 / 3; object-fit: cover; flex: none; margin-bottom: 12px; border-radius: 6px; background: var(--screen); }
+  @keyframes drift { from { transform: translateY(0); } to { transform: translateY(-50%); } }
+  .frost {
+    position: fixed; inset: 0; z-index: -2;
+    background: rgba(11, 10, 9, 0.5);
+    -webkit-backdrop-filter: blur(34px) saturate(120%);
+    backdrop-filter: blur(34px) saturate(120%);
+  }
+  .shade {
+    position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background:
+      linear-gradient(90deg, rgba(11, 10, 9, 0.75) 0%, rgba(11, 10, 9, 0.3) 55%, rgba(11, 10, 9, 0.15) 100%),
+      linear-gradient(180deg, rgba(11, 10, 9, 0) 55%, rgba(11, 10, 9, 0.85) 100%);
+  }
+
+  main {
+    max-width: 1240px; margin: 0 auto;
+    padding: max(28px, env(safe-area-inset-top, 0px)) max(clamp(20px, 5vw, 64px), env(safe-area-inset-right, 0px)) 40px max(clamp(20px, 5vw, 64px), env(safe-area-inset-left, 0px));
+    display: grid; gap: clamp(36px, 6vh, 64px);
+  }
+
+  /* ── The hero: words on the left, the app on a TV on the right ── */
+  .hero {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    gap: clamp(28px, 4vw, 64px); align-items: center;
+    min-height: min(78vh, 760px);
+  }
+  .words { display: grid; gap: clamp(16px, 2.6vh, 26px); justify-items: start; }
+  .home { display: block; width: clamp(150px, 16vw, 210px); }
+  h1 {
+    margin: 0; font-size: clamp(34px, 4vw, 56px); line-height: 1.08;
+    font-weight: 600; letter-spacing: -0.02em; text-wrap: balance;
+  }
+  h1 span { display: block; color: var(--cream); }
+  .kinds { margin: 0; color: var(--dim); font-size: 17px; font-weight: 400; display: flex; flex-wrap: wrap; gap: 6px 10px; }
+  .kinds span { padding: 5px 12px; border-radius: 999px; background: rgba(255, 255, 255, 0.07); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1); color: var(--paper); font-size: 14px; font-weight: 500; }
+
+  /* The download, the home page's cream pill. */
   .get {
-    display: inline-flex; align-items: center; gap: 14px; justify-self: start;
-    padding: 16px 30px 16px 22px; border-radius: 999px;
+    display: inline-flex; align-items: center; gap: 14px;
+    padding: 17px 32px 17px 24px; border-radius: 999px;
     background: var(--cream); color: var(--ink); text-decoration: none;
     font: 600 21px/1.15 var(--body);
-    box-shadow: 0 12px 36px -14px rgba(253, 237, 173, 0.6);
+    box-shadow: 0 14px 40px -14px rgba(253, 237, 173, 0.65);
+    transition: transform 0.18s ease;
   }
-  .get svg { width: 28px; height: 28px; flex: none; }
-  .get small { font: 400 14px/1 var(--body); opacity: 0.62; margin-left: 4px; }
+  .get:hover { transform: translateY(-1px); }
+  .get svg { width: 26px; height: 26px; flex: none; }
+  .get small { font: 400 14px/1 var(--body); opacity: 0.62; margin-left: 8px; }
   .get small:empty { display: none; }
-  /* Selected with a TV remote, or a keyboard: plain to see from across a
-     room. */
-  .get:focus, .get:focus-visible { outline: 4px solid var(--paper); outline-offset: 5px; }
+  /* Selected with a TV remote: plain to see from across the room. */
+  .get:focus-visible, .get:focus { outline: 4px solid var(--paper); outline-offset: 5px; }
 
+  /* What to type on the TV, as a ticket. */
   .address {
-    display: grid; gap: 8px;
-    padding: 20px 22px; border-radius: 18px;
-    background: rgba(255, 255, 255, 0.05);
+    display: grid; gap: 6px; width: 100%; max-width: 600px;
+    padding: 16px 20px 18px; border-radius: 18px;
+    background: rgba(20, 18, 15, 0.55);
     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
   }
-  .address p { margin: 0; color: var(--dim); font-size: 16px; }
+  .address p { margin: 0; color: var(--dim); font-size: 15px; }
+  .address em { font-style: normal; color: var(--paper); }
   .address code {
-    font: 500 clamp(18px, 3.6vw, 26px)/1.3 var(--mono);
+    font: 500 clamp(16px, 1.55vw, 21px)/1.3 var(--mono);
     color: var(--cream); overflow-wrap: anywhere;
     -webkit-user-select: all; user-select: all;
   }
 
-  h2 { margin: 8px 0 0; font-size: 22px; font-weight: 600; }
-  ol { margin: 0; padding: 0; list-style: none; counter-reset: step; display: grid; gap: 18px; }
-  ol > li {
-    counter-increment: step;
-    display: grid; grid-template-columns: 40px 1fr; gap: 4px 14px;
+  /* The app on a TV: the screenshot in a thin dark bezel, on a little
+     stand, glowing faintly onto the wall behind. */
+  .tv { margin: 0; justify-self: center; width: 100%; max-width: 680px; }
+  .tv .panel {
+    position: relative; padding: 1.1%; border-radius: 14px;
+    background: linear-gradient(180deg, #24211c, #121110);
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.07),
+      0 40px 90px -30px rgba(0, 0, 0, 0.9),
+      0 0 120px -20px rgba(253, 237, 173, 0.18);
   }
-  ol > li::before {
-    content: counter(step);
-    grid-row: span 3;
-    width: 34px; height: 34px; border-radius: 50%;
-    display: grid; place-items: center;
-    background: rgba(253, 237, 173, 0.14); color: var(--cream);
-    font: 600 17px/1 var(--body);
-  }
-  ol b { font-weight: 600; color: var(--paper); }
-  ol p { margin: 0; color: var(--dim); }
-  ol p em, .note em { font-style: normal; color: var(--paper); }
-  .which { display: grid; gap: 6px; margin-top: 4px; }
-  .which p { padding-left: 14px; border-left: 2px solid var(--rule); }
+  .tv img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 8px; }
+  .tv .stand { width: 22%; height: 16px; margin: 0 auto; background: linear-gradient(180deg, #1c1a16, #0f0e0c); clip-path: polygon(18% 0, 82% 0, 100% 100%, 0 100%); }
+  .tv .foot { width: 40%; height: 5px; margin: 0 auto; border-radius: 3px; background: #1c1a16; }
 
-  .note { margin: 0; color: var(--dim); font-size: 16px; }
-  .back { color: var(--dim); font-size: 15px; text-decoration: none; }
-  .back:hover, .back:focus-visible { color: var(--paper); }
-  .credits { margin: 12px 0 0; font-size: 12px; color: var(--dim); }
+  /* ── The steps, three glass cards ── */
+  .steps h2 { margin: 0 0 18px; font-size: 24px; font-weight: 600; letter-spacing: -0.01em; }
+  .steps ol { margin: 0; padding: 0; list-style: none; counter-reset: step; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .steps li {
+    counter-increment: step;
+    padding: 22px 22px 24px; border-radius: 20px;
+    background: rgba(20, 18, 15, 0.55);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.09);
+    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+    display: grid; align-content: start; gap: 8px;
+  }
+  .steps li::before {
+    content: counter(step);
+    width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--cream); color: var(--ink); font: 600 17px/1 var(--body);
+    margin-bottom: 4px;
+  }
+  .steps b { font-weight: 600; font-size: 19px; }
+  .steps p { margin: 0; color: var(--dim); font-size: 16px; line-height: 1.5; }
+  .steps em { font-style: normal; color: var(--paper); }
+  .which { display: grid; gap: 10px; margin-top: 4px; }
+  .which p { padding: 10px 12px; border-radius: 12px; background: rgba(255, 255, 255, 0.04); font-size: 14.5px; }
+  .which strong { display: block; color: var(--cream); font-weight: 500; font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 2px; }
+
+  .after { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12px 28px; }
+  .note { margin: 0; color: var(--dim); font-size: 15px; max-width: 40em; }
+  .note em { font-style: normal; color: var(--paper); }
+  .back { color: var(--paper); font-size: 15px; text-decoration: none; white-space: nowrap; opacity: 0.8; }
+  .back:hover, .back:focus-visible { opacity: 1; }
+  .credits { margin: 0; font-size: 12px; color: var(--dim); }
   .credits a { text-decoration: none; color: var(--paper); }
 
-  /* A TV (big, far away): everything a size up. */
-  @media (min-width: 1200px) and (min-height: 650px) {
-    main { max-width: 900px; padding-top: 48px; gap: 32px; }
-    body { font-size: 21px; }
-    ol p, .address p, .note { font-size: 19px; }
-    h2 { font-size: 26px; }
+  /* Narrower: the TV under the words, the steps one under another. */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; min-height: 0; }
+    .tv { max-width: 560px; }
+    .steps ol { grid-template-columns: 1fr; }
   }
+  @media (max-width: 640px) {
+    .wall { inset: -20% -40% -20% -20%; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+    .lane img { margin-bottom: 8px; }
+    .words { justify-items: stretch; }
+    .get { justify-content: center; }
+    .home { width: 150px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .lane { animation: none; } .get { transition: none; } }
 </style>
 </head>
 <body>
+
+<div class="wall" aria-hidden="true" data-wall></div>
+<div class="frost" aria-hidden="true"></div>
+<div class="shade" aria-hidden="true"></div>
+
 <main>
-  <a class="home" href="../" aria-label="Popcorn home"><img src="../assets/wordmark.svg" width="332" height="170" alt="Popcorn"></a>
-
-  <h1>Popcorn on your TV<span>Android TV, Google TV and Fire TV</span></h1>
-
-  <a class="get" href="https://github.com/popcorn-organization/popcorn/releases/latest/download/Popcorn-Android-TV.apk" autofocus data-get>
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 5h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-6v1.5h3a.75.75 0 0 1 0 1.5H7a.75.75 0 0 1 0-1.5h3V18H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm0 1.5a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h16a.5.5 0 0 0 .5-.5V7a.5.5 0 0 0-.5-.5H4z"/></svg>
-    <span>Download for TV<small data-size></small></span>
-  </a>
-
-  <div class="address">
-    <p>On the TV, type this address into the <em>Downloader</em> app:</p>
-    <code>popcorn-organization.github.io/<wbr>popcorn/tv</code>
-  </div>
-
-  <h2>Installing it</h2>
-  <ol>
-    <li>
-      <b>Get the Downloader app</b>
-      <p>It's free in your TV's app store: search for <em>Downloader</em> (the orange one, by AFTVnews).</p>
-    </li>
-    <li>
-      <b>Let Downloader install apps</b>
-      <p>TVs block this at first. It's a one-time switch:</p>
-      <div class="which">
-        <p><em>Google TV and Android TV:</em> open <em>Settings → System → About</em> and press OK on <em>Android TV OS build</em> seven times. Then open <em>Settings → Apps → Security &amp; restrictions → Unknown sources</em> and turn on <em>Downloader</em>.</p>
-        <p><em>Fire TV:</em> open <em>Settings → My Fire TV → About</em> and press OK on your Fire TV's name seven times. Then open <em>My Fire TV → Developer options → Install unknown apps</em> and turn on <em>Downloader</em>.</p>
+  <section class="hero">
+    <div class="words">
+      <a class="home" href="../" aria-label="Popcorn home"><img src="../assets/wordmark.svg" width="332" height="170" alt="Popcorn"></a>
+      <h1>Popcorn on your&nbsp;TV. <span>No sign-up. No&nbsp;ads.</span></h1>
+      <p class="kinds"><span>Android TV</span><span>Google TV</span><span>Fire TV</span></p>
+      <a class="get" href="https://github.com/popcorn-organization/popcorn/releases/latest/download/Popcorn-Android-TV.apk" autofocus data-get>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 5h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-6v1.5h3a.75.75 0 0 1 0 1.5H7a.75.75 0 0 1 0-1.5h3V18H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm0 1.5a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h16a.5.5 0 0 0 .5-.5V7a.5.5 0 0 0-.5-.5H4z"/></svg>
+        <span>Download for TV<small data-size></small></span>
+      </a>
+      <div class="address">
+        <p>On your TV, open <em>Downloader</em> and type:</p>
+        <code>popcorn-organization.github.io/<wbr>popcorn/tv</code>
       </div>
-    </li>
-    <li>
-      <b>Install Popcorn</b>
-      <p>Open Downloader, type the address above and press <em>Go</em>. Choose <em>Download for TV</em>, then <em>Install</em>, then <em>Open</em>. Popcorn is now in your TV's apps.</p>
-    </li>
-  </ol>
+    </div>
+    <figure class="tv" aria-label="Popcorn on a TV">
+      <div class="panel"><img src="../assets/tv-home.jpg" width="1280" height="720" alt="Popcorn's home screen on a TV"></div>
+      <div class="stand"></div>
+      <div class="foot"></div>
+    </figure>
+  </section>
 
-  <p class="note">Updates install from inside Popcorn: when there's a new version it asks, and you choose <em>Update</em>. Menu names can differ a little from one TV to another.</p>
+  <section class="steps">
+    <h2>Installing it</h2>
+    <ol>
+      <li>
+        <b>Get Downloader</b>
+        <p>It's free in your TV's app store. Search for <em>Downloader</em>, the orange one by AFTVnews.</p>
+      </li>
+      <li>
+        <b>Let it install apps</b>
+        <p>A one-time switch on the TV:</p>
+        <div class="which">
+          <p><strong>Google TV &amp; Android TV</strong><em>Settings → System → About</em>: press OK on <em>Android TV OS build</em> seven times. Then <em>Settings → Apps → Security &amp; restrictions → Unknown sources</em>: turn on <em>Downloader</em>.</p>
+          <p><strong>Fire TV</strong><em>Settings → My Fire TV → About</em>: press OK on your Fire TV's name seven times. Then <em>My Fire TV → Developer options → Install unknown apps</em>: turn on <em>Downloader</em>.</p>
+        </div>
+      </li>
+      <li>
+        <b>Install Popcorn</b>
+        <p>Open Downloader, type the address above and press <em>Go</em>. Choose <em>Download for TV</em>, then <em>Install</em>, then <em>Open</em>. Popcorn is now in your TV's apps.</p>
+      </li>
+    </ol>
+  </section>
 
-  <a class="back" href="../">← Popcorn for phones and PCs</a>
+  <div class="after">
+    <p class="note">Updates come from inside Popcorn: when there's a new version it asks, and you choose <em>Update</em>. Menu names can differ a little from one TV to another.</p>
+    <a class="back" href="../">← Popcorn for phones and PCs</a>
+  </div>
 
   <p class="credits">Posters by <a href="https://www.themoviedb.org/" target="_blank" rel="noopener">TMDB</a>. This product uses the TMDB API but is not endorsed or certified by TMDB.</p>
 </main>
+
 <script>
 (function () {
+  // The home page's wall: this week's trending posters.
+  var posters = "/5rhTDKUhPYvpdQIijFIs5VoWsON.jpg,/WGyAyBPncfuu8MZhLY9RtfZPM0.jpg,/bMXWXKM9ydUmMTNvDnYo9QtCBRt.jpg,/7SE0LBwgqiqZzkm9gKVbBAbcNQL.jpg,/kNxRgcTeqeU5jauBackTERoO2De.jpg,/6sYemVUn79UPKz1ZsSG6kPU4RVy.jpg,/gAgWJhUSQWCgtKR8170nMkYlBda.jpg,/tTMmREfhVd51CCg7GN73wL8cIoT.jpg,/bG4h6C6wRKmf3ryz8gdN6imXW4c.jpg,/hSmIJluOJmTWvJs4d7kHRxjc8s8.jpg,/6H2N59jJW1hZEzn2ZdrMvJw5vNI.jpg,/bGB6bEbG4qL22C1SFupkdAxYC9i.jpg,/j1MNyNNgNQL6f27cb3m3uKaPKd6.jpg,/5Xc7WpWsgflfgEMoBlf9TmWhfbH.jpg,/bjiS5ipwxb9JFy3XRRN4OAilSeX.jpg,/1ERGPNiKtnEcsvJS1ywsmqmcIDO.jpg,/lmrulvLbmaejTix1YaMxo1oGhH1.jpg,/o2Oyi3boT100bY5kCP4MBiTeetO.jpg,/vBQ7wks68OhJKlb3RnXSl2yXBXK.jpg,/zn3IXZzGavH3qle3o3g1r32eXDy.jpg,/srlsyEfIBz2MNWBndVc3opOaNGS.jpg,/195kCuy2RqGaEAZDDpGTx7gBUBZ.jpg,/eSS5mvSG84UUuvtbHel5Yu3Wik4.jpg,/snFM00mpNAfUzUtkdEW0uDEvXA0.jpg,/qJPvyo9Pxz3MQndd3tKSocLz1Nt.jpg,/dJPT2Uf12X6aFg8i5N67NTpIZ9t.jpg,/k7n2EVge7G77eMr3brztRGG1fFU.jpg,/bRwnj8WEKBCvmfeUNOukJPwB43K.jpg,/aa1mDCaRtGNEIHVpZrh2xil03Tq.jpg,/ouGH1PS0xjDyfTQOhppn7QzJqQZ.jpg,/9AWkNkZHwNLuM6H5u6dToioHMAI.jpg,/ifYDZkr2qkHFz87TNVvlxajOxl5.jpg,/c8UHaCOfzyQYagHv7vAAOkrmgDb.jpg,/9l1NuFjel2j89hiuiJbsxfblqjy.jpg,/dNJFRtVg3xLQ7dbNIQ55cmmIniD.jpg,/glt0v4I89rMWstDNCaFXc5SNyO1.jpg,/rmaNMA1seHqpjtnYKzyynFAr1g8.jpg,/IECgq0Hd4ezuyGhbQgQawURGKT.jpg,/upwdEyhhYZ7pT2hD535fr2MGfpx.jpg".split(",");
+  var wall = document.querySelector("[data-wall]");
+  var lanes = window.matchMedia("(max-width: 640px)").matches ? 6 : 9;
+  for (var l = 0; l < lanes; l++) {
+    var lane = document.createElement("div");
+    lane.className = "lane";
+    var own = [];
+    for (var i = l; i < posters.length; i += lanes) own.push(posters[i]);
+    var half = own.concat(own);
+    half.concat(half).forEach(function (p) {
+      var img = document.createElement("img");
+      img.src = "https://image.tmdb.org/t/p/w342" + p;
+      img.alt = "";
+      img.decoding = "async";
+      lane.appendChild(img);
+    });
+    wall.appendChild(lane);
+  }
+
   // The TV download's size, from the latest release.
   fetch("https://api.github.com/repos/popcorn-organization/popcorn/releases/latest")
     .then(function (r) { return r.ok ? r.json() : null; })
@@ -175,9 +281,10 @@
       });
     })
     .catch(function () {});
+
   // On a TV (Downloader's browser), the remote starts on the download.
   var get = document.querySelector("[data-get]");
-  if (get && document.activeElement !== get) get.focus();
+  if (get && document.activeElement !== get) get.focus({ preventScroll: true });
 })();
 </script>
 </body>
