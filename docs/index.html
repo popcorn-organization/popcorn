@@ -314,11 +314,16 @@
     padding-left: max(clamp(20px, 6vw, 96px), env(safe-area-inset-left, 0px));
     padding-right: max(clamp(20px, 6vw, 96px), env(safe-area-inset-right, 0px));
   }
+  /* The Popcorn logo, then "on your TV" level with the end of the word
+     (the script rises to the right). */
   .tv h2 {
     margin: 0;
+    display: flex; flex-wrap: wrap; align-items: center; column-gap: 0.3em;
     font-size: clamp(28px, min(3.2vw, calc(4.6 * var(--vh))), 44px);
     line-height: 1.12; font-weight: 600; letter-spacing: -0.015em;
   }
+  .tv h2 img { width: 5.4em; height: auto; }
+  .tv h2 span { white-space: nowrap; }
   .tv .kinds { margin: 10px 0 26px; color: var(--dim); font-size: 17px; }
   .steps {
     margin: 0; padding-left: 1.3em;
@@ -331,12 +336,23 @@
   .steps em, .how em { font-style: normal; color: var(--paper); }
   /* What to type in Downloader: big enough to copy off a phone held up
      next to the TV. */
+  .copyline { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-top: 8px; }
   .address {
-    display: block; margin-top: 8px;
     font: 500 clamp(17px, 1.5vw, 21px)/1.35 var(--mono); color: var(--cream);
     overflow-wrap: anywhere;
     -webkit-user-select: text; user-select: text;
   }
+  /* Copy, beside the address: quiet, as the second download buttons. */
+  .copy {
+    font: 500 14px/1 var(--body); color: var(--paper); cursor: pointer;
+    padding: 8px 16px; border: 0; border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+    transition: background 0.18s ease;
+  }
+  .copy:hover { background: rgba(255, 255, 255, 0.14); }
+  .copy:focus-visible { outline: 2px solid var(--paper); outline-offset: 3px; }
+  .copy.done { color: var(--cream); }
   .how summary {
     display: inline; cursor: pointer; list-style: none;
     color: var(--cream); font-weight: 500;
@@ -460,7 +476,7 @@
 
 <section class="tv" id="tv" aria-labelledby="tv-title">
   <div>
-    <h2 id="tv-title">Popcorn on your TV</h2>
+    <h2 id="tv-title"><img src="assets/wordmark.svg" width="332" height="170" alt="Popcorn"><span>on your TV</span></h2>
     <p class="kinds">Android TV, Google TV and Fire TV.</p>
     <div class="get">
       <a class="first" data-tv-get href="https://github.com/popcorn-organization/popcorn/releases/latest/download/Popcorn-Android-TV.apk">
@@ -478,7 +494,10 @@
           <p><b>Fire TV:</b> in <em>Settings → My Fire TV → About</em>, press OK on your Fire TV&rsquo;s name seven times. Then in <em>My Fire TV → Developer options → Install unknown apps</em>, turn on <em>Downloader</em>.</p>
         </details></li>
       <li>Open <em>Downloader</em>, type this address, then choose <em>Install</em>:
-        <code class="address">popcorn-organization.github.io/<wbr>popcorn/tv</code></li>
+        <span class="copyline">
+          <code class="address">popcorn-organization.github.io/<wbr>popcorn/tv</code>
+          <button class="copy" type="button" data-copy="popcorn-organization.github.io/popcorn/tv">Copy</button>
+        </span></li>
     </ol>
     <p class="after">After that, updates come from inside Popcorn.</p>
   </div>
@@ -598,6 +617,34 @@
   var onTv = !/Mobile/i.test(ua) &&
     !window.matchMedia("(any-pointer: fine)").matches &&
     !window.matchMedia("(any-pointer: coarse)").matches;
+  // Copy the address (to send to someone, or keep on the phone). Not on a
+  // TV, where there's nothing to paste it into.
+  var copyBtn = document.querySelector("[data-copy]");
+  if (onTv) copyBtn.hidden = true;
+  copyBtn.addEventListener("click", function () {
+    var text = copyBtn.getAttribute("data-copy");
+    function copied() {
+      copyBtn.textContent = "Copied";
+      copyBtn.classList.add("done");
+      clearTimeout(copyBtn.timer);
+      copyBtn.timer = setTimeout(function () {
+        copyBtn.textContent = "Copy";
+        copyBtn.classList.remove("done");
+      }, 2000);
+    }
+    function fallback() {
+      var t = document.createElement("textarea");
+      t.value = text; t.setAttribute("readonly", "");
+      t.style.cssText = "position:fixed;opacity:0;top:0;left:0";
+      document.body.appendChild(t); t.select();
+      try { if (document.execCommand("copy")) copied(); } catch (e) {}
+      t.remove();
+    }
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(copied, fallback);
+    } else fallback();
+  });
+
   var tvSection = document.getElementById("tv");
   function scrollToTv(smooth) {
     var y = tvSection.getBoundingClientRect().top + window.scrollY;
