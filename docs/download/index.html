@@ -35,18 +35,14 @@
   .plat .get a { width: 100%; justify-content: center; }
   .plat .more-link { margin: 14px 0 0; text-align: center; font-size: 14px; color: var(--dim); }
   .plat .more-link a { color: var(--cream); text-underline-offset: 3px; text-decoration-color: rgba(253, 237, 173, 0.4); }
-  .plat .this-tag {
-    display: none; position: absolute; top: 26px; right: 24px;
-    padding: 7px 11px; border-radius: 999px;
-    font: 500 11px/1 var(--body); letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--cream); background: rgba(253, 237, 173, 0.1); box-shadow: inset 0 0 0 1px rgba(253, 237, 173, 0.2);
-  }
-  .plat.this .this-tag { display: inline-block; }
   .plat.this {
     background: radial-gradient(100% 70% at 50% 0%, rgba(253, 237, 173, 0.13), transparent 70%), linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.025));
     box-shadow: inset 0 0 0 1px rgba(253, 237, 173, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 40px 100px -50px rgba(253, 237, 173, 0.35);
   }
   .plat.this .pico { color: var(--ink); background: linear-gradient(180deg, #fff4c8, var(--cream)); box-shadow: 0 10px 30px -10px rgba(253, 237, 173, 0.6); }
+  .intro .version { margin: 10px 0 0; font-size: 15px; color: var(--dim); }
+  .intro .version b { color: var(--paper); font-weight: 500; }
+  .intro .version:empty { display: none; }
   .apple { margin: 22px 0 0; font-size: 15px; color: var(--dim); }
   .apple b { color: var(--cream); font-weight: 500; }
   @media (max-width: 899px) {
@@ -92,13 +88,12 @@
   </header>
   <div class="wrap">
     <div class="intro">
-      <p class="eyebrow" data-version>Latest version</p>
       <h1>Download <span>Popcorn</span></h1>
       <p>Free. No sign-up. No ads. Pick your device.</p>
+      <p class="version" data-version></p>
     </div>
     <div class="platforms" data-get>
       <article class="plat card" data-plat="android">
-        <span class="this-tag">This device</span>
         <span class="pico"><svg aria-hidden="true"><use href="#i-android"/></svg></span>
         <h2>Android</h2>
         <p class="kind">Phones and tablets</p>
@@ -106,7 +101,6 @@
         <div class="get"><a class="first" data-os="android" href="https://github.com/popcorn-organization/popcorn/releases/latest/download/Popcorn-Android.apk"><svg><use href="#i-down"/></svg><span><strong>Download</strong><small data-size="android"></small></span></a></div>
       </article>
       <article class="plat card" data-plat="windows">
-        <span class="this-tag">This device</span>
         <span class="pico"><svg aria-hidden="true"><use href="#i-windows"/></svg></span>
         <h2>Windows</h2>
         <p class="kind">Windows 10 and 11</p>
@@ -114,7 +108,6 @@
         <div class="get"><a class="second" data-os="windows" href="https://github.com/popcorn-organization/popcorn/releases/latest/download/Popcorn-Windows-Setup.exe"><svg><use href="#i-down"/></svg><span><strong>Download</strong><small data-size="windows"></small></span></a></div>
       </article>
       <article class="plat card" data-plat="tv">
-        <span class="this-tag">This device</span>
         <span class="pico"><svg aria-hidden="true"><use href="#i-tv"/></svg></span>
         <h2>TV</h2>
         <p class="kind">Android TV, Google TV and Fire TV</p>
@@ -130,7 +123,6 @@
 <main class="wrap">
   <section class="tvcard card tint" id="tv" data-rise>
     <div>
-      <p class="eyebrow">On your TV</p>
       <h2><img class="word" src="../assets/wordmark.svg" width="332" height="170" alt="Popcorn"> on your TV</h2>
       <p class="kind">Android TV, Google TV and Fire TV.</p>
       <p class="after">After that, updates come from inside Popcorn. Or download the TV file to install it another way:</p>
@@ -166,7 +158,7 @@
       if (!rel) return;
       var v = String(rel.tag_name || "").replace(/^v/, "");
       var day = new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Colombo", day: "numeric", month: "short", year: "numeric" }).format(new Date(rel.published_at));
-      document.querySelector("[data-version]").textContent = "Version " + v + " · " + day;
+      var line = document.querySelector("[data-version]"); var vb = document.createElement("b"); vb.textContent = "Version " + v; line.appendChild(vb); line.appendChild(document.createTextNode(" · Updated " + day));
       (rel.assets || []).forEach(function (a) {
         var key = /Android-TV/i.test(a.name) ? "tv" : /Android/i.test(a.name) ? "android"
           : /Windows/i.test(a.name) ? "windows" : null;
