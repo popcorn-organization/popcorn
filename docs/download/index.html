@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/site.css?v=3">
+<link rel="stylesheet" href="../assets/site.css?v=4">
 <style>
   /* One row per device, between hairlines: its name on the left; the
      download and what to do the first time on the right. */
@@ -62,8 +62,8 @@
 
 <div class="band">
   <header class="top">
-    <a class="brand" href="../" aria-label="Popcorn home"><img src="../assets/wordmark.svg" width="332" height="170" alt="Popcorn"></a>
-    <nav><a href="../features/">Features</a><a href="../download/" aria-current="page">Download</a><a href="../help/">Help</a></nav>
+    <button class="menu" type="button" data-menu aria-controls="pages" aria-expanded="false" aria-label="Menu"><span></span><span></span><span></span></button>
+    <nav id="pages" aria-label="Pages"><a href="../">Home</a><a href="../features/">Features</a><a href="../download/" aria-current="page">Download</a><a href="../help/">Help</a></nav>
   </header>
   <div class="wrap lobby">
     <h1>Download <span>Popcorn</span></h1>
@@ -180,5 +180,6 @@
 })();
 </script>
 <script src="../assets/wall.js?v=1"></script>
+<script src="../assets/nav.js?v=1"></script>
 </body>
 </html>

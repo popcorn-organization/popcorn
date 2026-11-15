@@ -29,15 +29,43 @@ em { font-style: normal; color: var(--paper); }
 
 /* ── The bar at the top ── */
 .top {
-  display: flex; align-items: center; justify-content: space-between; gap: 20px;
+  position: relative; z-index: 10;
+  display: flex; align-items: center; justify-content: flex-end; gap: 20px;
   max-width: 1180px; margin: 0 auto;
   padding: max(22px, env(safe-area-inset-top, 0px)) var(--gutter) 0;
 }
-.top .brand img { width: 118px; }
 .top nav { display: flex; gap: clamp(18px, 3vw, 34px); font: 500 16px/1 var(--body); }
 .top nav a { text-decoration: none; color: var(--dim); padding: 8px 0; }
 .top nav a:hover, .top nav a[aria-current="page"] { color: var(--paper); }
 .top nav a[aria-current="page"] { box-shadow: inset 0 -2px 0 var(--cream); }
+
+/* The menu button, on small screens only: three lines that turn into a
+   cross; the links drop down under it in a frosted panel. */
+.menu { display: none; }
+@media (max-width: 600px) {
+  .menu {
+    display: grid; place-content: center; gap: 5px;
+    width: 46px; height: 46px; padding: 0; border: 0; border-radius: 999px; cursor: pointer;
+    background: rgba(255, 255, 255, 0.08); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  }
+  .menu span { display: block; width: 18px; height: 2px; border-radius: 2px; background: var(--paper); transition: transform 0.2s ease, opacity 0.2s ease; }
+  .menu[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .menu[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+  .menu[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .menu:focus-visible { outline: 2px solid var(--paper); outline-offset: 3px; }
+  .top nav {
+    display: none; position: absolute; top: calc(100% + 10px); right: var(--gutter); z-index: 20;
+    flex-direction: column; gap: 2px; min-width: 210px; padding: 8px; border-radius: 20px;
+    background: rgba(22, 20, 17, 0.86);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1), 0 24px 60px rgba(0, 0, 0, 0.55);
+    -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px);
+    font-size: 17px;
+  }
+  .top nav.open { display: flex; }
+  .top nav a { padding: 13px 16px; border-radius: 13px; opacity: 1; color: var(--paper); }
+  .top nav a[aria-current="page"] { box-shadow: none; background: rgba(255, 255, 255, 0.08); color: var(--cream); }
+}
 
 /* ── A page's opening ── */
 .intro { padding: clamp(48px, 9vw, 110px) 0 clamp(36px, 6vw, 72px); max-width: 760px; }
@@ -110,8 +138,6 @@ ol.steps li::marker { color: var(--cream); font-weight: 600; }
 
 @media (max-width: 560px) {
   body { font-size: 17px; }
-  .top .brand img { width: 96px; }
-  .top nav { font-size: 15px; gap: 18px; }
   .get a { flex: 1 1 100%; justify-content: center; }
 }
 @media (prefers-reduced-motion: reduce) { .get a { transition: none; } }
