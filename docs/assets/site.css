@@ -116,37 +116,38 @@ ol.steps li::marker { color: var(--cream); font-weight: 600; }
 }
 @media (prefers-reduced-motion: reduce) { .get a { transition: none; } }
 
-/* ── The lobby: the home page's poster wall, frosted, at the top of every
-   inner page (filled by wall.js). The page's title and links sit over it;
-   it fades into the dark room below. ── */
-.band { position: relative; overflow: hidden; isolation: isolate; }
-.band .wall {
-  position: absolute; inset: -45% -12% -45% -12%;
+/* ── The backdrop: the home page's poster wall, frosted and dimmed, fixed
+   behind the whole page (filled by wall.js): it stays put while the page
+   scrolls over it. ── */
+body { background: transparent; }
+.backdrop { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.backdrop .wall {
+  position: absolute; inset: -30% -12% -30% -12%;
   display: grid; grid-template-columns: repeat(9, 1fr); gap: 12px;
-  align-items: start; transform: rotate(-9deg); z-index: -3;
+  align-items: start; transform: rotate(-9deg);
 }
-.band .lane { display: flex; flex-direction: column; animation: drift 180s linear infinite; will-change: transform; }
-.band .lane:nth-child(even) { animation-direction: reverse; animation-duration: 220s; }
-.band .lane img { width: 100%; aspect-ratio: 2 / 3; object-fit: cover; flex: none; margin-bottom: 12px; border-radius: 6px; background: var(--screen); }
+.backdrop .lane { display: flex; flex-direction: column; animation: drift 180s linear infinite; will-change: transform; }
+.backdrop .lane:nth-child(even) { animation-direction: reverse; animation-duration: 220s; }
+.backdrop .lane img { width: 100%; aspect-ratio: 2 / 3; object-fit: cover; flex: none; margin-bottom: 12px; border-radius: 6px; background: var(--screen); }
 @keyframes drift { from { transform: translateY(0); } to { transform: translateY(-50%); } }
-.band .frost {
-  position: absolute; inset: 0; z-index: -2;
-  background: rgba(11, 10, 9, 0.42);
+.backdrop .frost {
+  position: absolute; inset: 0;
+  background: rgba(11, 10, 9, 0.5);
   -webkit-backdrop-filter: blur(34px) saturate(120%);
   backdrop-filter: blur(34px) saturate(120%);
 }
-.band::after {
-  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
-  background:
-    linear-gradient(180deg, rgba(11, 10, 9, 0) 50%, var(--night) 100%),
-    linear-gradient(90deg, rgba(11, 10, 9, 0.62) 0%, rgba(11, 10, 9, 0.22) 55%, rgba(11, 10, 9, 0.05) 100%);
+/* Darker on the left, where the words are, as on the home page. */
+.backdrop::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg, rgba(11, 10, 9, 0.55) 0%, rgba(11, 10, 9, 0.25) 55%, rgba(11, 10, 9, 0.1) 100%);
 }
+.band { position: relative; }
 .band .intro { padding-bottom: clamp(48px, 7vw, 88px); }
 @media (max-width: 640px) {
-  .band .wall { inset: -25% -40% -25% -20%; grid-template-columns: repeat(6, 1fr); gap: 8px; }
-  .band .lane img { margin-bottom: 8px; }
+  .backdrop .wall { inset: -20% -40% -20% -20%; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+  .backdrop .lane img { margin-bottom: 8px; }
 }
-@media (prefers-reduced-motion: reduce) { .band .lane { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .backdrop .lane { animation: none; } }
 
 /* Glass buttons over the wall, as on the home page. */
 .get a.second { -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
