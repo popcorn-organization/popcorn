@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Popcorn Help</title>
 <meta name="description" content="Answers to common questions about Popcorn: installing, updates, the TV app, subtitles, sound and the free Gemini key.">
-<meta name="theme-color" content="#0b0a09">
+<meta name="theme-color" content="#000000">
 <meta name="color-scheme" content="dark">
 <meta property="og:title" content="Popcorn Help">
 <meta property="og:description" content="Answers to common questions about Popcorn.">
@@ -13,9 +13,9 @@
 <link rel="icon" type="image/png" sizes="192x192" href="../assets/favicon.png?v=2">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/site.css?v=6">
-<link rel="stylesheet" href="../assets/ui.css?v=1">
+<link rel="stylesheet" href="../assets/ui.css?v=3">
 <style>
   /* The topics on the left (they stay put as the page scrolls), each
      topic's questions in a glass card on the right; on phones the topics
@@ -36,7 +36,7 @@
   .qgroup { padding: 8px clamp(20px, 3vw, 36px) 6px; scroll-margin-top: 92px; }
   .qgroup h2 {
     display: flex; align-items: center; gap: 10px;
-    padding: 24px 0 8px; font: 500 13px/1 var(--body); letter-spacing: 0.14em; text-transform: uppercase; color: var(--cream);
+    padding: 26px 0 6px; font: 700 22px/1.2 var(--body); letter-spacing: -0.02em; color: var(--paper);
   }
   .faq details { border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
   .faq details:last-child { border-bottom: 0; }
@@ -216,7 +216,7 @@
   <p>Posters and film details by <a href="https://www.themoviedb.org/" target="_blank" rel="noopener">TMDB</a>. This product uses the TMDB API but is not endorsed or certified by TMDB. Streaming info by <a href="https://www.justwatch.com/" target="_blank" rel="noopener">JustWatch</a>.</p>
 </footer>
 
-<script src="../assets/wall.js?v=1"></script>
+<script src="../assets/wall.js?v=2"></script>
 <script>
   // A link to one question (help/#gemini) opens it.
   (function () {
@@ -239,6 +239,6 @@
     document.querySelectorAll(".qgroup").forEach(function (g) { io.observe(g); });
   })();
 </script>
-<script src="../assets/nav.js?v=2"></script>
+<script src="../assets/nav.js?v=3"></script>
 </body>
 </html>
