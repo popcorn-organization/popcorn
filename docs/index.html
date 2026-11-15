@@ -314,16 +314,14 @@
     padding-left: max(clamp(20px, 6vw, 96px), env(safe-area-inset-left, 0px));
     padding-right: max(clamp(20px, 6vw, 96px), env(safe-area-inset-right, 0px));
   }
-  /* The Popcorn logo, then "on your TV" level with the end of the word
-     (the script rises to the right). */
+  /* The Popcorn logo as a word in the heading, the size of the words
+     beside it. */
   .tv h2 {
     margin: 0;
-    display: flex; flex-wrap: wrap; align-items: center; column-gap: 0.3em;
     font-size: clamp(28px, min(3.2vw, calc(4.6 * var(--vh))), 44px);
     line-height: 1.12; font-weight: 600; letter-spacing: -0.015em;
   }
-  .tv h2 img { width: 5.4em; height: auto; }
-  .tv h2 span { white-space: nowrap; }
+  .tv h2 img { display: inline-block; width: 3.2em; height: auto; vertical-align: -0.46em; margin-right: 0.12em; }
   .tv .kinds { margin: 10px 0 26px; color: var(--dim); font-size: 17px; }
   .steps {
     margin: 0; padding-left: 1.3em;
@@ -476,7 +474,7 @@
 
 <section class="tv" id="tv" aria-labelledby="tv-title">
   <div>
-    <h2 id="tv-title"><img src="assets/wordmark.svg" width="332" height="170" alt="Popcorn"><span>on your TV</span></h2>
+    <h2 id="tv-title"><img src="assets/wordmark.svg" width="332" height="170" alt="Popcorn"> on your TV</h2>
     <p class="kinds">Android TV, Google TV and Fire TV.</p>
     <div class="get">
       <a class="first" data-tv-get href="https://github.com/popcorn-organization/popcorn/releases/latest/download/Popcorn-Android-TV.apk">
