@@ -75,12 +75,13 @@
 
   .lobby {
     position: relative;
-    /* Exactly the visible screen (dvh: it follows the phone's address bar
-       as it shows and hides), and never more: where the content is taller
-       than that (large text settings, a small phone), the script below
-       shrinks it to fit rather than letting the page scroll. */
+    /* The screen with the phone's address bar showing (svh), and it stays
+       that size: following the bar as it hid and showed on scrolling
+       (dvh), the whole first screen stretched and shrank as you scrolled.
+       Where the content is taller than that (large text settings, a small
+       phone), the script below shrinks it to fit. */
     height: 100vh;
-    height: 100dvh;
+    height: 100svh;
     overflow: hidden;
     isolation: isolate;
     display: grid;

@@ -146,7 +146,10 @@ ol.steps li::marker { color: var(--cream); font-weight: 600; }
    behind the whole page (filled by wall.js): it stays put while the page
    scrolls over it. ── */
 body { background: transparent; }
-.backdrop { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+/* As tall as the screen with the address bar hidden (lvh), and staying
+   that tall: sized to the visible screen, the wall shifted each time the
+   phone's address bar hid or showed on scrolling. */
+.backdrop { position: fixed; top: 0; left: 0; right: 0; height: 100vh; height: 100lvh; z-index: -1; overflow: hidden; pointer-events: none; }
 .backdrop .wall {
   position: absolute; inset: -30% -12% -30% -12%;
   display: grid; grid-template-columns: repeat(9, 1fr); gap: 12px;
