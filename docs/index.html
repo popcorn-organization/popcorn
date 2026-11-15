@@ -379,10 +379,63 @@
     .tv .kinds, .steps { font-size: 18px; }
   }
 
+  /* ── The other pages, top right of the lobby ── */
+  .sitenav {
+    position: absolute; z-index: 2;
+    top: max(clamp(18px, calc(3.5 * var(--vh)), 36px), env(safe-area-inset-top, 0px));
+    right: max(clamp(20px, 6vw, 96px), env(safe-area-inset-right, 0px));
+    display: flex; gap: clamp(18px, 2.6vw, 32px);
+    font: 500 16px/1 var(--body);
+  }
+  .sitenav a { color: var(--paper); text-decoration: none; opacity: 0.72; padding: 8px 0; }
+  .sitenav a:hover { opacity: 1; }
+  .sitenav a:focus-visible { outline: 2px solid var(--paper); outline-offset: 3px; border-radius: 4px; }
+  @media (orientation: portrait) {
+    .sitenav { left: 0; right: 0; justify-content: center; font-size: 15px; top: max(10px, env(safe-area-inset-top, 0px)); }
+  }
+
+  /* ── What's inside: words beside a real screenshot, under the lobby ── */
+  .inside {
+    display: grid; gap: 36px clamp(48px, 6vw, 96px); align-items: center;
+    padding-top: clamp(64px, calc(12 * var(--vh)), 140px);
+    padding-left: max(clamp(20px, 6vw, 96px), env(safe-area-inset-left, 0px));
+    padding-right: max(clamp(20px, 6vw, 96px), env(safe-area-inset-right, 0px));
+  }
+  .inside h2 { margin: 0; font-size: clamp(28px, min(3.2vw, calc(4.6 * var(--vh))), 44px); line-height: 1.12; font-weight: 600; letter-spacing: -0.015em; }
+  .inside h2 span { color: var(--cream); }
+  .inside ul { margin: 22px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; color: var(--dim); font-size: 17px; }
+  .inside li { padding-left: 20px; position: relative; }
+  .inside li::before { content: ""; position: absolute; left: 0; top: 0.75em; width: 8px; height: 1px; background: var(--cream); }
+  .inside li em { font-style: normal; color: var(--paper); }
+  .inside .more { display: inline-block; margin-top: 24px; color: var(--cream); font-weight: 500; text-decoration: none; border-bottom: 1px solid rgba(253, 237, 173, 0.35); }
+  .inside figure {
+    margin: 0; border-radius: 16px; overflow: hidden; background: var(--screen);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 40px 80px -40px rgba(0, 0, 0, 0.9);
+  }
+  .inside figure img { width: 100%; height: auto; }
+  @media (min-width: 900px) { .inside { grid-template-columns: minmax(0, 420px) minmax(0, 1fr); } }
+  @media (orientation: landscape) {
+    .inside { --logo: min(46vw, calc(80 * var(--vh))); --logo-x: calc(73vw - var(--logo) / 2);
+      padding-left: max(6vw, min(calc((var(--logo-x) - 560px) / 2), 240px), env(safe-area-inset-left, 0px)); }
+  }
+  @media (orientation: portrait) { .inside { max-width: 600px; margin-inline: auto; } }
+
+  /* ── The line at the foot ── */
+  .foot {
+    margin: 0 max(clamp(20px, 6vw, 96px), env(safe-area-inset-right, 0px));
+    padding: 26px 0 max(30px, env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid var(--rule);
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 40px;
+    font: 400 13px/1.6 var(--body); color: var(--dim);
+  }
+  .foot nav { display: flex; flex-wrap: wrap; gap: 8px 22px; }
+  .foot a { color: var(--paper); text-decoration: none; }
+  .foot p { margin: 0; max-width: 46em; }
+
   /* ── The splash ──
      The script logo alone in the middle while the posters download; then it
      glides into its place above the tagline and the page fades in around it. */
-  .wall, .frost, .lobby::after, .marquee > *, .credits {
+  .wall, .frost, .lobby::after, .marquee > *, .credits, .sitenav {
     transition: opacity 0.9s ease;
   }
   .marquee > .features { transition-delay: 0.15s; }
@@ -392,7 +445,7 @@
   .marquee > .tips { transition-delay: 0.45s; }
   .credits { transition-delay: 0.55s; }
   .splashing .wall, .splashing .frost, .splashing .lobby::after,
-  .splashing .marquee > *, .splashing .credits {
+  .splashing .marquee > *, .splashing .credits, .splashing .sitenav {
     opacity: 0; transition-delay: 0s;
   }
   .splash-logo {
@@ -421,6 +474,7 @@
 </svg>
 
 <main class="lobby">
+  <nav class="sitenav" aria-label="Pages"><a href="features/">Features</a><a href="download/">Download</a><a href="help/">Help</a></nav>
   <div class="wall" aria-hidden="true" data-wall></div>
 
   <div class="frost" aria-hidden="true"></div>
@@ -472,6 +526,21 @@
   <p class="credits">Posters by <a href="https://www.themoviedb.org/" target="_blank" rel="noopener">TMDB</a>. This product uses the TMDB API but is not endorsed or certified by TMDB.</p>
 </main>
 
+<section class="inside" aria-labelledby="inside-title">
+  <div>
+    <h2 id="inside-title">Everything's built in. <span>Nothing to set up.</span></h2>
+    <ul>
+      <li>Films start almost as soon as you press play, in up to <em>4K</em>.</li>
+      <li><em>Ask</em> for something to watch, the way you'd ask a friend.</li>
+      <li>Subtitles that line themselves up, and <em>Sinhala</em> subtitles.</li>
+      <li><em>Skip Intro</em>, and the next episode plays by itself.</li>
+      <li>The original soundtrack, never switched to a dub behind your back.</li>
+    </ul>
+    <a class="more" href="features/">See everything Popcorn does</a>
+  </div>
+  <figure><img src="assets/shots/details.webp" width="1582" height="893" alt="Popcorn on Windows: the home screen, with Possible Love's page open beside it" loading="lazy"></figure>
+</section>
+
 <section class="tv" id="tv" aria-labelledby="tv-title">
   <div>
     <h2 id="tv-title"><img src="assets/wordmark.svg" width="332" height="170" alt="Popcorn"> on your TV</h2>
@@ -500,6 +569,11 @@
     <p class="after">After that, updates come from inside Popcorn.</p>
   </div>
 </section>
+
+<footer class="foot">
+  <nav aria-label="Pages"><a href="features/">Features</a><a href="download/">Download</a><a href="help/">Help</a></nav>
+  <p>Posters and film details by <a href="https://www.themoviedb.org/" target="_blank" rel="noopener">TMDB</a>. Streaming info by <a href="https://www.justwatch.com/" target="_blank" rel="noopener">JustWatch</a>.</p>
+</footer>
 
 <script>
 (function () {
