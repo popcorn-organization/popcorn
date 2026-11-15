@@ -115,3 +115,46 @@ ol.steps li::marker { color: var(--cream); font-weight: 600; }
   .get a { flex: 1 1 100%; justify-content: center; }
 }
 @media (prefers-reduced-motion: reduce) { .get a { transition: none; } }
+
+/* ── The lobby: the home page's poster wall, frosted, at the top of every
+   inner page (filled by wall.js). The page's title and links sit over it;
+   it fades into the dark room below. ── */
+.band { position: relative; overflow: hidden; isolation: isolate; }
+.band .wall {
+  position: absolute; inset: -45% -12% -45% -12%;
+  display: grid; grid-template-columns: repeat(9, 1fr); gap: 12px;
+  align-items: start; transform: rotate(-9deg); z-index: -3;
+}
+.band .lane { display: flex; flex-direction: column; animation: drift 180s linear infinite; will-change: transform; }
+.band .lane:nth-child(even) { animation-direction: reverse; animation-duration: 220s; }
+.band .lane img { width: 100%; aspect-ratio: 2 / 3; object-fit: cover; flex: none; margin-bottom: 12px; border-radius: 6px; background: var(--screen); }
+@keyframes drift { from { transform: translateY(0); } to { transform: translateY(-50%); } }
+.band .frost {
+  position: absolute; inset: 0; z-index: -2;
+  background: rgba(11, 10, 9, 0.42);
+  -webkit-backdrop-filter: blur(34px) saturate(120%);
+  backdrop-filter: blur(34px) saturate(120%);
+}
+.band::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(11, 10, 9, 0) 50%, var(--night) 100%),
+    linear-gradient(90deg, rgba(11, 10, 9, 0.62) 0%, rgba(11, 10, 9, 0.22) 55%, rgba(11, 10, 9, 0.05) 100%);
+}
+.band .intro { padding-bottom: clamp(48px, 7vw, 88px); }
+@media (max-width: 640px) {
+  .band .wall { inset: -25% -40% -25% -20%; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+  .band .lane img { margin-bottom: 8px; }
+}
+@media (prefers-reduced-motion: reduce) { .band .lane { animation: none; } }
+
+/* Glass buttons over the wall, as on the home page. */
+.get a.second { -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+
+/* A screenshot glows with its own colours behind it, as the app's pages
+   glow with their artwork's (set --glow per picture). */
+.shot { position: relative; }
+.glow { --glow: rgba(253, 237, 173, 0.18); }
+.glow .shot, .shot.glow {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 30px 140px -20px var(--glow), 0 40px 80px -40px rgba(0, 0, 0, 0.9) !important;
+}

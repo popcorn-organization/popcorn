@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/site.css?v=1">
+<link rel="stylesheet" href="../assets/site.css?v=2">
 <style>
   /* One row per device, between hairlines: its name on the left; the
      download and what to do the first time on the right. */
@@ -23,14 +23,28 @@
     padding: clamp(36px, 5vw, 56px) 0;
     border-top: 1px solid var(--rule);
   }
-  .device:last-of-type { border-bottom: 1px solid var(--rule); }
+  .device:first-of-type { border-top: 0; }
+  .device h2 img.word { display: inline-block; width: 3.2em; height: auto; vertical-align: -0.46em; margin-right: 0.12em; }
+
+  /* The lobby: the downloads over the wall, as on the home page. */
+  .lobby { padding-top: clamp(56px, 9vw, 110px); padding-bottom: clamp(72px, 10vw, 130px); display: grid; gap: 22px; justify-items: start; }
+  .lobby h1 { margin: 0; font-size: clamp(40px, 5.6vw, 68px); line-height: 1.04; font-weight: 600; letter-spacing: -0.02em; }
+  .lobby h1 span { color: var(--cream); }
+  .lobby .pitch { margin: -8px 0 6px; font-size: clamp(19px, 1.8vw, 23px); color: var(--paper); opacity: 0.85; }
+  .lobby .get a { padding: 16px 30px 16px 22px; }
+  .lobby .get a strong { font-size: 21px; }
+  .lobby .version { margin: 4px 0 0; }
+  .lobby .tips { display: grid; gap: 6px; max-width: 40em; }
+  .lobby .tips p, .lobby .apple { margin: 0; font-size: 15px; color: var(--dim); }
+  .lobby .tips b { color: var(--paper); font-weight: 500; }
+  .lobby .apple { color: var(--cream); }
   .device .kind { margin: 8px 0 0; color: var(--dim); }
   .device .body { display: grid; gap: 22px; align-content: start; max-width: 600px; }
   .device .first-time { margin: 0; color: var(--dim); font-size: 16px; }
   .device .first-time b { color: var(--paper); font-weight: 500; margin-right: 6px; }
   .device ol.steps { font-size: 17px; }
   .device.later .body p { margin: 0; color: var(--dim); }
-  .version { margin: 14px 0 0; font-size: 15px; color: var(--dim); }
+  .version { font-size: 15px; color: var(--dim); }
   .version b { color: var(--paper); font-weight: 500; }
   .version:empty { display: none; }
   @media (min-width: 860px) { .device { grid-template-columns: minmax(0, 340px) minmax(0, 1fr); } }
@@ -44,45 +58,37 @@
   <symbol id="i-tv" viewBox="0 0 24 24"><path fill="currentColor" d="M4 5h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-6v1.5h3a.75.75 0 0 1 0 1.5H7a.75.75 0 0 1 0-1.5h3V18H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm0 1.5a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h16a.5.5 0 0 0 .5-.5V7a.5.5 0 0 0-.5-.5H4z"/></symbol>
 </svg>
 
-<header class="top">
-  <a class="brand" href="../" aria-label="Popcorn home"><img src="../assets/wordmark.svg" width="332" height="170" alt="Popcorn"></a>
-  <nav><a href="../features/">Features</a><a href="../download/" aria-current="page">Download</a><a href="../help/">Help</a></nav>
-</header>
+<div class="band">
+  <div class="wall" aria-hidden="true" data-wall></div>
+  <div class="frost" aria-hidden="true"></div>
+  <header class="top">
+    <a class="brand" href="../" aria-label="Popcorn home"><img src="../assets/wordmark.svg" width="332" height="170" alt="Popcorn"></a>
+    <nav><a href="../features/">Features</a><a href="../download/" aria-current="page">Download</a><a href="../help/">Help</a></nav>
+  </header>
+  <div class="wrap lobby">
+    <h1>Download <span>Popcorn</span></h1>
+    <p class="pitch">Free. No sign-up. No ads.</p>
+    <div class="get" data-get>
+      <a class="first" data-os="android" href="https://github.com/popcorn-organization/popcorn/releases/latest/download/Popcorn-Android.apk">
+        <svg><use href="#i-android"/></svg><span><strong>Android</strong><small data-size="android"></small></span></a>
+      <a class="second" data-os="windows" href="https://github.com/popcorn-organization/popcorn/releases/latest/download/Popcorn-Windows-Setup.exe">
+        <svg><use href="#i-windows"/></svg><span><strong>Windows</strong><small data-size="windows"></small></span></a>
+      <a class="second" data-os="tv" href="#tv">
+        <svg><use href="#i-tv"/></svg><span><strong>TV</strong><small data-size="tv"></small></span></a>
+    </div>
+    <p class="version" data-version></p>
+    <div class="tips">
+      <p data-tip="android"><b>Android, first time?</b> Open the file, allow <em>install unknown apps</em> if your phone asks, then tap <em>Install</em>. Phones and tablets.</p>
+      <p data-tip="windows"><b>Windows, first time?</b> If Windows warns you, choose <em>More info</em>, then <em>Run anyway</em>. Windows 10 and 11.</p>
+    </div>
+    <p class="apple">Not available for iPhone or Mac yet.</p>
+  </div>
+</div>
 
 <main class="wrap">
-  <div class="intro">
-    <h1>Download Popcorn</h1>
-    <p>Free for Android, Windows and TV. No sign-up, no ads.</p>
-    <p class="version" data-version></p>
-  </div>
-
-  <section class="device" id="android">
-    <div>
-      <h2>Android</h2>
-      <p class="kind">Phones and tablets.</p>
-    </div>
-    <div class="body">
-      <div class="get"><a class="first" href="https://github.com/popcorn-organization/popcorn/releases/latest/download/Popcorn-Android.apk">
-        <svg><use href="#i-android"/></svg><span><strong>Download for Android</strong><small data-size="android"></small></span></a></div>
-      <p class="first-time"><b>First time?</b>Open the file, allow <em>install unknown apps</em> if your phone asks, then tap <em>Install</em>.</p>
-    </div>
-  </section>
-
-  <section class="device" id="windows">
-    <div>
-      <h2>Windows</h2>
-      <p class="kind">Windows 10 and 11.</p>
-    </div>
-    <div class="body">
-      <div class="get"><a class="first" href="https://github.com/popcorn-organization/popcorn/releases/latest/download/Popcorn-Windows-Setup.exe">
-        <svg><use href="#i-windows"/></svg><span><strong>Download for Windows</strong><small data-size="windows"></small></span></a></div>
-      <p class="first-time"><b>First time?</b>If Windows warns you, choose <em>More info</em>, then <em>Run anyway</em>.</p>
-    </div>
-  </section>
-
   <section class="device" id="tv">
     <div>
-      <h2>TV</h2>
+      <h2><img class="word" src="../assets/wordmark.svg" width="332" height="170" alt="Popcorn"> on your TV</h2>
       <p class="kind">Android TV, Google TV and Fire TV.</p>
     </div>
     <div class="body">
@@ -105,14 +111,6 @@
     </div>
   </section>
 
-  <section class="device later" id="apple">
-    <div>
-      <h2>iPhone and Mac</h2>
-    </div>
-    <div class="body">
-      <p>Not available yet.</p>
-    </div>
-  </section>
 </main>
 
 <footer class="foot">
@@ -143,6 +141,22 @@
     })
     .catch(function () {});
 
+  // This device's download first, and only its tip where we know it.
+  var ua = navigator.userAgent || "";
+  var os = /Android/i.test(ua) ? "android" : /Windows/i.test(ua) ? "windows" : null;
+  if (os === "windows") {
+    var get = document.querySelector("[data-get]");
+    var win = get.querySelector('[data-os="windows"]'), droid = get.querySelector('[data-os="android"]');
+    win.className = "first"; droid.className = "second";
+    get.insertBefore(win, droid);
+  }
+  if (os) document.querySelectorAll("[data-tip]").forEach(function (t) { t.hidden = t.getAttribute("data-tip") !== os; });
+  // The TV button: down to the steps.
+  document.querySelector('[data-os="tv"]').addEventListener("click", function (e) {
+    e.preventDefault();
+    document.getElementById("tv").scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  });
+
   // Copy the TV address.
   var btn = document.querySelector("[data-copy]");
   btn.addEventListener("click", function () {
@@ -165,5 +179,6 @@
   });
 })();
 </script>
+<script src="../assets/wall.js?v=1"></script>
 </body>
 </html>
