@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/site.css?v=3">
+<link rel="stylesheet" href="../assets/site.css?v=4">
 <style>
   /* Each feature: what it does beside a real screenshot of it, sides
      alternating down the page. Wide screenshots sit under their words. */
@@ -93,8 +93,8 @@
 
 <div class="band">
   <header class="top">
-    <a class="brand" href="../" aria-label="Popcorn home"><img src="../assets/wordmark.svg" width="332" height="170" alt="Popcorn"></a>
-    <nav><a href="../features/" aria-current="page">Features</a><a href="../download/">Download</a><a href="../help/">Help</a></nav>
+    <button class="menu" type="button" data-menu aria-controls="pages" aria-expanded="false" aria-label="Menu"><span></span><span></span><span></span></button>
+    <nav id="pages" aria-label="Pages"><a href="../">Home</a><a href="../features/" aria-current="page">Features</a><a href="../download/">Download</a><a href="../help/">Help</a></nav>
   </header>
   <div class="wrap">
     <div class="intro">
@@ -230,5 +230,6 @@
 </footer>
 
 <script src="../assets/wall.js?v=1"></script>
+<script src="../assets/nav.js?v=1"></script>
 </body>
 </html>
