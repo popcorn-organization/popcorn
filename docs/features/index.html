@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Popcorn Features</title>
+<meta name="description" content="Everything built into Popcorn: films that start almost at once, 4K, subtitles that line themselves up, Sinhala subtitles, Ask for something to watch, Skip Intro and more.">
+<meta name="theme-color" content="#0b0a09">
+<meta name="color-scheme" content="dark">
+<meta property="og:title" content="Popcorn Features">
+<meta property="og:description" content="Everything built into Popcorn. No sign-up, no ads, nothing to set up.">
+<meta property="og:image" content="https://popcorn-organization.github.io/popcorn/assets/share.jpg">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/favicon.png?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/site.css?v=1">
+<style>
+  /* Each feature: what it does beside a real screenshot of it, sides
+     alternating down the page. Wide screenshots sit under their words. */
+  .feature {
+    display: grid; gap: 32px clamp(48px, 7vw, 110px); align-items: center;
+    padding: clamp(48px, 7vw, 96px) 0;
+    border-top: 1px solid var(--rule);
+  }
+  .feature .words { max-width: 470px; }
+  .feature .words p { margin: 16px 0 0; color: var(--dim); }
+  .feature .words ul { margin: 18px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; color: var(--dim); font-size: 17px; }
+  .feature .words li { padding-left: 20px; position: relative; }
+  .feature .words li::before { content: ""; position: absolute; left: 0; top: 0.72em; width: 8px; height: 1px; background: var(--cream); }
+  .feature .key { display: inline-block; margin-top: 18px; font-size: 15px; color: var(--dim); }
+  .feature .key a { color: var(--cream); text-underline-offset: 3px; text-decoration-color: rgba(253, 237, 173, 0.4); }
+  .shot {
+    margin: 0; justify-self: center; width: 100%;
+    border-radius: 18px; overflow: hidden; background: var(--screen);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 40px 80px -40px rgba(0, 0, 0, 0.9);
+  }
+  .shot img { width: 100%; }
+  .shot.tall { max-width: 420px; }
+  .shot.lead { margin-bottom: clamp(48px, 7vw, 96px); }
+  .shot.phone { max-width: 300px; border-radius: 28px; }
+  .phones { display: flex; justify-content: center; gap: clamp(16px, 3vw, 32px); }
+  .phones .shot:nth-child(2) { margin-top: 48px; }
+  .feature.wide .words { max-width: 720px; }
+  @media (min-width: 900px) {
+    .feature { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+    .feature.flip .words { order: 2; }
+    .feature.wide { grid-template-columns: minmax(0, 1fr); }
+  }
+
+  /* The smaller things: a plain two-column list. */
+  .more { padding: clamp(48px, 7vw, 96px) 0 0; border-top: 1px solid var(--rule); }
+  .more dl { margin: 36px 0 0; display: grid; gap: 30px 64px; }
+  .more dt { font-size: 18px; font-weight: 500; color: var(--paper); }
+  .more dd { margin: 6px 0 0; color: var(--dim); font-size: 16px; max-width: 34em; }
+  @media (min-width: 760px) { .more dl { grid-template-columns: 1fr 1fr; } }
+
+  .end { padding: clamp(64px, 9vw, 120px) 0 0; display: grid; gap: 24px; justify-items: start; }
+  .end h2 { font-size: clamp(30px, 3.6vw, 46px); }
+  .end h2 span { color: var(--cream); }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-down" viewBox="0 0 24 24"><path fill="currentColor" d="M12 3a1 1 0 0 1 1 1v10.6l3.3-3.3a1 1 0 1 1 1.4 1.4l-5 5a1 1 0 0 1-1.4 0l-5-5a1 1 0 1 1 1.4-1.4l3.3 3.3V4a1 1 0 0 1 1-1zM5 19h14a1 1 0 1 1 0 2H5a1 1 0 1 1 0-2z"/></symbol>
+</svg>
+
+<header class="top">
+  <a class="brand" href="../" aria-label="Popcorn home"><img src="../assets/wordmark.svg" width="332" height="170" alt="Popcorn"></a>
+  <nav><a href="../features/" aria-current="page">Features</a><a href="../download/">Download</a><a href="../help/">Help</a></nav>
+</header>
+
+<main class="wrap">
+  <div class="intro">
+    <h1>Made for watching, <span>not for setting up.</span></h1>
+    <p>Open Popcorn, pick something and press play. Everything below is already built in. No sign-up, no ads, no add-ons to find.</p>
+  </div>
+  <figure class="shot lead"><img src="../assets/shots/player.webp" width="1600" height="900" alt="Popcorn's player on Windows, paused at the start of Possible Love, with Quality, Audio, Subtitles and Video Size"></figure>
+
+  <section class="feature">
+    <div class="words">
+      <h2>Press play, and it starts</h2>
+      <p>While you read about a film, Popcorn gets a head start on it, so it begins almost as soon as you press play.</p>
+      <ul>
+        <li>Choose 4K, 1080p, 720p or 480p, each with its size, and the best balance marked <em>Recommended</em>.</li>
+        <li>Change quality halfway through. It carries on from the same moment.</li>
+        <li>If a stream stalls, Popcorn finds another copy and keeps going.</li>
+        <li>Pick up where you left off, on any film or episode.</li>
+      </ul>
+    </div>
+    <figure class="shot tall"><img src="../assets/shots/quality.webp" width="600" height="770" alt="Choosing how to watch Possible Love: Korean (original) or English audio, then Ultra HD 2160p, Full HD 1080p (recommended), HD 720p or SD 480p, each with its size" loading="lazy"></figure>
+  </section>
+
+  <section class="feature flip">
+    <div class="words">
+      <h2>Ask for something to watch</h2>
+      <p>Not sure what you want? Say it the way you'd say it to a friend, like <em>a feel-good film for a rainy Sunday</em>, and Ask comes back with posters to choose from.</p>
+      <ul>
+        <li>Ask follow-up questions to narrow it down.</li>
+        <li>Ask for what's on Netflix, Prime Video or Disney+ in your country.</li>
+        <li>Write in your own language and it answers in it.</li>
+        <li>No spoilers, unless you ask for them.</li>
+      </ul>
+      <span class="key">Uses a free Gemini key from Google. <a href="../help/#gemini">How to get one</a></span>
+    </div>
+    <figure class="shot tall"><img src="../assets/shots/ask-col.webp" width="600" height="935" alt="Ask answering 'a feel-good movie for a rainy Sunday' with Paddington 2, The Princess Bride, Amélie, Chef, Singin' in the Rain and My Neighbor Totoro" loading="lazy"></figure>
+  </section>
+
+  <section class="feature">
+    <div class="words">
+      <h2>Subtitles that keep time</h2>
+      <p>Popcorn finds subtitles in your language and puts the ones made for your copy first. If they're out of time, it listens for when people speak and moves every line to match.</p>
+      <ul>
+        <li><em>Sinhala</em> subtitles, translated from English as you watch and kept for next time.</li>
+        <li>Adjust the timing yourself if you like. Popcorn remembers it.</li>
+        <li>Your choice of language becomes the default for everything after.</li>
+      </ul>
+      <span class="key">Sinhala subtitles use the same free Gemini key.</span>
+    </div>
+    <figure class="shot tall"><img src="../assets/shots/subtitles.webp" width="770" height="780" alt="Possible Love paused, with the subtitle menu open: Off, Sinhala (auto-translated from English), Czech and several English subtitles" loading="lazy"></figure>
+  </section>
+
+  <section class="feature flip">
+    <div class="words">
+      <h2>In the language it was made in</h2>
+      <p>A Korean film plays in Korean, a Spanish series in Spanish. If you'd rather hear English, choose it where a dubbed version exists, and Popcorn keeps to it for the whole series.</p>
+      <p>It never switches the language by itself.</p>
+    </div>
+    <figure class="shot tall"><img src="../assets/shots/audio.webp" width="820" height="480" alt="The player's audio menu: Korean, original soundtrack (chosen), or English, dubbed where available" loading="lazy"></figure>
+  </section>
+
+  <section class="feature">
+    <div class="words">
+      <h2>Made for series</h2>
+      <p>Binge without reaching for the remote.</p>
+      <ul>
+        <li><em>Skip Intro</em>, <em>Skip Recap</em> and <em>Skip Credits</em> buttons, where the episode has them marked.</li>
+        <li>The next episode plays by itself, into the next season too.</li>
+        <li>Every episode in the player, with how much you have left.</li>
+      </ul>
+    </div>
+    <figure class="shot"><img src="../assets/shots/episodes.webp" width="920" height="1010" alt="The episode list open in the player for Ghosts season 2, with 'Now Playing' on episode 3 and 20 minutes left" loading="lazy"></figure>
+  </section>
+
+  <section class="feature wide">
+    <div class="words">
+      <h2>Find it, then watch it anywhere</h2>
+      <p>What's trending this week, the top 10 in Search, cast pages, trailers, My List and Continue Watching. And if a film is on Netflix, Prime Video, Disney+ or another service where you live, its logo is right by Play: one tap opens it in that app.</p>
+    </div>
+    <figure class="shot"><img src="../assets/shots/details.webp" width="1582" height="893" alt="Popcorn on Windows: the home screen, with Possible Love's page open beside it and a Netflix logo next to Play Movie" loading="lazy"></figure>
+  </section>
+
+  <section class="feature flip">
+    <div class="words">
+      <h2>On your phone</h2>
+      <ul>
+        <li>Swipe for volume and brightness, double-tap to skip 10 seconds, hold for double speed.</li>
+        <li>Play and pause from the lock screen.</li>
+        <li>The picture turns whichever way you hold the phone.</li>
+        <li>Films still in cinemas show the day they come out.</li>
+      </ul>
+    </div>
+    <div class="phones">
+      <figure class="shot phone"><img src="../assets/shots/phone-search.webp" width="720" height="1133" alt="Search on an Android phone, showing this week's trending films" loading="lazy"></figure>
+      <figure class="shot phone"><img src="../assets/shots/phone-details.webp" width="720" height="1200" alt="Possible Love's page on a phone, with Play Movie and a Netflix logo" loading="lazy"></figure>
+    </div>
+  </section>
+
+  <section class="more">
+    <h2>And the rest</h2>
+    <dl>
+      <div><dt>Cinema sound</dt><dd>5.1 and 7.1 soundtracks go out as they are, for Dolby Atmos, spatial audio or Windows Sonic where you have it. On ordinary speakers, nothing's lost, bass included.</dd></div>
+      <div><dt>On a PC</dt><dd>Real full screen, keyboard shortcuts for everything, and smooth scrolling with the mouse. Films are kept on the drive Popcorn is installed on, not on C:.</dd></div>
+      <div><dt>On a TV</dt><dd>Android TV, Google TV and Fire TV, driven by the remote. <a href="../download/#tv" style="color:var(--cream)">How to install it</a></dd></div>
+      <div><dt>Backup</dt><dd>Save My List and what you've watched to a file, and bring it back on another phone or PC.</dd></div>
+      <div><dt>Updates itself</dt><dd>New versions install from inside the app. Nothing to look for.</dd></div>
+      <div><dt>No account</dt><dd>No sign-up and no ads. Your list and history stay on your device.</dd></div>
+      <div><dt>Free</dt><dd>All of it. No subscription, no paid extras.</dd></div>
+    </dl>
+  </section>
+
+  <section class="end">
+    <h2>Ready when you are. <span>It's free.</span></h2>
+    <div class="get"><a class="first" href="../download/"><svg><use href="#i-down"/></svg><span><strong>Download Popcorn</strong></span></a></div>
+  </section>
+</main>
+
+<footer class="foot">
+  <nav><a href="../">Home</a><a href="../features/">Features</a><a href="../download/">Download</a><a href="../help/">Help</a></nav>
+  <p>Posters and film details by <a href="https://www.themoviedb.org/" target="_blank" rel="noopener">TMDB</a>. This product uses the TMDB API but is not endorsed or certified by TMDB. Streaming info by <a href="https://www.justwatch.com/" target="_blank" rel="noopener">JustWatch</a>.</p>
+</footer>
+
+</body>
+</html>

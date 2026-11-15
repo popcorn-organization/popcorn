@@ -1,0 +1,117 @@
+/* The inner pages (Features, Download, Help): the home page's night room,
+   type and cream, without the poster wall. Plain pages to read: a bar at
+   the top, the words, a line at the foot. */
+:root {
+  --night: #0b0a09;
+  --screen: #15130f;
+  --rule: #2a2621;
+  --paper: #f3efe6;
+  --dim: #a19b8e;
+  --cream: #fdedad;
+  --ink: #17140f;
+  --body: "Outfit", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --gutter: max(clamp(20px, 6vw, 96px), env(safe-area-inset-left, 0px));
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { background: var(--night); -webkit-tap-highlight-color: transparent; }
+body {
+  margin: 0; background: var(--night); color: var(--paper);
+  font: 300 18px/1.6 var(--body);
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+em { font-style: normal; color: var(--paper); }
+:focus-visible { outline: 2px solid var(--paper); outline-offset: 3px; border-radius: 4px; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 var(--gutter); }
+
+/* ── The bar at the top ── */
+.top {
+  display: flex; align-items: center; justify-content: space-between; gap: 20px;
+  max-width: 1180px; margin: 0 auto;
+  padding: max(22px, env(safe-area-inset-top, 0px)) var(--gutter) 0;
+}
+.top .brand img { width: 118px; }
+.top nav { display: flex; gap: clamp(18px, 3vw, 34px); font: 500 16px/1 var(--body); }
+.top nav a { text-decoration: none; color: var(--dim); padding: 8px 0; }
+.top nav a:hover, .top nav a[aria-current="page"] { color: var(--paper); }
+.top nav a[aria-current="page"] { box-shadow: inset 0 -2px 0 var(--cream); }
+
+/* ── A page's opening ── */
+.intro { padding: clamp(48px, 9vw, 110px) 0 clamp(36px, 6vw, 72px); max-width: 760px; }
+.intro h1 {
+  margin: 0; font-size: clamp(38px, 5.4vw, 66px); line-height: 1.06;
+  font-weight: 600; letter-spacing: -0.02em; text-wrap: balance;
+}
+.intro h1 span { color: var(--cream); }
+.intro p { margin: 18px 0 0; font-size: clamp(18px, 1.6vw, 21px); color: var(--dim); max-width: 36em; text-wrap: pretty; }
+
+h2 { margin: 0; font-size: clamp(26px, 2.8vw, 36px); line-height: 1.15; font-weight: 600; letter-spacing: -0.015em; text-wrap: balance; }
+h3 { margin: 0; font-size: 18px; line-height: 1.35; font-weight: 500; }
+p { text-wrap: pretty; }
+
+/* ── Download pills, as on the home page ── */
+.get { display: flex; flex-wrap: wrap; gap: 12px; }
+.get a {
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 14px 28px 14px 22px; border-radius: 999px; text-decoration: none;
+  transition: background 0.18s ease, transform 0.18s ease;
+}
+.get a svg { width: 24px; height: 24px; flex: none; }
+.get a > span { display: flex; align-items: baseline; gap: 10px; }
+.get a strong { font: 600 19px/1.1 var(--body); letter-spacing: -0.01em; }
+.get a small { font: 400 13px/1.1 var(--body); opacity: 0.62; }
+.get a small:empty { display: none; }
+.get a.first { background: var(--cream); color: var(--ink); box-shadow: 0 12px 36px -14px rgba(253, 237, 173, 0.6); }
+.get a.first:hover { transform: translateY(-1px); }
+.get a.second { color: var(--paper); background: rgba(255, 255, 255, 0.08); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12); }
+.get a.second:hover { background: rgba(255, 255, 255, 0.14); }
+
+/* "How?" and other small openers: cream, underlined. */
+details.how summary {
+  display: inline; cursor: pointer; list-style: none;
+  color: var(--cream); font-weight: 500;
+  border-bottom: 1px solid rgba(253, 237, 173, 0.35);
+}
+details.how summary::-webkit-details-marker { display: none; }
+details.how[open] summary { color: var(--dim); border-color: transparent; }
+details.how p { margin: 10px 0 0; font-size: 15px; }
+details.how p b { color: var(--paper); font-weight: 500; }
+
+/* Steps: plain numbers in cream. */
+ol.steps { margin: 0; padding-left: 1.3em; display: grid; gap: 18px; color: var(--dim); }
+ol.steps li { padding-left: 6px; }
+ol.steps li::marker { color: var(--cream); font-weight: 600; }
+.address { font: 500 clamp(16px, 1.5vw, 20px)/1.35 var(--mono); color: var(--cream); overflow-wrap: anywhere; }
+.copyline { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-top: 8px; }
+.copy {
+  font: 500 14px/1 var(--body); color: var(--paper); cursor: pointer;
+  padding: 8px 16px; border: 0; border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+.copy:hover { background: rgba(255, 255, 255, 0.14); }
+.copy.done { color: var(--cream); }
+
+/* ── The line at the foot ── */
+.foot {
+  /* The line as wide as the words above it. */
+  margin: clamp(64px, 10vw, 120px) max(var(--gutter), calc((100% - 1180px) / 2 + var(--gutter))) 0;
+  padding: 28px 0 max(32px, env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--rule);
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 14px 40px;
+  font: 400 13px/1.6 var(--body); color: var(--dim);
+}
+.foot nav { display: flex; flex-wrap: wrap; gap: 8px 22px; }
+.foot nav a { text-decoration: none; color: var(--paper); }
+.foot p { margin: 0; max-width: 46em; }
+.foot p a { color: var(--paper); text-decoration: none; }
+
+@media (max-width: 560px) {
+  body { font-size: 17px; }
+  .top .brand img { width: 96px; }
+  .top nav { font-size: 15px; gap: 18px; }
+  .get a { flex: 1 1 100%; justify-content: center; }
+}
+@media (prefers-reduced-motion: reduce) { .get a { transition: none; } }
