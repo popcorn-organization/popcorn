@@ -394,32 +394,6 @@
     .sitenav { left: 0; right: 0; justify-content: center; font-size: 15px; top: max(10px, env(safe-area-inset-top, 0px)); }
   }
 
-  /* ── What's inside: words beside a real screenshot, under the lobby ── */
-  .inside {
-    display: grid; gap: 36px clamp(48px, 6vw, 96px); align-items: center;
-    padding-top: clamp(64px, calc(12 * var(--vh)), 140px);
-    padding-left: max(clamp(20px, 6vw, 96px), env(safe-area-inset-left, 0px));
-    padding-right: max(clamp(20px, 6vw, 96px), env(safe-area-inset-right, 0px));
-  }
-  .inside h2 { margin: 0; font-size: clamp(28px, min(3.2vw, calc(4.6 * var(--vh))), 44px); line-height: 1.12; font-weight: 600; letter-spacing: -0.015em; }
-  .inside h2 span { color: var(--cream); }
-  .inside ul { margin: 22px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; color: var(--dim); font-size: 17px; }
-  .inside li { padding-left: 20px; position: relative; }
-  .inside li::before { content: ""; position: absolute; left: 0; top: 0.75em; width: 8px; height: 1px; background: var(--cream); }
-  .inside li em { font-style: normal; color: var(--paper); }
-  .inside .more { display: inline-block; margin-top: 24px; color: var(--cream); font-weight: 500; text-decoration: none; border-bottom: 1px solid rgba(253, 237, 173, 0.35); }
-  .inside figure {
-    margin: 0; border-radius: 16px; overflow: hidden; background: var(--screen);
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 40px 80px -40px rgba(0, 0, 0, 0.9);
-  }
-  .inside figure img { width: 100%; height: auto; }
-  @media (min-width: 900px) { .inside { grid-template-columns: minmax(0, 420px) minmax(0, 1fr); } }
-  @media (orientation: landscape) {
-    .inside { --logo: min(46vw, calc(80 * var(--vh))); --logo-x: calc(73vw - var(--logo) / 2);
-      padding-left: max(6vw, min(calc((var(--logo-x) - 560px) / 2), 240px), env(safe-area-inset-left, 0px)); }
-  }
-  @media (orientation: portrait) { .inside { max-width: 600px; margin-inline: auto; } }
-
   /* ── The line at the foot ── */
   .foot {
     margin: 0 max(clamp(20px, 6vw, 96px), env(safe-area-inset-right, 0px));
@@ -525,21 +499,6 @@
 
   <p class="credits">Posters by <a href="https://www.themoviedb.org/" target="_blank" rel="noopener">TMDB</a>. This product uses the TMDB API but is not endorsed or certified by TMDB.</p>
 </main>
-
-<section class="inside" aria-labelledby="inside-title">
-  <div>
-    <h2 id="inside-title">Everything's built in. <span>Nothing to set up.</span></h2>
-    <ul>
-      <li>Films start almost as soon as you press play, in up to <em>4K</em>.</li>
-      <li><em>Ask</em> for something to watch, the way you'd ask a friend.</li>
-      <li>Subtitles that line themselves up, and <em>Sinhala</em> subtitles.</li>
-      <li><em>Skip Intro</em>, and the next episode plays by itself.</li>
-      <li>The original soundtrack, never switched to a dub behind your back.</li>
-    </ul>
-    <a class="more" href="features/">See everything Popcorn does</a>
-  </div>
-  <figure><img src="assets/shots/details.webp" width="1582" height="893" alt="Popcorn on Windows: the home screen, with Possible Love's page open beside it" loading="lazy"></figure>
-</section>
 
 <section class="tv" id="tv" aria-labelledby="tv-title">
   <div>
