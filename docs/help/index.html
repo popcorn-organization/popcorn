@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/site.css?v=6">
-<link rel="stylesheet" href="../assets/ui.css?v=1">
+<link rel="stylesheet" href="../assets/ui.css?v=6">
 <style>
   /* The topics on the left (they stay put as the page scrolls), each
      topic's questions in a glass card on the right; on phones the topics
@@ -29,14 +29,13 @@
     font: 500 15px/1.2 var(--body); color: var(--dim);
     transition: background 0.18s ease, color 0.18s ease;
   }
-  .jump a svg { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
   .jump a:hover { color: var(--paper); background: rgba(255, 255, 255, 0.05); }
   .jump a.on { color: var(--cream); background: rgba(253, 237, 173, 0.09); }
   .qs { display: grid; gap: 18px; }
   .qgroup { padding: 8px clamp(20px, 3vw, 36px) 6px; scroll-margin-top: 92px; }
   .qgroup h2 {
     display: flex; align-items: center; gap: 10px;
-    padding: 24px 0 8px; font: 500 13px/1 var(--body); letter-spacing: 0.14em; text-transform: uppercase; color: var(--cream);
+    padding: 26px 0 6px; font: 600 21px/1.2 var(--body); letter-spacing: -0.01em; color: var(--paper);
   }
   .faq details { border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
   .faq details:last-child { border-bottom: 0; }
@@ -68,8 +67,7 @@
     .side { position: static; }
     .jump { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
     .jump a { padding: 10px 14px; border-radius: 999px; font-size: 14px; color: var(--paper); background: rgba(255, 255, 255, 0.07); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1); }
-    .jump a svg { width: 17px; height: 17px; }
-    .jump a.on { background: rgba(255, 255, 255, 0.07); color: var(--paper); }
+      .jump a.on { background: rgba(255, 255, 255, 0.07); color: var(--paper); }
     .qgroup { border-radius: 24px; padding: 4px 20px; }
     .faq summary { font-size: 17px; padding: 18px 0; }
     .faq .a { padding-right: 0; font-size: 16px; }
@@ -95,7 +93,7 @@
 </div>
 
 <main class="wrap helpgrid">
-  <aside class="side"><nav class="jump card" aria-label="Topics"><a href="#start"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h12M13 6l6 6-6 6"/></svg>Getting started</a><a href="#watching"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l5.5-3.5z"/></svg>Watching</a><a href="#subtitles"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M7 14h4M13 14h4M7 10.5h10"/></svg>Subtitles</a><a href="#ask"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M18.5 15.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></svg>Ask and the Gemini key</a></nav></aside>
+  <aside class="side"><nav class="jump card" aria-label="Topics"><a href="#start">Getting started</a><a href="#watching">Watching</a><a href="#subtitles">Subtitles</a><a href="#ask">Ask and the Gemini key</a></nav></aside>
   <div class="qs">
   <section class="qgroup card" id="start" data-rise>
     <h2>Getting started</h2>
@@ -212,7 +210,7 @@
 </main>
 
 <footer class="foot">
-  <div class="brand"><img src="../assets/wordmark.svg" width="332" height="170" alt="Popcorn"><nav><a href="../">Home</a><a href="../features/">Features</a><a href="../download/">Download</a><a href="../help/">Help</a></nav></div>
+  <div class="brand"><img src="../assets/wordmark.svg" width="332" height="170" alt="Popcorn"><nav aria-label="Pages"><a href="../">Home</a><a href="../features/">Features</a><a href="../download/">Download</a><a href="../help/">Help</a></nav></div>
   <p>Posters and film details by <a href="https://www.themoviedb.org/" target="_blank" rel="noopener">TMDB</a>. This product uses the TMDB API but is not endorsed or certified by TMDB. Streaming info by <a href="https://www.justwatch.com/" target="_blank" rel="noopener">JustWatch</a>.</p>
 </footer>
 
@@ -226,17 +224,31 @@
     }
     openHash(); window.addEventListener("hashchange", openHash);
   })();
-  // The topic you're reading lights up on the left.
+  // The topic you're reading lights up on the left: the last one whose
+  // heading has passed 40% of the way down the screen, and the last topic
+  // once the page is scrolled to the end (it can't scroll up that far).
+  // A tapped topic lights up at once.
   (function () {
-    if (!("IntersectionObserver" in window)) return;
-    var links = document.querySelectorAll(".jump a");
-    var io = new IntersectionObserver(function (es) {
-      es.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        links.forEach(function (a) { a.classList.toggle("on", a.getAttribute("href") === "#" + e.target.id); });
+    var links = Array.prototype.slice.call(document.querySelectorAll(".jump a"));
+    var groups = Array.prototype.slice.call(document.querySelectorAll(".qgroup"));
+    var held = null, holdTimer = null;
+    function light(id) { links.forEach(function (a) { a.classList.toggle("on", a.getAttribute("href") === "#" + id); }); }
+    function spy() {
+      if (held) return;
+      var line = window.innerHeight * 0.4, cur = groups[0];
+      groups.forEach(function (g) { if (g.getBoundingClientRect().top <= line) cur = g; });
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) cur = groups[groups.length - 1];
+      light(cur.id);
+    }
+    links.forEach(function (a) {
+      a.addEventListener("click", function () {
+        held = a.getAttribute("href").slice(1); light(held);
+        clearTimeout(holdTimer); holdTimer = setTimeout(function () { held = null; }, 900);
       });
-    }, { rootMargin: "-40% 0px -55% 0px" });
-    document.querySelectorAll(".qgroup").forEach(function (g) { io.observe(g); });
+    });
+    window.addEventListener("scroll", spy, { passive: true });
+    window.addEventListener("resize", spy);
+    spy();
   })();
 </script>
 <script src="../assets/nav.js?v=2"></script>
