@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Popcorn Privacy</title>
+<meta name="description" content="What Popcorn keeps, where it keeps it, and what syncing with Google Drive can and can't see.">
+<meta name="theme-color" content="#0b0a09">
+<meta name="color-scheme" content="dark">
+<meta property="og:title" content="Popcorn Privacy">
+<meta property="og:description" content="What Popcorn keeps and where.">
+<meta property="og:image" content="https://popcorn-organization.github.io/popcorn/assets/share.jpg">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/favicon.png?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/site.css?v=6">
+<link rel="stylesheet" href="../assets/ui.css?v=6">
+<style>
+  /* One glass card of plain sections, as wide as the other pages' cards;
+     the lines themselves kept to a readable length. */
+  .policy { padding: 8px clamp(20px, 3vw, 36px) 28px; }
+  .policy > * { max-width: 46em; }
+  .policy h2 { padding: 28px 0 8px; font: 600 21px/1.25 var(--body); letter-spacing: -0.01em; color: var(--paper); }
+  .policy p, .policy li { color: var(--dim); font-size: 17px; line-height: 1.6; }
+  .policy p { margin: 0 0 12px; }
+  .policy ul { margin: 0 0 12px; padding-left: 1.2em; display: grid; gap: 6px; }
+  .policy li::marker { color: var(--cream); }
+  .policy strong { color: var(--paper); font-weight: 500; }
+  .policy a { color: var(--cream); text-decoration-color: rgba(253, 237, 173, 0.4); text-underline-offset: 3px; overflow-wrap: anywhere; }
+  .policy .updated { padding-top: 20px; font-size: 14px; color: var(--dim); opacity: 0.8; }
+  @media (max-width: 899px) {
+    .policy { border-radius: 24px; padding: 4px 20px 22px; }
+    .policy p, .policy li { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="backdrop" aria-hidden="true"><div class="wall" data-wall></div><div class="frost"></div></div>
+
+<div class="band">
+  <header class="top">
+    <button class="menu" type="button" data-menu aria-controls="pages" aria-expanded="false" aria-label="Menu"><span></span><span></span><span></span></button>
+    <nav id="pages" aria-label="Pages"><a href="../">Home</a><a href="../features/">Features</a><a href="../download/">Download</a><a href="../help/">Help</a></nav>
+  </header>
+  <div class="wrap">
+    <div class="intro">
+      <h1>Privacy</h1>
+      <p>Popcorn has no accounts, no ads and no servers of its own. Here's what it keeps and where.</p>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <article class="policy card" data-rise>
+    <h2>On your device</h2>
+    <p>My List, what you've watched and how far you got, your language choices, your settings and your Gemini key are kept on the device you use Popcorn on. They aren't sent to us. We don't run any server that could receive them.</p>
+    <p>Popcorn has no analytics, no tracking and no ads.</p>
+
+    <h2>Syncing with Google Drive</h2>
+    <p>Syncing is off unless you turn it on in <em>Settings → Sync</em>. When you do, you sign in with Google and Popcorn asks for one permission: to use <strong>its own hidden folder in your Google Drive</strong> (Google calls it "app data"). That folder doesn't show in your Drive, and with this permission Popcorn can't see, open or change anything else in your Drive.</p>
+    <p>In that folder Popcorn keeps:</p>
+    <ul>
+      <li>My List,</li>
+      <li>Continue Watching, and how far you got in each film and episode,</li>
+      <li>the audio and subtitle language you chose.</li>
+    </ul>
+    <p>Each device you turn sync on keeps one file there, and the devices read each other's to stay the same. The app talks to Google directly: the data goes between your devices and your Google Drive, and never to us. Popcorn also asks Google for your account's email address, only to show you in Settings which account you're syncing with.</p>
+    <p>Popcorn uses this data only to keep your lists the same on your devices. It isn't shared with anyone, sold, or used for ads.</p>
+    <p>Popcorn's use and transfer of information received from Google APIs adheres to the <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener">Google API Services User Data Policy</a>, including the Limited Use requirements.</p>
+
+    <h2>Turning sync off and deleting your data</h2>
+    <ul>
+      <li><strong>Turn sync off on one device:</strong> <em>Settings → Sync</em>. Your lists stay on that device.</li>
+      <li><strong>Delete everything Popcorn saved in your Drive:</strong> <em>Settings → Sync → Delete synced data</em>. This also turns sync off on your other devices. Or, in Google Drive on the web, open <em>Settings → Manage apps</em>, find Popcorn and choose <em>Delete hidden app data</em>.</li>
+      <li><strong>Remove Popcorn's access to your Google account:</strong> <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener">myaccount.google.com/permissions</a>.</li>
+    </ul>
+
+    <h2>Other services Popcorn uses</h2>
+    <ul>
+      <li><strong>TMDB and JustWatch</strong>, and a service for IMDb ratings, for film and series details, posters, ratings and where to stream. Popcorn asks them about the titles you look at.</li>
+      <li><strong>Google Gemini</strong>, only if you add your own Gemini key, for Ask and Sinhala subtitles. Your questions and the subtitle lines being translated go to Google with your key. On Google's free plan, Google may use them to improve its services.</li>
+      <li>To play something, Popcorn connects to the sources the video comes from. Like any website you visit, they can see your device's internet address.</li>
+    </ul>
+
+    <h2>Questions</h2>
+    <p>Ask on <a href="https://github.com/popcorn-organization/popcorn/issues" target="_blank" rel="noopener">Popcorn's GitHub page</a>.</p>
+
+    <p class="updated">Last updated 17 November 2026.</p>
+  </article>
+</main>
+
+<footer class="foot">
+  <div class="brand"><img src="../assets/wordmark.svg" width="332" height="170" alt="Popcorn"><nav aria-label="Pages"><a href="../">Home</a><a href="../features/">Features</a><a href="../download/">Download</a><a href="../help/">Help</a><a href="../privacy/">Privacy</a></nav></div>
+  <p>Posters and film details by <a href="https://www.themoviedb.org/" target="_blank" rel="noopener">TMDB</a>. This product uses the TMDB API but is not endorsed or certified by TMDB. Streaming info by <a href="https://www.justwatch.com/" target="_blank" rel="noopener">JustWatch</a>.</p>
+</footer>
+
+<script src="../assets/wall.js?v=1"></script>
+<script src="../assets/nav.js?v=2"></script>
+</body>
+</html>
