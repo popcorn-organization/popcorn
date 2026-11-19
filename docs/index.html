@@ -482,14 +482,18 @@
     .get { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
     .get a { flex: none; justify-content: center; }
     .get a.first { grid-column: 1 / -1; }
-    .get a.second { padding: 12px 14px; gap: 8px; }
+    /* (Sized by the grid, not its words: its own width decides below
+       whether the download's size fits beside the name.) */
+    .get a.second { padding: 12px 12px; gap: 7px; container-type: inline-size; }
     .get a.second svg { width: 20px; height: 20px; }
     .get a.second > span { gap: 6px; }
-    .get a.second strong { font-size: 17px; }
-    .get a.second small { font-size: 12px; }
+    .get a.second strong { font-size: 17px; white-space: nowrap; }
+    .get a.second small { font-size: 12px; white-space: nowrap; }
     .features { font-size: 15px; gap: 10px 14px; }
   }
-  @media (max-width: 379px) { .get a.second small { display: none; } }
+  /* Too narrow for "Windows 28 MB" on one line (it broke into "28 / MB"):
+     just the name. */
+  @container (max-width: 134px) { .get a.second small { display: none; } }
   @media (orientation: portrait) and (max-height: 820px) { .features { font-size: 14px; } }
 
   /* ── The TV section: one glowing glass card, the heading and download
