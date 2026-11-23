@@ -9,7 +9,7 @@
 <p align="center"><a href="https://popcorn-organization.github.io/popcorn/"><b>Visit the Popcorn website →</b></a></p>
 
 <!-- latest -->
-**Latest version: 4.5.0**, released on 24 November 2026 at 1:03 AM (Sri Lanka time).
+**Latest version: 4.5.1**, released on 24 November 2026 at 1:31 AM (Sri Lanka time).
 <!-- /latest -->
 
 ## Download
